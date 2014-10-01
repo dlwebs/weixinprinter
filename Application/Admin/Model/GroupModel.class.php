@@ -23,4 +23,9 @@ class GroupModel extends BaseModel {
         }
         return array('data' => $grouplist, 'page' => $pageinfo);
     }
+
+    public function truncateGroupAuth() {
+        $where = 'group_auth != 1';
+        return $this->where($where)->setField('group_auth', 0);
+    }
 }

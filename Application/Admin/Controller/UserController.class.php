@@ -27,6 +27,14 @@ class UserController extends BaseController {
         $userobj = D("user");
         $userinfo = $userobj->getUserById($user_id);
         $this->assign('userinfo', $userinfo);
+
+        $usergroup = M('usergroup');
+        $groupid = $usergroup->where('uid = "'.$user_id.'"')->find();
+        $this->assign('group_id', $groupid['gid']);
+
+        $groupobj = D('group');
+        $grouplist = $groupobj->getGroupList('all');
+        $this->assign('grouplist', $grouplist['data']);
         $this->display();
     }
 
@@ -39,12 +47,12 @@ class UserController extends BaseController {
             if ($isok) {
                 $usergroup = M('usergroup');
                 $usergroup->where('uid="'.$user_id.'"')->delete();
-                $this->success('删除成功', 'user/list');
+                $this->success('删除成功');
             } else {
-                $this->error('删除失败', 'user/list');
+                $this->error('删除失败');
             }
         }
-        $this->error('无此用户', 'user/list');
+        $this->error('无此用户');
     }
 
     public function saveAction() {
@@ -52,7 +60,7 @@ class UserController extends BaseController {
         $userobj = D('user');
         $usergroup = M('usergroup');
         if (isset($post['id']) && $post['id']) {
-            $edunumber = $edu->where('id='.$post['id'])->save($post);
+            $usernumber = $userobj->updateUser($post);
             $deletenumber = $usergroup->where('uid="'.$post['user_id'].'" and gid = "'.$post['group_id'].'"')->delete();
             $id = $post['id'];
         } else {

@@ -46,4 +46,16 @@ class UserModel extends BaseModel {
         $insert['user_printer'] = 0;
         return $this->add($insert);
     }
+
+    public function updateUser($data = array()) {
+        unset($data['user_id']);
+        if (!$data['user_pw']) {
+            unset($data['user_pw']);
+        } else {
+            $insert['user_pw'] = md5($data['user_pw']);
+        }
+        $insert['user_name'] = $data['user_name'];
+        $insert['user_status'] = $data['user_status'];
+        return $this->where('id="'.$data['id'].'"')->save($insert);
+    }
 }

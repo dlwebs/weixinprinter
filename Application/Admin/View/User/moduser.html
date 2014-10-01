@@ -1,0 +1,66 @@
+<h2 class="sub-header">修改用户</h2>
+<div class="row placeholders">
+    <div class="col-md-7">
+        <form class="form-horizontal" role="form" method="post" id="userform" action="__MODULE__/user/save" enctype="multipart/form-data">
+        <input type="hidden" name="user_id" value="{$userinfo.user_id}">
+        <input type="hidden" name="id" value="{$userinfo.id}">
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">用户ID</label>
+              <div class="col-sm-8">
+                {$userinfo.user_id}
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">用户名</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="user_name" name="user_name" value="{$userinfo.user_name}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">密码</label>
+              <div class="col-sm-8">
+                <input type="password" class="form-control" id="user_pw" name="user_pw" value="">不填写则表示不修改密码
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">用户状态</label>
+              <div class="col-sm-8">
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="user_status" value="1"<if condition="$userinfo.user_status eq 1"> checked</if>> 启用
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="user_status" value="0"<if condition="$userinfo.user_status eq 0"> checked</if>> 停用
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">用户组</label>
+              <div class="col-sm-8">
+                <select class="form-control" name="group_id">
+                  <option value="">请选择用户组</option>
+                <foreach name="grouplist" item="group">
+                  <option value="{$group.group_id}"<if condition="$group.group_id eq $group_id"> selected</if>>{$group.group_name}</option>
+                </foreach>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" id="addbtn">修改</button>
+              </div>
+            </div>
+          </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function () {
+    $("#addbtn").click(function () {
+        var user_name = $("#user_name").val();
+        if (!user_name) {
+            alert("请填写用户名");
+            return false;
+        }
+        $("#userform").submit();
+    });
+});
+</script>

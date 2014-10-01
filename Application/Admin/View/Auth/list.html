@@ -1,0 +1,43 @@
+<h2 class="sub-header">权限列表</h2>
+    <button type="button" class="btn btn-default" id="refresh">刷新权限</button>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>权限标识</th>
+            <th>权限名称</th>
+            <th>状态</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <foreach name="authlist" item="auth">
+          <tr>
+            <td class="col-sm-2">{$auth.name}</td>
+            <td class="col-sm-2">{$auth.title}</td>
+            <td class="col-sm-2"><if condition="$auth.status eq 1">启用<else />停用</if></td>
+            <td class="col-sm-2">
+                <a href="__MODULE__/modauth/{$auth.id}">编辑</a>
+                <a href="javascript:;" id="delauth_{$auth.id}">删除</a>
+            </td>
+          </tr>
+        </foreach>
+        </tbody>
+      </table>
+      {$page}
+    </div>
+<script type="text/javascript">
+$(function () {
+    $("a[id^='delauth_']").click(function () {
+        if (confirm("确认要删除权限吗？")) {
+            var id = this.id.split("_");
+            location.href = "__MODULE__/delauth/"+id[1];
+        }
+    });
+    $("#refresh").click(function () {
+        if (confirm("刷新权限会重置所有权限，你确定要刷新吗？")) {
+            location.href = "__MODULE__/auth/refresh";
+        }
+    });
+});
+</script>

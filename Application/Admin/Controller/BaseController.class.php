@@ -18,7 +18,7 @@ class BaseController extends Controller {
             }
             $auth = new Auth();
             if (!$auth->check('all', $this->userInfo['user_id'])) {
-                if (!$auth->check(MODULE_NAME.'-'.ACTION_NAME, $this->userInfo['user_id'])) {
+                if (!$auth->check('Admin-'.MODULE_NAME.'-'.ACTION_NAME, $this->userInfo['user_id'])) {
                     $this->error('没有权限', 'Index/login');
                 }
             }
