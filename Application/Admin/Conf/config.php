@@ -8,7 +8,8 @@ $private_config = array(
                         'URL_ROUTER_ON' => true,
                         'URL_CASE_INSENSITIVE' =>true,
                         'URL_ROUTE_RULES' => array(
-                                                  
+                                                  'moduser/:userid' => 'User/moduser',
+                                                  'deluser/:userid' => 'User/deluser',
                                                   )
                         );
 

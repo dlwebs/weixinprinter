@@ -7,4 +7,8 @@ return array(
     'SHOW_PAGE_TRACE' => true,
     'DEFAULT_FILTER' =>'htmlspecialchars,stripslashes',
     'ACTION_SUFFIX' => 'Action',
+
+    'AUTH_CONFIG'=>array(
+        'AUTH_ON' => true
+    )
 );
