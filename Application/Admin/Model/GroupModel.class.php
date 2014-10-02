@@ -10,8 +10,7 @@ class GroupModel extends BaseModel {
         return $groupInfo;
     }
 
-    public function getGroupList($show = '') {
-        $where = 'group_id != 1';
+    public function getGroupList($show = '', $where='group_id != 1') {
         if ($show == 'all') {
             $grouplist = $this->where($where)->select();
             $pageinfo = array();
@@ -23,7 +22,24 @@ class GroupModel extends BaseModel {
         }
         return array('data' => $grouplist, 'page' => $pageinfo);
     }
-
+	public function getGroupById($groupid = '') {
+        return $this->where('group_id = "'.$groupid.'"')->find();
+    }
+	public function addGroup($data = array()) {
+        $insert['group_id'] = $data['group_id'];
+        $insert['group_name'] = $data['group_name'];
+        $insert['group_status'] = $data['group_status'];
+        return $this->add($insert);
+    }
+	public function updateGroup($data = array()) {
+        unset($data['id']);
+        $insert['group_name'] = $data['group_name'];
+        $insert['group_status'] = $data['group_status'];
+        return $this->where('group_id="'.$data['id'].'"')->save($insert);
+    }
+	public function deleteGroupById($groupid = '') {
+        return $this->where('group_id = "'.$groupid.'"')->delete();
+    }
     public function truncateGroupAuth() {
         $where = 'group_auth != 1';
         return $this->where($where)->setField('group_auth', 0);
