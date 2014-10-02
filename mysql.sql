@@ -4,6 +4,9 @@ CREATE TABLE `wxp_system` (
   `system_id` tinyint(4) NOT NULL auto_increment,
   `system_name` varchar(50) NOT NULL COMMENT '系统名称',
   `system_desc` varchar(2000) NOT NULL COMMENT '系统描述',
+  `system_subscribe` varchar(200) NOT NULL COMMENT '关注公众号后发送的欢迎消息',
+  `system_sendimg` varchar(200) NOT NULL COMMENT '发送资源后的回复消息',
+  `system_printimg` varchar(200) NOT NULL COMMENT '打印图片后的回复消息',
   PRIMARY KEY (`system_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='系统信息表';
 
@@ -109,14 +112,3 @@ CREATE TABLE `wxp_weixin` (
   UNIQUE KEY weixin_number (weixin_number)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='公众号表';
 
-
-DROP TABLE IF EXISTS `wxp_groupauth`;
-CREATE TABLE `wxp_groupauth` (
-  `gid` tinyint(10) unsigned NOT NULL COMMENT '组ID，关联group表的group_id字段',
-  `aid` tinyint(10) unsigned NOT NULL COMMENT '权限ID，关联authrule表的id字段', 
-  UNIQUE KEY `gid_aid` (`gid`,`aid`),  
-  KEY `gid` (`gid`), 
-  KEY `aid` (`aid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='组与权限关联表';
-
-INSERT INTO `wxp_groupauth` VALUES (1, 1);
