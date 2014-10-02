@@ -8,7 +8,7 @@ class UserController extends BaseController {
 		$condition = " id != 1 ";
 		$edu_id = I('post.edu_id');
 		if($edu_id){
-			$condition = $condition." and user_id='".$edu_id."'";
+			$condition = $condition." and user_id like '%".$edu_id."%'";
 			$this->assign('edu_id', $edu_id);
 		}
 		$edu_name = I('post.edu_name');
