@@ -39,10 +39,6 @@ class GroupController extends BaseController {
         $groupinfo = $groupobj->getGroupById($group_id);
         $this->assign('groupinfo', $groupinfo);
 
-        $groupauth = M('groupauth');
-        $groupauthArray = $groupauth->where('gid = "'.$group_id.'"')->getField('aid', true);
-        $this->assign('groupauthArray', $groupauthArray);
-
         $auth = D('authrule');
         $authdata = $auth->getAuthList();
         $this->assign('authlist', $authdata['data']);
@@ -56,8 +52,6 @@ class GroupController extends BaseController {
         if ($groupinfo) {
             $isok = $groupobj->deleteGroupById($group_id);
             if ($isok) {
-                $groupauth = M('groupauth');
-                $groupauth->where('gid="'.$group_id.'"')->delete();
                 $this->success('删除成功');
             } else {
                 $this->error('删除失败');
@@ -71,6 +65,9 @@ class GroupController extends BaseController {
         $groupobj = D('group');
 		$groupauth = M('groupauth');
         if (isset($post['id']) && $post['id']) {
+			if(count($post['group_auth'])){
+				$post['group_auth'] = implode(",", $post['group_auth']);
+			}
             $groupnumber = $groupobj->updateGroup($post);
             $id = $post['id'];
         } else {
@@ -84,16 +81,10 @@ class GroupController extends BaseController {
             if ($groupinfo) {
                 $this->error("用户ID已存在");
             }
-            $id = $groupobj->addGroup($post);
-        }
-		if ($id && count($post['group_auth'])) {
 			if(count($post['group_auth'])){
-				$group_auth = $post['group_auth'];
-				$groupauth->where('gid="'.$post['group_id'].'"')->delete();
-				for($i = 0; $i < count($group_auth); $i ++){
-					$groupauth->add(array('gid'=>$post['group_id'], 'aid'=>$group_auth[$i]));
-				}
+				$post['group_auth'] = implode(",", $post['group_auth']);
 			}
+            $id = $groupobj->addGroup($post);
         }
         if ($id) {
             $this->success('保存成功', 'list');
