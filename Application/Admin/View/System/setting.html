@@ -1,0 +1,50 @@
+<h2 class="sub-header">系统设置</h2>
+<div class="row placeholders">
+      <div class="col-md-7">
+        <form class="form-horizontal" role="form" method="post" id="systemform" action="__MODULE__/System/setting" enctype="multipart/form-data">
+			<input type="hidden" name="system_id" value="{$systeminfo.system_id}">
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">系统名称</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="system_name" name="system_name" value="{$systeminfo.system_name}" autofocus>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">系统描述</label>
+              <div class="col-sm-8">
+                <textarea class="form-control" id="system_desc" name="system_desc">{$systeminfo.system_desc}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">关注公众号后发送的欢迎消息</label>
+              <div class="col-sm-8">
+                <textarea class="form-control" id="system_subscribe" name="system_subscribe">{$systeminfo.system_subscribe}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">发送资源后的回复消息</label>
+              <div class="col-sm-8">
+                <textarea class="form-control" id="system_sendimg" name="system_sendimg">{$systeminfo.system_sendimg}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">打印图片后的回复消息</label>
+              <div class="col-sm-8">
+                <textarea class="form-control" id="system_printimg" name="system_printimg">{$systeminfo.system_printimg}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" id="systembtn">确定</button>
+              </div>
+            </div>
+          </form>
+	</div>
+</div>
+<script type="text/javascript">
+$(function () {
+    $("#systembtn").click(function () {
+        $("#systemform").submit();
+    });
+});
+</script>
