@@ -10,6 +10,8 @@ $private_config = array(
                         'URL_ROUTE_RULES' => array(
                                                   'moduser/:userid' => 'User/moduser',
                                                   'deluser/:userid' => 'User/deluser',
+												  'modgroup/groupid' => 'Group/modgroup',
+                                                  'delgroup/groupid' => 'Group/delgroup',
                                                   ),
                         'AUTH_NAME' => array(
                                             'Admin-Auth-list' => '查看权限列表',
@@ -23,6 +25,11 @@ $private_config = array(
                                             'Admin-User-moduser' => '修改用户',
                                             'Admin-User-deluser' => '删除用户',
                                             'Admin-User-save' => '保存用户信息',
+											'Admin-Group-list' => '查看组列表',
+                                            'Admin-Group-add' => '添加组',
+                                            'Admin-Group-modgroup' => '修改组',
+                                            'Admin-Group-delgroup' => '删除组',
+                                            'Admin-Group-save' => '保存组信息',
                                             )
                         );
 

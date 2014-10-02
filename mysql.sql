@@ -109,3 +109,14 @@ CREATE TABLE `wxp_weixin` (
   UNIQUE KEY weixin_number (weixin_number)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='公众号表';
 
+
+DROP TABLE IF EXISTS `wxp_groupauth`;
+CREATE TABLE `wxp_groupauth` (
+  `gid` tinyint(10) unsigned NOT NULL COMMENT '组ID，关联group表的group_id字段',
+  `aid` tinyint(10) unsigned NOT NULL COMMENT '权限ID，关联authrule表的id字段', 
+  UNIQUE KEY `gid_aid` (`gid`,`aid`),  
+  KEY `gid` (`gid`), 
+  KEY `aid` (`aid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='组与权限关联表';
+
+INSERT INTO `wxp_groupauth` VALUES (1, 1);
