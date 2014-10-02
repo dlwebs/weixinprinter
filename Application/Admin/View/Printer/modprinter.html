@@ -3,7 +3,7 @@
     <div class="col-md-7">
         <form class="form-horizontal" role="form" method="post" id="printerform" action="__MODULE__/Printer/save" enctype="multipart/form-data">
         <input type="hidden" name="id" value="{$printerinfo.printer_id}">
-		<input type="hidden" name="printer_id" value="{$printer.printer_id}">
+		<input type="hidden" name="printer_id" value="{$printerinfo.printer_id}">
             <div class="form-group">
               <label for="userid" class="col-sm-3 control-label">设备名称</label>
               <div class="col-sm-8">
@@ -20,20 +20,20 @@
               <label for="userid" class="col-sm-3 control-label">设备类型</label>
               <div class="col-sm-8">
                 <label class="checkbox-inline">
-                  <input type="radio" name="weixin_type" value="1"<if condition="$printerinfo.weixin_type eq 1"> checked</if>> 横屏
+                  <input type="radio" name="printer_type" value="1"<if condition="$printerinfo.printer_type eq 1"> checked</if>> 横屏
                 </label>
                 <label class="checkbox-inline">
-                  <input type="radio" name="weixin_type" value="2"<if condition="$printerinfo.weixin_type eq 2"> checked</if>> 竖屏
+                  <input type="radio" name="printer_type" value="2"<if condition="$printerinfo.printer_type eq 2"> checked</if>> 竖屏
                 </label>
               </div>
             </div>
             <div class="form-group">
               <label for="userid" class="col-sm-3 control-label">公众帐号</label>
-              <div class="col-sm-8">
+              <div class="col-sm-8">{$printerinfo.printer_weixin}
 				<select class="form-control" name="printer_weixin">
 					<option value="">请选择公众帐号</option>
 					<foreach name="weixinlist" item="weixin">
-					  <option value="{$weixin.weixin_number}"<if condition="$printerinfo.printer_weixin eq $weixin.weixin_number"> selected</if>>{$weixin.weixin_number}</option>
+					  <option value="{$weixin.weixin_id}"<if condition="$weixin.weixin_id eq $printerinfo.printer_weixin"> selected</if>>{$weixin.weixin_number}</option>
 					</foreach>
                 </select>
               </div>

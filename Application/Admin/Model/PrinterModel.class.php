@@ -43,7 +43,9 @@ class PrinterModel extends BaseModel {
 
     public function updatePrinter($data = array()) {
 		foreach($data as $key=>$value){
-			$insert[$key] = $value;
+			if($key != "id"){
+				$insert[$key] = $value;
+			}
 		}
         return $this->where('printer_id ="'.$data['printer_id'].'"')->save($insert);
     }

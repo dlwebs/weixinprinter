@@ -36,8 +36,8 @@ class PrinterController extends BaseController {
     }
 
     public function addAction(){
-        $weixin = D('weixin');
-        $weixindata = $weixin->getWeixinList('all');
+        $wxobj = D('weixin');
+        $weixindata = $wxobj->getWeixinList('all');
         $this->assign('weixinlist', $weixindata['data']);
         $this->display();
     }
@@ -46,6 +46,7 @@ class PrinterController extends BaseController {
         $printer_id = I('get.printerid');
         $printerobj = D("printer");
         $printerinfo = $printerobj->getPrinterById($printer_id);
+		$this->assign('printerinfo', $printerinfo);
 
 		$weixin = D('weixin');
         $weixindata = $weixin->getWeixinList('all');
@@ -72,29 +73,47 @@ class PrinterController extends BaseController {
     public function saveAction() {
 		$post = I('post.');
         $printerobj = D('printer');
-		if (!$post['printer_name']) {
-			$this->error("打印机名称不能为空");
-		}
-		$pninfo = $printerobj->getPrinterByName($post['printer_name']);
-		if ($pninfo) {
-			$this->error("打印机名称已存在");
-		}
-		if (!$post['printer_code']) {
-			$this->error("打印机消费码不能为空");
-		}
-		$pcinfo = $printerobj->getPrinterByCode($post['printer_code']);
-		if ($pcinfo) {
-			$this->error("打印机消费码已存在");
-		}
-		$pxinfo = $printerobj->getPrinterByWeixin($post['printer_weixin']);
-		if ($pxinfo) {
-			$this->error("公众帐号已存在");
-		}
         if (isset($post['id']) && $post['id']) {
+			if (!$post['printer_name']) {
+				$this->error("打印机名称不能为空");
+			}
+			$pninfo = $printerobj->getPrinterByName($post['printer_name']);
+			if (count($pninfo) && $pninfo["printer_id"] != $post['printer_id']) {
+				$this->error("打印机名称已存在");
+			}
+			if (!$post['printer_code']) {
+				$this->error("打印机消费码不能为空");
+			}
+			$pcinfo = $printerobj->getPrinterByCode($post['printer_code']);
+			if (count($pcinfo) && $pcinfo["printer_id"] != $post['printer_id']) {
+				$this->error("打印机消费码已存在");
+			}
+			$pxinfo = $printerobj->getPrinterByWeixin($post['printer_weixin']);
+			if (count($pxinfo) && $pxinfo["printer_id"] != $post['printer_id']) {
+				$this->error("公众帐号已存在");
+			}
             $printernumber = $printerobj->updatePrinter($post);
             $id = $post['id'];
         } else {
-            $id = $groupobj->addPrinter($post);
+			if (!$post['printer_name']) {
+				$this->error("打印机名称不能为空");
+			}
+			$pninfo = $printerobj->getPrinterByName($post['printer_name']);
+			if ($pninfo) {
+				$this->error("打印机名称已存在");
+			}
+			if (!$post['printer_code']) {
+				$this->error("打印机消费码不能为空");
+			}
+			$pcinfo = $printerobj->getPrinterByCode($post['printer_code']);
+			if ($pcinfo) {
+				$this->error("打印机消费码已存在");
+			}
+			$pxinfo = $printerobj->getPrinterByWeixin($post['printer_weixin']);
+			if ($pxinfo) {
+				$this->error("公众帐号已存在");
+			}
+            $id = $printerobj->addPrinter($post);
         }
         if ($id) {
             $this->success('保存成功', 'list');

@@ -9,7 +9,7 @@ class WeixinModel extends BaseModel {
 
     public function getWeixinList($show = '') {
 		if ($show == 'all') {
-            $wxlist = $this->order('weixin_regdate')->where($where)->select();
+            $wxlist = $this->order('weixin_regdate')->select();
             $pageinfo = array();
         } else {
 			$count = $this->count();
