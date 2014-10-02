@@ -29,10 +29,10 @@ class UserModel extends BaseModel {
         return $this->where('user_id = "'.$userid.'"')->delete();
     }
 
-    public function getUserList() {
-        $count = $this->where('id != 1')->count();
+    public function getUserList($where='id != 1') {
+        $count = $this->where($where)->count();
         $page = new \Think\Page($count, 10);
-        $userlist = $this->where('id != 1')->field('user_pw', true)->order('user_regdate')->limit($page->firstRow.','.$page->listRows)->select();
+        $userlist = $this->where($where)->field('user_pw', true)->order('user_regdate')->limit($page->firstRow.','.$page->listRows)->select();
         $pageinfo = $page->show();
         return array('data' => $userlist, 'page' => $pageinfo);
     }
