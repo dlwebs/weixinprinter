@@ -9,7 +9,9 @@ CREATE TABLE `wxp_system` (
   `system_printimg` varchar(200) NOT NULL COMMENT '打印图片后的回复消息',
   PRIMARY KEY (`system_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='系统信息表';
-INSERT INTO `wxprint`.`wxp_system` (`system_id` ,`system_name` ,`system_desc` ,`system_subscribe` ,`system_sendimg` ,`system_printimg`)VALUES ('1', '', '', '', '', '');
+
+INSERT INTO `wxp_system` VALUES ('1', '', '', '', '', '');
+
 
 
 DROP TABLE IF EXISTS `wxp_user`;
@@ -78,6 +80,7 @@ CREATE TABLE `wxp_resource` (
   `resource_id` int(11) NOT NULL auto_increment,
   `resource_type` enum('1','2') NOT NULL COMMENT '资源类型，1是视频，2是图片',
   `resource_status` enum('1','2','3') NOT NULL COMMENT '资源状态，1是审核中，2是审核通过，3是审核未通过',
+  `resource_print` enum('1','2') NOT NULL COMMENT '资源打印状态，1是未打印，2是已打印',
   `resource_date` datetime NOT NULL COMMENT '资源上传日期',
   `resource_checkdate` datetime NOT NULL COMMENT '资源审核通过日期',
   `resource_user` varchar(50) NOT NULL COMMENT '资源上传者，关联user表的user_id字段',
@@ -94,10 +97,10 @@ CREATE TABLE `wxp_printer` (
   `printer_id` int(11) NOT NULL auto_increment,
   `printer_name` varchar(50) NOT NULL COMMENT '打印机名称',
   `printer_code` varchar(20) NOT NULL COMMENT '打印机消费码',
-  `printer_imgcode` varchar(50) NOT NULL COMMENT '打印机二维码',
   `printer_type` enum('1','2') NOT NULL COMMENT '打印机终端类型，1是横屏，2是竖屏',
   `printer_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_number字段',
-  PRIMARY KEY (`printer_id`)
+  PRIMARY KEY (`printer_id`),
+  UNIQUE KEY printer_code (printer_code)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='设备表';
 
 
@@ -108,6 +111,8 @@ CREATE TABLE `wxp_weixin` (
   `weixin_number` varchar(50) NOT NULL COMMENT '公众号帐号',
   `weixin_callbackurl` varchar(200) NOT NULL COMMENT '回调地址',
   `weixin_token` varchar(50) NOT NULL COMMENT 'token',
+  `weixin_imgcode` varchar(50) NOT NULL COMMENT '公众号帐号二维码',
+  `weixin_regdate` datetime NOT NULL COMMENT '公众号添加时间',
   PRIMARY KEY (`weixin_id`),
   UNIQUE KEY weixin_number (weixin_number)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='公众号表';

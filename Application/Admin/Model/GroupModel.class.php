@@ -22,25 +22,33 @@ class GroupModel extends BaseModel {
         }
         return array('data' => $grouplist, 'page' => $pageinfo);
     }
-	public function getGroupById($groupid = '') {
+
+    public function getGroupById($groupid = '') {
         return $this->where('group_id = "'.$groupid.'"')->find();
     }
-	public function addGroup($data = array()) {
-        $insert['group_id'] = $data['group_id'];
+
+    public function getGroupByName($groupname = '') {
+        return $this->where('group_name = "'.$groupname.'"')->find();
+    }
+
+    public function addGroup($data = array()) {
         $insert['group_name'] = $data['group_name'];
         $insert['group_status'] = $data['group_status'];
-		$insert['group_auth'] = $data['group_auth'];
+        $insert['group_auth'] = $data['group_auth'];
         return $this->add($insert);
     }
-	public function updateGroup($data = array()) {
+
+    public function updateGroup($data = array()) {
         $insert['group_name'] = $data['group_name'];
         $insert['group_status'] = $data['group_status'];
-		$insert['group_auth'] = $data['group_auth'];
+        $insert['group_auth'] = $data['group_auth'];
         return $this->where('group_id="'.$data['id'].'"')->save($insert);
     }
-	public function deleteGroupById($groupid = '') {
+
+    public function deleteGroupById($groupid = '') {
         return $this->where('group_id = "'.$groupid.'"')->delete();
     }
+
     public function truncateGroupAuth() {
         $where = 'group_auth != 1';
         return $this->where($where)->setField('group_auth', 0);

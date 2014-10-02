@@ -5,31 +5,22 @@ class GroupController extends BaseController {
 
     public function listAction(){
         $groupobj = D('group');
-		$group_name = I('post.group_name');
-		if($group_name && trim($group_name)){
-			$groupdata = $groupobj->getGroupList('', "group_id != 1 and group_name like '%".$group_name."%'");
-		}else{
-			$groupdata = $groupobj->getGroupList();
-		}
-		$this->assign('group_name', $group_name);
+        $group_name = I('post.group_name');
+        if($group_name && trim($group_name)){
+            $groupdata = $groupobj->getGroupList('', "group_id != 1 and group_name like '%".$group_name."%'");
+        }else{
+            $groupdata = $groupobj->getGroupList();
+        }
+        $this->assign('group_name', $group_name);
         $this->assign('grouplist', $groupdata['data']);
-        $this->assign('page', $userdata['page']);
-		
-		$auth = D('authrule');
-        $authdata = $auth->getAuthList();
-        $this->assign('authlist', $authdata['data']);
+        $this->assign('page', $groupdata['page']);
         $this->display();
     }
 
     public function addAction(){
-        $groupobj = D('group');
-        $grouplist = $groupobj->getGroupList('all');
-        $this->assign('grouplist', $grouplist['data']);
-
-		$auth = D('authrule');
-        $authdata = $auth->getAuthList();
+        $auth = D('authrule');
+        $authdata = $auth->getAuthList('all');
         $this->assign('authlist', $authdata['data']);
-
         $this->display();
     }
 
@@ -40,7 +31,7 @@ class GroupController extends BaseController {
         $this->assign('groupinfo', $groupinfo);
 
         $auth = D('authrule');
-        $authdata = $auth->getAuthList();
+        $authdata = $auth->getAuthList('all');
         $this->assign('authlist', $authdata['data']);
         $this->display();
     }
@@ -63,27 +54,23 @@ class GroupController extends BaseController {
     public function saveAction() {
         $post = filterAllParam('post');
         $groupobj = D('group');
-		$groupauth = M('groupauth');
         if (isset($post['id']) && $post['id']) {
-			if(count($post['group_auth'])){
-				$post['group_auth'] = implode(",", $post['group_auth']);
-			}
+            if(count($post['group_auth'])){
+                $post['group_auth'] = implode(",", $post['group_auth']);
+            }
             $groupnumber = $groupobj->updateGroup($post);
             $id = $post['id'];
         } else {
-			if (!$post['group_id']) {
-                $this->error("组ID不能为空");
-            }
             if (!$post['group_name']) {
                 $this->error("组名称不能为空");
             }
-            $groupinfo = $groupobj->getGroupById($post['group_id']);
+            $groupinfo = $groupobj->getGroupByName($post['group_name']);
             if ($groupinfo) {
-                $this->error("用户ID已存在");
+                $this->error("组名称已存在");
             }
-			if(count($post['group_auth'])){
-				$post['group_auth'] = implode(",", $post['group_auth']);
-			}
+            if (count($post['group_auth'])) {
+                $post['group_auth'] = implode(",", $post['group_auth']);
+            }
             $id = $groupobj->addGroup($post);
         }
         if ($id) {

@@ -33,7 +33,7 @@
             <td class="col-sm-2">{$group.group_name}</td>
             <td class="col-sm-2"><if condition="$group.group_status eq 1">启用<else />停用</if></td>
             <td class="col-sm-2">
-                <a href="__MODULE__/Group/modgroup/groupid/{$group.group_id}">编辑</a>
+                <a href="__MODULE__/modgroup/{$group.group_id}">编辑</a>
                 <a href="javascript:;" id="delgroup_{$group.group_id}">删除</a>
             </td>
           </tr>
@@ -47,7 +47,7 @@ $(function () {
     $("a[id^='delgroup_']").click(function () {
         if (confirm("确认要删除此用户组吗？")) {
             var id = this.id.split("_");
-            location.href = "__MODULE__/Group/delgroup/groupid/"+id[1];
+            location.href = "__MODULE__/delgroup/"+id[1];
         }
     });
 });

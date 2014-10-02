@@ -1,0 +1,58 @@
+<h2 class="sub-header">添加公众号</h2>
+<div class="row placeholders">
+    <div class="col-md-7">
+        <form class="form-horizontal" role="form" method="post" id="wxform" action="__MODULE__/Weixin/save" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{$wxinfo.weixin_id}">
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">公众号帐号</label>
+              <div class="col-sm-8">
+                {$wxinfo.weixin_number}
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">回调地址</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="weixin_callbackurl" name="weixin_callbackurl" value="{$wxinfo.weixin_callbackurl}" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">Token</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="weixin_token" name="weixin_token" value="{$wxinfo.weixin_token}" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">二维码</label>
+              <div class="col-sm-8">
+                <input type="file" id="weixin_imgcode" name="weixin_imgcode">
+                <if condition="$wxinfo.weixin_imgcode neq ''">
+                      <img src="/upload/{$wxinfo.weixin_imgcode}" width="100" height="50">
+                      <input type="checkbox" name="delweixin_imgcode" value='{$wxinfo.weixin_imgcode}'>删除二维码
+                 </if>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" id="addbtn">添加</button>
+              </div>
+            </div>
+          </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function () {
+    $("#addbtn").click(function () {
+        var weixin_callbackurl = $("#weixin_callbackurl").val();
+        var weixin_token = $("#weixin_token").val();
+        if (!weixin_callbackurl) {
+            alert("请填写回调地址");
+            return false;
+        }
+        if (!weixin_token) {
+            alert("请填写Token");
+            return false;
+        }
+        $("#wxform").submit();
+    });
+});
+</script>
