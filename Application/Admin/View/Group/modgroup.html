@@ -32,7 +32,7 @@
               <div class="col-sm-8">
 				<foreach name="authlist" item="auth">
 					<label class="checkbox-inline">
-					  <input type="checkbox" name="group_auth[]" <in name="auth.id" value="$groupauthArray">checked</in> value="{$auth.id}"> {$auth.title}
+					  <input type="checkbox" name="group_auth[]" <in name="auth.id" value="$groupinfo.group_auth">checked</in> value="{$auth.id}"> {$auth.title}
 					</label>
 				</foreach>
               </div>
