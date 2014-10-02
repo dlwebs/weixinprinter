@@ -22,6 +22,8 @@ class UserController extends BaseController {
 			$usergroupArray = $usergroup->where('gid = "'.$group_id.'"')->getField('uid', true);
 			if(count($usergroupArray)){
 				$condition = $condition." and user_id in (".implode(",", $usergroupArray).")";
+			}else{
+				$condition = $condition." and user_id=''";
 			}
 			$this->assign('group_id', $group_id);
 		}
@@ -81,7 +83,7 @@ class UserController extends BaseController {
         $usergroup = M('usergroup');
         if (isset($post['id']) && $post['id']) {
             $usernumber = $userobj->updateUser($post);
-            $deletenumber = $usergroup->where('uid="'.$post['user_id'].'" and gid = "'.$post['group_id'].'"')->delete();
+            $deletenumber = $usergroup->where('uid="'.$post['user_id'].'"')->delete();
             $id = $post['id'];
         } else {
             if (!$post['user_id']) {
