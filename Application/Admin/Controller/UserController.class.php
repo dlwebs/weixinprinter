@@ -5,7 +5,27 @@ class UserController extends BaseController {
 
     public function listAction(){
         $userobj = D('user');
-        $userdata = $userobj->getUserList();
+		$condition = " id != 1 ";
+		$edu_id = I('post.edu_id');
+		if($edu_id){
+			$condition = $condition." and user_id='".$edu_id."'";
+			$this->assign('edu_id', $edu_id);
+		}
+		$edu_name = I('post.edu_name');
+		if($edu_name){
+			$condition = $condition." and user_name like '%".$edu_name."%'";
+			$this->assign('edu_name', $edu_name);
+		}
+		$group_id = I('post.group_id');
+		if($group_id){
+			$usergroup = M('usergroup');
+			$usergroupArray = $usergroup->where('gid = "'.$group_id.'"')->getField('uid', true);
+			if(count($usergroupArray)){
+				$condition = $condition." and user_id in (".implode(",", $usergroupArray).")";
+			}
+			$this->assign('group_id', $group_id);
+		}
+		$userdata = $userobj->getUserList($condition);
         $this->assign('userlist', $userdata['data']);
         $this->assign('page', $userdata['page']);
 
