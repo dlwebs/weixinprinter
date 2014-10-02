@@ -29,12 +29,13 @@ class GroupModel extends BaseModel {
         $insert['group_id'] = $data['group_id'];
         $insert['group_name'] = $data['group_name'];
         $insert['group_status'] = $data['group_status'];
+		$insert['group_auth'] = $data['group_auth'];
         return $this->add($insert);
     }
 	public function updateGroup($data = array()) {
-        unset($data['id']);
         $insert['group_name'] = $data['group_name'];
         $insert['group_status'] = $data['group_status'];
+		$insert['group_auth'] = $data['group_auth'];
         return $this->where('group_id="'.$data['id'].'"')->save($insert);
     }
 	public function deleteGroupById($groupid = '') {
