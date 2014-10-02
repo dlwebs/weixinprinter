@@ -1,0 +1,51 @@
+<h2 class="sub-header">添加组</h2>
+<div class="row placeholders">
+    <div class="col-md-7">
+        <form class="form-horizontal" role="form" method="post" id="groupform" action="__MODULE__/group/save" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">组名称</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="group_name" name="group_name" value="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">组状态</label>
+              <div class="col-sm-8">
+                <label class="checkbox-inline">
+                  <input type="radio" name="group_status" value="1" checked> 启用
+                </label>
+                <label class="checkbox-inline">
+                  <input type="radio" name="group_status" value="0"> 停用
+                </label>
+              </div>
+            </div>
+			<div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">组权限</label>
+              <div class="col-sm-8">
+				<foreach name="authlist" item="auth">
+					<label class="checkbox-inline">
+					  <input type="checkbox" name="group_auth[]" value="{$auth.id}" checked> {$auth.title}
+					</label>
+				</foreach>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" id="addbtn">添加</button>
+              </div>
+            </div>
+          </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function () {
+    $("#addbtn").click(function () {
+        var group_name = $("#group_name").val();
+        if (!group_name) {
+            alert("请填写组名称");
+            return false;
+        }
+        $("#groupform").submit();
+    });
+});
+</script>

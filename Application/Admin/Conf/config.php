@@ -14,6 +14,8 @@ $private_config = array(
                                                   'delgroup/:groupid' => 'Group/delgroup',
                                                   'modweixin/:wxid' => 'Weixin/modweixin',
                                                   'delweixin/:wxid' => 'Weixin/delweixin',
+												  'modprinter/:wxid' => 'Printer/modprinter',
+                                                  'delprinter/:wxid' => 'Printer/delprinter',
                                                   ),
                         'AUTH_NAME' => array(
                                             'Admin-Auth-list' => '查看权限列表',
@@ -36,6 +38,9 @@ $private_config = array(
                                             'Admin-Weixin-list' => '微信公众号列表',
                                             'Admin-Weixin-add' => '添加微信公众号',
                                             'Admin-Weixin-save' => '保存公众号信息',
+											'Admin-Printer-list' => '设备列表',
+                                            'Admin-Printer-add' => '添加设备',
+                                            'Admin-Printer-save' => '保存设备',
                                             )
                         );
 
