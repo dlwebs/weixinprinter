@@ -9,7 +9,7 @@ CREATE TABLE `wxp_system` (
   `system_printimg` varchar(200) NOT NULL COMMENT '打印图片后的回复消息',
   PRIMARY KEY (`system_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='系统信息表';
-
+INSERT INTO `wxprint`.`wxp_system` (`system_id` ,`system_name` ,`system_desc` ,`system_subscribe` ,`system_sendimg` ,`system_printimg`)VALUES ('1', '', '', '', '', '');
 
 
 DROP TABLE IF EXISTS `wxp_user`;
