@@ -5,73 +5,96 @@ class PrinterController extends BaseController {
 
     public function listAction(){
         $printerobj = D('printer');
-        $group_name = I('post.group_name');
-        if($group_name && trim($group_name)){
-            $groupdata = $groupobj->getGroupList('', "group_id != 1 and group_name like '%".$group_name."%'");
-        }else{
-            $groupdata = $groupobj->getGroupList();
+        $searchArray = I('post.');
+        if(count($searchArray)){
+			$condition = " 1 ";
+			if($searchArray["search_name"]){
+				$condition = $condition." AND printer_name like '%".$searchArray["search_name"]."%'";
+				$this->assign('search_name', $searchArray["search_name"]);
+			}
+			if($searchArray["search_code"]){
+				$condition = $condition." AND printer_code like '%".$searchArray["printer_code"]."%'";
+				$this->assign('grouplist', $searchArray['printer_code']);
+			}
+			if($searchArray["search_weixin"]){
+				$condition = $condition." AND printer_weixin like '%".$searchArray["search_weixin"]."%'";
+				$this->assign('grouplist', $searchArray['search_weixin']);
+			}
+			if($searchArray["search_type"]){
+				$condition = $condition." AND printer_type = '".$searchArray["search_type"]."'";
+				$this->assign('grouplist', $searchArray['search_type']);
+			}
         }
-        $this->assign('group_name', $group_name);
-        $this->assign('grouplist', $groupdata['data']);
-        $this->assign('page', $groupdata['page']);
+		if($condition){
+			$printerdata = $printerobj->getPrinterList('', $condition);
+		}else{
+            $printerdata = $printerobj->getPrinterList();
+        }
+        $this->assign('printerlist', $printerdata['data']);
+        $this->assign('page', $printerdata['page']);
         $this->display();
     }
 
     public function addAction(){
-        $auth = D('authrule');
-        $authdata = $auth->getAuthList('all');
-        $this->assign('authlist', $authdata['data']);
+        $weixin = D('weixin');
+        $weixindata = $weixin->getWeixinList('all');
+        $this->assign('weixinlist', $weixindata['data']);
         $this->display();
     }
 
     public function modprinterAction(){
-        $group_id = I('get.groupid');
-        $groupobj = D("group");
-        $groupinfo = $groupobj->getGroupById($group_id);
-        $this->assign('groupinfo', $groupinfo);
+        $printer_id = I('get.printerid');
+        $printerobj = D("printer");
+        $printerinfo = $printerobj->getPrinterById($printer_id);
 
-        $auth = D('authrule');
-        $authdata = $auth->getAuthList('all');
-        $this->assign('authlist', $authdata['data']);
+		$weixin = D('weixin');
+        $weixindata = $weixin->getWeixinList('all');
+        $this->assign('weixinlist', $weixindata['data']);
+
         $this->display();
     }
 
     public function delprinterAction(){
-        $group_id = I('get.groupid');
-        $groupobj = D("group");
-        $groupinfo = $groupobj->getGroupById($group_id);
-        if ($groupinfo) {
-            $isok = $groupobj->deleteGroupById($group_id);
+        $printer_id = I('get.printerid');
+        $printerobj = D("printer");
+        $printerinfo = $printerobj->getPrinterById($printer_id);
+        if ($printerinfo) {
+            $isok = $printerobj->deletePrinterById($printer_id);
             if ($isok) {
                 $this->success('删除成功');
             } else {
                 $this->error('删除失败');
             }
         }
-        $this->error('无此组信息');
+        $this->error('无此打印机信息');
     }
 
     public function saveAction() {
-        $post = filterAllParam('post');
-        $groupobj = D('group');
+		$post = I('post.');
+        $printerobj = D('printer');
+		if (!$post['printer_name']) {
+			$this->error("打印机名称不能为空");
+		}
+		$pninfo = $printerobj->getPrinterByName($post['printer_name']);
+		if ($pninfo) {
+			$this->error("打印机名称已存在");
+		}
+		if (!$post['printer_code']) {
+			$this->error("打印机消费码不能为空");
+		}
+		$pcinfo = $printerobj->getPrinterByCode($post['printer_code']);
+		if ($pcinfo) {
+			$this->error("打印机消费码已存在");
+		}
+		$pxinfo = $printerobj->getPrinterByWeixin($post['printer_weixin']);
+		if ($pxinfo) {
+			$this->error("公众帐号已存在");
+		}
         if (isset($post['id']) && $post['id']) {
-            if(count($post['group_auth'])){
-                $post['group_auth'] = implode(",", $post['group_auth']);
-            }
-            $groupnumber = $groupobj->updateGroup($post);
+            $printernumber = $printerobj->updatePrinter($post);
             $id = $post['id'];
         } else {
-            if (!$post['group_name']) {
-                $this->error("组名称不能为空");
-            }
-            $groupinfo = $groupobj->getGroupByName($post['group_name']);
-            if ($groupinfo) {
-                $this->error("组名称已存在");
-            }
-            if (count($post['group_auth'])) {
-                $post['group_auth'] = implode(",", $post['group_auth']);
-            }
-            $id = $groupobj->addGroup($post);
+            $id = $groupobj->addPrinter($post);
         }
         if ($id) {
             $this->success('保存成功', 'list');

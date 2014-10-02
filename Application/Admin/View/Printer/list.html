@@ -5,7 +5,30 @@
                 <div class="form-group">
                   <label for="helpername" class="col-sm-2 control-label">设备名称</label>
                   <div class="col-sm-10">
-                      <input type="text" class="form-control" id="group_name" name="group_name" value="{$group_name}">
+                      <input type="text" class="form-control" id="search_name" name="search_name" value="{$search_name}">
+                  </div>
+                </div>
+				<div class="form-group">
+                  <label for="helpername" class="col-sm-2 control-label">消费码</label>
+                  <div class="col-sm-10">
+                      <input type="text" class="form-control" id="search_code" name="search_code" value="{$search_code}">
+                  </div>
+                </div>
+				<div class="form-group">
+                  <label for="helpername" class="col-sm-2 control-label">终端类型</label>
+                  <div class="col-sm-10">
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_type" value="1"<if condition="$search_type eq 1"> checked</if>> 模屏
+					  </label>
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_type" value="2"<if condition="$search_type eq 2"> checked</if>> 竖屏
+					  </label>
+                  </div>
+                </div>
+				<div class="form-group">
+                  <label for="helpername" class="col-sm-2 control-label">公众帐号</label>
+                  <div class="col-sm-10">
+                      <input type="text" class="form-control" id="search_weixin" name="search_weixin" value="{$search_weixin}">
                   </div>
                 </div>
                 <div class="form-group">
@@ -17,24 +40,24 @@
 		</div>
     </div>
 
-<h2 class="sub-header">组列表</h2>
+<h2 class="sub-header">设备列表</h2>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>组名称</th>
-            <th>状态</th>
+            <th>设备名称</th>
+			<th>终端类型</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-        <foreach name="grouplist" item="group">
+        <foreach name="printerlist" item="printer">
           <tr>
-            <td class="col-sm-2">{$group.group_name}</td>
-            <td class="col-sm-2"><if condition="$group.group_status eq 1">启用<else />停用</if></td>
+            <td class="col-sm-2">{$printer.printer_name}</td>
+            <td class="col-sm-2"><if condition="$printer.printer_type eq 1">横屏<else />竖屏</if></td>
             <td class="col-sm-2">
-                <a href="__MODULE__/modgroup/{$group.group_id}">编辑</a>
-                <a href="javascript:;" id="delgroup_{$group.group_id}">删除</a>
+                <a href="__MODULE__/modprinter/{$printer.printer_id}">编辑</a>
+                <a href="javascript:;" id="delprinter_{$group.printer_id}">删除</a>
             </td>
           </tr>
         </foreach>
@@ -44,10 +67,10 @@
     </div>
 <script type="text/javascript">
 $(function () {
-    $("a[id^='delgroup_']").click(function () {
-        if (confirm("确认要删除此用户组吗？")) {
+    $("a[id^='delprinter_']").click(function () {
+        if (confirm("确认要删除此设备吗？")) {
             var id = this.id.split("_");
-            location.href = "__MODULE__/delgroup/"+id[1];
+            location.href = "__MODULE__/delprinter/"+id[1];
         }
     });
 });

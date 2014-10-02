@@ -7,11 +7,16 @@ class WeixinModel extends BaseModel {
         return $this->where('weixin_id = "'.$id.'"')->delete();
     }
 
-    public function getWeixinList() {
-        $count = $this->count();
-        $page = new \Think\Page($count, 10);
-        $wxlist = $this->order('weixin_regdate')->limit($page->firstRow.','.$page->listRows)->select();
-        $pageinfo = $page->show();
+    public function getWeixinList($show = '') {
+		if ($show == 'all') {
+            $wxlist = $this->order('weixin_regdate')->where($where)->select();
+            $pageinfo = array();
+        } else {
+			$count = $this->count();
+			$page = new \Think\Page($count, 10);
+			$wxlist = $this->order('weixin_regdate')->limit($page->firstRow.','.$page->listRows)->select();
+			$pageinfo = $page->show();
+		}
         return array('data' => $wxlist, 'page' => $pageinfo);
     }
 

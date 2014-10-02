@@ -3,54 +3,52 @@ namespace Admin\Model;
 
 class PrinterModel extends BaseModel {
 
-    public function getGroupInfo($group_id) {
-        $data['group_id'] = $group_id;
-        $data['group_status'] = 1;
-        $groupInfo = $this->where($data)->find();
-        return $groupInfo;
+    public function getPrinterInfo($printer_id) {
+        $data['printer_id'] = $group_id;
+        $printerInfo = $this->where($data)->find();
+        return $printerInfo;
     }
 
-    public function getGroupList($show = '', $where='group_id != 1') {
+    public function getPrinterList($show = '', $where='') {
         if ($show == 'all') {
-            $grouplist = $this->where($where)->select();
+            $printerlist = $this->where($where)->select();
             $pageinfo = array();
         } else {
             $count = $this->where($where)->count();
             $page = new \Think\Page($count, 10);
-            $grouplist = $this->where($where)->limit($page->firstRow.','.$page->listRows)->select();
+            $printerlist = $this->where($where)->limit($page->firstRow.','.$page->listRows)->select();
             $pageinfo = $page->show();
         }
-        return array('data' => $grouplist, 'page' => $pageinfo);
+        return array('data' => $printerlist, 'page' => $pageinfo);
+    }
+	public function getPrinterByName($printername = '') {
+        return $this->where('printer_name = "'.$printername.'"')->find();
+    }
+	public function getPrinterByCode($printercode = '') {
+        return $this->where('printer_code = "'.$printercode.'"')->find();
+    }
+	public function getPrinterByWeixin($printerweixin = '') {
+        return $this->where('printer_weixin = "'.$printerweixin.'"')->find();
+    }
+    public function getPrinterById($printerid = '') {
+        return $this->where('printer_id = "'.$printerid.'"')->find();
     }
 
-    public function getGroupById($groupid = '') {
-        return $this->where('group_id = "'.$groupid.'"')->find();
-    }
-
-    public function getGroupByName($groupname = '') {
-        return $this->where('group_name = "'.$groupname.'"')->find();
-    }
-
-    public function addGroup($data = array()) {
-        $insert['group_name'] = $data['group_name'];
-        $insert['group_status'] = $data['group_status'];
-        $insert['group_auth'] = $data['group_auth'];
+    public function addPrinter($data = array()) {
+		foreach($data as $key=>$value){
+			$insert[$key] = $value;
+		}
         return $this->add($insert);
     }
 
-    public function updateGroup($data = array()) {
-        $insert['group_name'] = $data['group_name'];
-        $insert['group_status'] = $data['group_status'];
-        $insert['group_auth'] = $data['group_auth'];
-        return $this->where('group_id="'.$data['id'].'"')->save($insert);
+    public function updatePrinter($data = array()) {
+		foreach($data as $key=>$value){
+			$insert[$key] = $value;
+		}
+        return $this->where('printer_id ="'.$data['printer_id'].'"')->save($insert);
     }
 
-    public function deleteGroupById($groupid = '') {
-        return $this->where('group_id = "'.$groupid.'"')->delete();
-    }
-
-    public function truncateGroupAuth() {
-        $where = 'group_auth != 1';
-        return $this->where($where)->setField('group_auth', 0);
+    public function deletePrinterById($printerid = '') {
+        return $this->where('printer_id = "'.$printerid.'"')->delete();
     }
 }

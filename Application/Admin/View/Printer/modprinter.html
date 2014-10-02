@@ -1,34 +1,41 @@
 <h2 class="sub-header">修改设备信息</h2>
 <div class="row placeholders">
     <div class="col-md-7">
-        <form class="form-horizontal" role="form" method="post" id="groupform" action="__MODULE__/Printer/save" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="{$printerinfo.group_id}">
-		<input type="hidden" name="group_id" value="{$printer.group_id}">
+        <form class="form-horizontal" role="form" method="post" id="printerform" action="__MODULE__/Printer/save" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{$printerinfo.printer_id}">
+		<input type="hidden" name="printer_id" value="{$printer.printer_id}">
             <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">组名称</label>
+              <label for="userid" class="col-sm-3 control-label">设备名称</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="group_name" name="group_name" value="{$groupinfo.group_name}">
+                <input type="text" class="form-control" id="printer_name" name="printer_name" value="{$printerinfo.printer_name}">
               </div>
             </div>
             <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">组状态</label>
+              <label for="userid" class="col-sm-3 control-label">消费码</label>
+			  <div class="col-sm-8">
+                <input type="text" class="form-control" id="printer_code" name="printer_code" value="{$printerinfo.printer_code}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">设备类型</label>
               <div class="col-sm-8">
                 <label class="checkbox-inline">
-                  <input type="radio" name="group_status" value="1"<if condition="$groupinfo.group_status eq 1"> checked</if>> 启用
+                  <input type="radio" name="weixin_type" value="1"<if condition="$printerinfo.weixin_type eq 1"> checked</if>> 横屏
                 </label>
                 <label class="checkbox-inline">
-                  <input type="radio" name="group_status" value="0"<if condition="$groupinfo.group_status eq 0"> checked</if>> 停用
+                  <input type="radio" name="weixin_type" value="2"<if condition="$printerinfo.weixin_type eq 2"> checked</if>> 竖屏
                 </label>
               </div>
             </div>
             <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">组权限</label>
+              <label for="userid" class="col-sm-3 control-label">公众帐号</label>
               <div class="col-sm-8">
-				<foreach name="authlist" item="auth">
-					<label class="checkbox-inline">
-					  <input type="checkbox" name="group_auth[]" <in name="auth.id" value="$groupinfo.group_auth">checked</in> value="{$auth.id}"> {$auth.title}
-					</label>
-				</foreach>
+				<select class="form-control" name="printer_weixin">
+					<option value="">请选择公众帐号</option>
+					<foreach name="weixinlist" item="weixin">
+					  <option value="{$weixin.weixin_number}"<if condition="$printerinfo.printer_weixin eq $weixin.weixin_number"> selected</if>>{$weixin.weixin_number}</option>
+					</foreach>
+                </select>
               </div>
             </div>
             <div class="form-group">
@@ -42,12 +49,17 @@
 <script type="text/javascript">
 $(function () {
     $("#addbtn").click(function () {
-        var group_name = $("#group_name").val();
-        if (!group_name) {
-            alert("请填写组名称");
+        var printer_name = $("#printer_name").val();
+		var printer_code = $("#printer_code").val();
+        if (!printer_name) {
+            alert("请填写设备名称");
             return false;
         }
-        $("#groupform").submit();
+		if (!printer_code) {
+            alert("请填写消费码");
+            return false;
+        }
+        $("#printerform").submit();
     });
 });
 </script>

@@ -14,8 +14,8 @@ $private_config = array(
                                                   'delgroup/:groupid' => 'Group/delgroup',
                                                   'modweixin/:wxid' => 'Weixin/modweixin',
                                                   'delweixin/:wxid' => 'Weixin/delweixin',
-												  'modprinter/:wxid' => 'Printer/modprinter',
-                                                  'delprinter/:wxid' => 'Printer/delprinter',
+												  'modprinter/:printerid' => 'Printer/modprinter',
+                                                  'delprinter/:printerid' => 'Printer/delprinter',
                                                   ),
                         'AUTH_NAME' => array(
                                             'Admin-Auth-list' => '查看权限列表',
