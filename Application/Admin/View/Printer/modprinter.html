@@ -29,11 +29,11 @@
             </div>
             <div class="form-group">
               <label for="userid" class="col-sm-3 control-label">公众帐号</label>
-              <div class="col-sm-8">{$printerinfo.printer_weixin}
+              <div class="col-sm-8">
 				<select class="form-control" name="printer_weixin">
 					<option value="">请选择公众帐号</option>
 					<foreach name="weixinlist" item="weixin">
-					  <option value="{$weixin.weixin_id}"<if condition="$weixin.weixin_id eq $printerinfo.printer_weixin"> selected</if>>{$weixin.weixin_number}</option>
+					  <option value="{$weixin.weixin_id}"<if condition="$weixin.weixin_id eq $printerinfo['printer_weixin']"> selected</if>>{$weixin.weixin_number}</option>
 					</foreach>
                 </select>
               </div>
