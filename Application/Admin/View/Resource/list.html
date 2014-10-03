@@ -1,0 +1,105 @@
+<h1 class="page-header">搜索打印资源</h1>
+    <div class="row placeholders">
+        <div class="col-md-7">
+            <form class="form-horizontal" role="form" method="post" action="__MODULE__/Resource/list">
+                <div class="form-group">
+                  <label for="helpername" class="col-sm-2 control-label">资源类型</label>
+                  <div class="col-sm-10">
+                      <label class="checkbox-inline">
+						<input type="radio" name="search_type" value="0"<if condition="$search_type eq ''"> checked</if>> all
+					  </label>
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_type" value="1"<if condition="$search_type eq 1"> checked</if>> 视频
+					  </label>
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_type" value="2"<if condition="$search_type eq 2"> checked</if>> 图片
+					  </label>
+                  </div>
+                </div>
+				<div class="form-group">
+                  <label for="helpername" class="col-sm-2 control-label">打印状态</label>
+                  <div class="col-sm-10">
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_print" value="0"<if condition="$search_print eq ''"> checked</if>> all
+					  </label>
+                      <label class="checkbox-inline">
+						<input type="radio" name="search_print" value="1"<if condition="$search_print eq 1"> checked</if>> 未打印
+					  </label>
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_print" value="2"<if condition="$search_print eq 2"> checked</if>> 已打印
+					  </label>
+                  </div>
+                </div>
+				<div class="form-group">
+                  <label for="helpername" class="col-sm-2 control-label">资源状态</label>
+                  <div class="col-sm-10">
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_status" value="0"<if condition="$search_status eq ''"> checked</if>> all
+					  </label>
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_status" value="1"<if condition="$search_status eq 1"> checked</if>> 审核中
+					  </label>
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_status" value="2"<if condition="$search_status eq 2"> checked</if>> 审核通过
+					  </label>
+					  <label class="checkbox-inline">
+						<input type="radio" name="search_status" value="2"<if condition="$search_status eq 3"> checked</if>> 审核未通过
+					  </label>
+                  </div>
+                </div>
+				<div class="form-group">
+                  <label for="helpername" class="col-sm-2 control-label">上传者</label>
+                  <div class="col-sm-10">
+                      <input type="text" class="form-control" id="search_user" name="search_user" value="{$search_user}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">搜索</button>
+                  </div>
+                </div>
+			</form>
+		</div>
+    </div>
+
+<h2 class="sub-header">打印列表</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>资源类型</th>
+			<th>打印状态</th>
+			<th>资源状态</th>
+			<th>上传者</th>
+			<th>上传日期</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <foreach name="resourcelist" item="resource">
+          <tr>
+            <td class="col-sm-2"><if condition="$resource.resource_type eq 1">视频<else />图片</if></td>
+            <td class="col-sm-2"><if condition="$resource.resource_print eq 1">未打印<else />已打印</if></td>
+			<td class="col-sm-2"><if condition="$resource.resource_status eq 1">审核中<elseif condition="$resource.resource_status eq 2"/>审核通过<else />审核未通过</if></td>
+			<td class="col-sm-2">{$resource.resource_user}</td>
+			<td class="col-sm-2">{$resource.resource_date}</td>
+            <td class="col-sm-2">
+                <a href="__MODULE__/modresource/{$resource.resource_id}">编辑</a>
+                <a href="javascript:;" id="delresource_{$resource.resource_id}">删除</a>
+            </td>
+          </tr>
+        </foreach>
+        </tbody>
+      </table>
+      {$page}
+    </div>
+<script type="text/javascript">
+$(function () {
+    $("a[id^='delresource_']").click(function () {
+        if (confirm("确认要删除此打印信息吗？")) {
+            var id = this.id.split("_");
+            location.href = "__MODULE__/delresource/"+id[1];
+        }
+    });
+});
+</script>
