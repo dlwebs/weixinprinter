@@ -16,6 +16,7 @@ $private_config = array(
                                                   'delweixin/:wxid' => 'Weixin/delweixin',
 												  'modprinter/:printerid' => 'Printer/modprinter',
                                                   'delprinter/:printerid' => 'Printer/delprinter',
+												  'detailresource/:resourceid' => 'Resource/detailresource',
                                                   ),
                         'AUTH_NAME' => array(
                                             'Admin-Auth-list' => '查看权限列表',
@@ -41,6 +42,7 @@ $private_config = array(
 											'Admin-Printer-list' => '设备列表',
                                             'Admin-Printer-add' => '添加设备',
                                             'Admin-Printer-save' => '保存设备',
+											'Admin-Resource-list' => '打印设备',
                                             )
                         );
 

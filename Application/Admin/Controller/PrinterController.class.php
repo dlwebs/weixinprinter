@@ -13,16 +13,16 @@ class PrinterController extends BaseController {
 				$this->assign('search_name', $searchArray["search_name"]);
 			}
 			if($searchArray["search_code"]){
-				$condition = $condition." AND printer_code like '%".$searchArray["printer_code"]."%'";
-				$this->assign('grouplist', $searchArray['printer_code']);
+				$condition = $condition." AND printer_code like '%".$searchArray["search_code"]."%'";
+				$this->assign('search_code', $searchArray['search_code']);
 			}
 			if($searchArray["search_weixin"]){
 				$condition = $condition." AND printer_weixin like '%".$searchArray["search_weixin"]."%'";
-				$this->assign('grouplist', $searchArray['search_weixin']);
+				$this->assign('search_weixin', $searchArray['search_weixin']);
 			}
 			if($searchArray["search_type"]){
 				$condition = $condition." AND printer_type = '".$searchArray["search_type"]."'";
-				$this->assign('grouplist', $searchArray['search_type']);
+				$this->assign('search_type', $searchArray['search_type']);
 			}
         }
 		if($condition){

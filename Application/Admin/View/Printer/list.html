@@ -57,7 +57,7 @@
             <td class="col-sm-2"><if condition="$printer.printer_type eq 1">横屏<else />竖屏</if></td>
             <td class="col-sm-2">
                 <a href="__MODULE__/modprinter/{$printer.printer_id}">编辑</a>
-                <a href="javascript:;" id="delprinter_{$group.printer_id}">删除</a>
+                <a href="javascript:;" id="delprinter_{$printer.printer_id}">删除</a>
             </td>
           </tr>
         </foreach>
