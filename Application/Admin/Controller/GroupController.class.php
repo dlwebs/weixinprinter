@@ -55,6 +55,13 @@ class GroupController extends BaseController {
         $post = filterAllParam('post');
         $groupobj = D('group');
         if (isset($post['id']) && $post['id']) {
+			if (!$post['group_name']) {
+                $this->error("组名称不能为空");
+            }
+            $groupinfo = $groupobj->getGroupByName($post['group_name']);
+            if (count($groupinfo) && $groupinfo["group_id"] != $post['group_id']) {
+                $this->error("组名称已存在");
+            }
             if(count($post['group_auth'])){
                 $post['group_auth'] = implode(",", $post['group_auth']);
             }
