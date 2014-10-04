@@ -51,12 +51,17 @@ $(function () {
     $("#addbtn").click(function () {
         var printer_name = $("#printer_name").val();
 		var printer_code = $("#printer_code").val();
+		var printer_weixin = $("#printer_weixin").val();
         if (!printer_name) {
             alert("请填写设备名称");
             return false;
         }
 		if (!printer_code) {
             alert("请填写消费码");
+            return false;
+        }
+		if (!printer_weixin) {
+            alert("请填写公共帐号");
             return false;
         }
         $("#printerform").submit();

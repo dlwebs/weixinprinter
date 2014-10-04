@@ -12,10 +12,6 @@ class PrinterController extends BaseController {
 				$condition = $condition." AND printer_name like '%".$searchArray["search_name"]."%'";
 				$this->assign('search_name', $searchArray["search_name"]);
 			}
-			if($searchArray["search_code"]){
-				$condition = $condition." AND printer_code like '%".$searchArray["search_code"]."%'";
-				$this->assign('search_code', $searchArray['search_code']);
-			}
 			if($searchArray["search_weixin"]){
 				$condition = $condition." AND printer_weixin like '%".$searchArray["search_weixin"]."%'";
 				$this->assign('search_weixin', $searchArray['search_weixin']);
@@ -88,6 +84,9 @@ class PrinterController extends BaseController {
 			if (count($pcinfo) && $pcinfo["printer_id"] != $post['printer_id']) {
 				$this->error("打印机消费码已存在");
 			}
+			if(!$post['printer_weixin']){
+				$this->error("公共帐号不能为空");
+			}
 			$pxinfo = $printerobj->getPrinterByWeixin($post['printer_weixin']);
 			if (count($pxinfo) && $pxinfo["printer_id"] != $post['printer_id']) {
 				$this->error("公众帐号已存在");
@@ -108,6 +107,9 @@ class PrinterController extends BaseController {
 			$pcinfo = $printerobj->getPrinterByCode($post['printer_code']);
 			if ($pcinfo) {
 				$this->error("打印机消费码已存在");
+			}
+			if(!$post['printer_weixin']){
+				$this->error("公共帐号不能为空");
 			}
 			$pxinfo = $printerobj->getPrinterByWeixin($post['printer_weixin']);
 			if ($pxinfo) {
