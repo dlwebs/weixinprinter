@@ -6,8 +6,8 @@ class ResourceController extends BaseController {
     public function listAction(){
         $resourceobj = D('resource');
         $searchArray = I('post.');
+		$condition = " resource_status='2' AND resource_print='2' ";
         if(count($searchArray)){
-			$condition = " 1 ";
 			if($searchArray["search_weixin"]){
 				$condition = $condition." AND resource_weixin = '".$searchArray["search_weixin"]."'";
 				$this->assign('search_weixin', $searchArray["search_weixin"]);
