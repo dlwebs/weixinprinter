@@ -9,6 +9,8 @@ $private_config = array(
                         'URL_CASE_INSENSITIVE' =>true,
                         'URL_ROUTE_RULES' => array(
                                                   'wx/:from/:to/:event' => 'Weixin/event',
+                                                  'getcode/:printerid' => 'Weixin/getcode',
+                                                  'createcode/:printerid' => 'Weixin/createcode',
                                                   )
                         );
 

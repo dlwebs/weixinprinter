@@ -30,6 +30,9 @@ class weixin {
                 case "video":
                     $result = $this->receiveVideo($postObj);
                     break;
+                case "text":
+                    $result = $this->receiveText($postObj);
+                    break;
                 default:
                     $result = "unknown msg type: ".$RX_TYPE;
                     break;
@@ -68,8 +71,33 @@ class weixin {
 
     //接收视频，回复文字消息
     private function receiveVideo($object)  {
-        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'picUrl'=>$object->PicUrl, 'mediaId'=>$object->MediaId, 'thumbMediaId'=>$object->ThumbMediaId);
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName 'mediaId'=>$object->MediaId, 'thumbMediaId'=>$object->ThumbMediaId);
         $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receivevideo';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($param));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $item_str = curl_exec($ch);
+        curl_close($ch);
+
+        $xmlTpl = "<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content>%s</Content>
+        </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
+        return $result;
+    }
+
+    //接收文本，回复文字消息
+    private function receiveText($object)  {
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'content'=>$object->Content);
+        $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receivetext';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

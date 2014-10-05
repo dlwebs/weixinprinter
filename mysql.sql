@@ -10,7 +10,7 @@ CREATE TABLE `wxp_system` (
   PRIMARY KEY (`system_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='系统信息表';
 
-INSERT INTO `wxp_system` VALUES ('1', '', '', '', '', '');
+INSERT INTO `wxp_system` VALUES (1, '', '', '', '', '');
 
 
 
@@ -48,8 +48,8 @@ INSERT INTO `wxp_group` VALUES (1, '超级管理员', '1', 1);
 
 DROP TABLE IF EXISTS `wxp_usergroup`;
 CREATE TABLE `wxp_usergroup` (
-  `uid` varchar(50) NOT NULL COMMENT '用户ID，关联user表的user_id字段',  
-  `gid` tinyint(4) unsigned NOT NULL COMMENT '组ID，关联group表的group_id字段', 
+  `uid` varchar(50) NOT NULL COMMENT '用户ID，关联user表的user_id字段',
+  `gid` tinyint(4) unsigned NOT NULL COMMENT '组ID，关联group表的group_id字段',
   UNIQUE KEY `uid_gid` (`uid`,`gid`),  
   KEY `uid` (`uid`), 
   KEY `gid` (`gid`)
@@ -78,6 +78,8 @@ INSERT INTO `wxp_authrule` VALUES (1, 'all', '所有权限', 1, 1, '');
 DROP TABLE IF EXISTS `wxp_resource`;
 CREATE TABLE `wxp_resource` (
   `resource_id` int(11) NOT NULL auto_increment,
+  `resource_content` varchar(500) NOT NULL COMMENT '资源内容，对于图片来说是图片链接，对于视频来说是视频缩略图的媒体id',
+  `resource_mediaid` varchar(100) NOT NULL COMMENT '视频或图片消息媒体id，可以调用多媒体文件下载接口拉取数据',
   `resource_type` enum('1','2') NOT NULL COMMENT '资源类型，1是视频，2是图片',
   `resource_status` enum('1','2','3') NOT NULL COMMENT '资源状态，1是审核中，2是审核通过，3是审核未通过',
   `resource_print` enum('1','2') NOT NULL COMMENT '资源打印状态，1是未打印，2是已打印',
@@ -86,7 +88,7 @@ CREATE TABLE `wxp_resource` (
   `resource_user` varchar(50) NOT NULL COMMENT '资源上传者，关联user表的user_id字段',
   `resource_checker` varchar(50) NOT NULL COMMENT '资源审核者，关联user表的user_id字段',
   `resource_weixin` varchar(50) NOT NULL COMMENT '资源是哪个公众号的，关联weixin表weixin_number字段',
-  `resource_printer` int(11) unsigned NOT NULL COMMENT '资源在哪台设备打印，关联printer表的printer_id字段',
+  `resource_printer` varchar(50) NOT NULL COMMENT '资源的消费码',
   PRIMARY KEY (`resource_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='资源表';
 
@@ -96,12 +98,23 @@ DROP TABLE IF EXISTS `wxp_printer`;
 CREATE TABLE `wxp_printer` (
   `printer_id` int(11) NOT NULL auto_increment,
   `printer_name` varchar(50) NOT NULL COMMENT '打印机名称',
-  `printer_code` varchar(20) NOT NULL COMMENT '打印机消费码',
+  `printer_code` varchar(20) NOT NULL COMMENT '打印机消费码前缀',
   `printer_type` enum('1','2') NOT NULL COMMENT '打印机终端类型，1是横屏，2是竖屏',
   `printer_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_number字段',
   PRIMARY KEY (`printer_id`),
   UNIQUE KEY printer_code (printer_code)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='设备表';
+
+
+
+DROP TABLE IF EXISTS `wxp_printcode`;
+CREATE TABLE `wxp_printcode` (
+  `printcode_id` int(11) NOT NULL auto_increment,
+  `p_code_number` varchar(50) NOT NULL COMMENT '打印机生成的可供使用的消费码',
+  `p_status` enum('0','1') NOT NULL COMMENT '消费码状态，0是未使用，1是已使用',
+  PRIMARY KEY (`printcode_id`), 
+  KEY `p_code_number` (`p_code_number`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='打印机消费码表';
 
 
 
