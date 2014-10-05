@@ -46,9 +46,23 @@ class WeixinController extends BaseController {
 
     public function getcodeAction() {
         $pid = I('get.printerid');
+        $printobj = new \Admin\Model\PrinterModel();
+        $printerInfo = $printobj->getPrinterInfo($pid);
+        if ($printerInfo) {
+            $printcode = D('printcode');
+            $code = $printcode->getCode($printerInfo['printer_code']);
+            return $code;
+        }
     }
 
     public function createcodeAction() {
         $pid = I('get.printerid');
+        $printobj = new \Admin\Model\PrinterModel();
+        $printerInfo = $printobj->getPrinterInfo($pid);
+        if ($printerInfo) {
+            $printcode = D('printcode');
+            $code = $printcode->createCode($printerInfo['printer_code']);
+            return $code;
+        }
     }
 }
