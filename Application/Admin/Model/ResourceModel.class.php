@@ -38,11 +38,11 @@ class ResourceModel extends BaseModel {
         }
         $data['resource_mediaid'] = $post['mediaId'];
         $data['resource_type'] = $type;
-        $data['resource_status'] = 1;
+        $data['resource_status'] = 2;
         $data['resource_print'] = 1;
         $data['resource_date'] = date('Y-m-d H:i:s');
 
-        $where = array('resource_status' => 1, 'resource_print' => 1, 'resource_weixin' => $post['toUserName'], 'resource_user' => $post['fromUserName'], 'resource_printer' => '');
+        $where = array('resource_status'=>2, 'resource_print'=>1, 'resource_weixin'=>$post['toUserName'], 'resource_user'=>$post['fromUserName'], 'resource_printer'=>'');
         $hasprint = $this->where($where)->find();
         if ($hasprint) {
             return $this->where('resource_id="'.$hasprint['resource_id'].'"')->setField($data);

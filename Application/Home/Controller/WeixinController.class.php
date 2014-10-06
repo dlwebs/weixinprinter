@@ -9,14 +9,18 @@ class WeixinController extends RestController {
         $post = I('post.');
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
-        return '照片已收到，回复消费码开始制作打印';
+        if ($resourceid) {
+            $this->response('照片已收到，回复消费码开始制作打印', 'html');
+        } else {
+            $this->response('照片发送失败，请重新发送', 'html');
+        }
     }
 
     public function receivevideoAction_post(){
         $post = I('post.');
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post, 1);
-        return '视频已收到';
+        $this->response('视频已收到', 'html');
     }
 
     public function receivetextAction_post(){
@@ -24,11 +28,11 @@ class WeixinController extends RestController {
         $resource = new \Admin\Model\ResourceModel();
         $result = $resource->updateResourceCode($post);
         if ($result == 'a') {
-            return '请先上传资源';
+            $this->response('请先上传资源', 'html');
         } elseif ($result == 'b') {
-            return '消费码错误';
+            $this->response('消费码错误', 'html');
         } else {
-            return '开始打印，请在打印机前稍候';
+            $this->response('开始打印，请在打印机前稍候', 'html');
         }
     }
 
