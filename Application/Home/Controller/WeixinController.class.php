@@ -46,11 +46,9 @@ class WeixinController extends RestController {
             $insert['user_regdate'] = date('Y-m-d H:i:s');
             $insert['user_weixin'] = $toUserName;
             $insert['user_name'] = '微信用户';
-            $insert['user_pw'] = '';
-            $insert['user_status'] = '1';
             $userobj->add($insert);
         }
-        $this->response($insert, 'json');
+        $this->response($fromUserName, 'html');
     }
 
     public function getcodeAction_get() {
