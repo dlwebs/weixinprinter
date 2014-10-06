@@ -46,7 +46,7 @@ class WeixinController extends RestController {
             $insert['user_follow'] = '0';
         }
         $userobj->add($insert);
-        $this->response('欢迎，关注成功', 'html');
+        $this->response($insert, 'json');
     }
 
     public function getcodeAction_get() {

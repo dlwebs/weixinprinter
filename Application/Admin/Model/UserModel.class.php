@@ -43,7 +43,6 @@ class UserModel extends BaseModel {
         $insert['user_status'] = $data['user_status'];
         $insert['user_pw'] = md5($data['user_pw']);
         $insert['user_regdate'] = date('Y-m-d H:i:s');
-        $insert['user_printer'] = 0;
         return $this->add($insert);
     }
 
