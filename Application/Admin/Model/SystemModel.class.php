@@ -24,7 +24,7 @@ class SystemModel extends BaseModel {
 	public function getSystemById($systemid = '') {
         return $this->where('system_id = "'.$systemid.'"')->find();
     }
-	public function addSysatem($data = array()) {
+	public function addSystem($data = array()) {
 		foreach($data as $key=>$value){
 			$insert[$key] = $value;
 		}
