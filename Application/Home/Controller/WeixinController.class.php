@@ -48,7 +48,7 @@ class WeixinController extends RestController {
             $insert['user_name'] = '微信用户';
             $userobj->add($insert);
         }
-        $this->response('关注成功', 'json');
+        $this->response('关注成功', 'html');
     }
 
     public function getcodeAction_get() {
