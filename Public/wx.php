@@ -6,7 +6,7 @@
 //define your token
 define("TOKEN", "weixinprinter");
 $wechatObj = new wechatCallbackapiTest();
-$wechatObj->valid();
+$wechatObj->responseMsg();
 
 class wechatCallbackapiTest
 {
@@ -21,43 +21,125 @@ class wechatCallbackapiTest
         }
     }
 
-    public function responseMsg()
-    {
-		//get post data, May be due to the different environments
-		$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
-
-      	//extract post data
-		if (!empty($postStr)){
-                /* libxml_disable_entity_loader is to prevent XML eXternal Entity Injection,
-                   the best way is to check the validity of xml by yourself */
-                libxml_disable_entity_loader(true);
-              	$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-                $fromUsername = $postObj->FromUserName;
-                $toUsername = $postObj->ToUserName;
-                $keyword = trim($postObj->Content);
-                $time = time();
-                $textTpl = "<xml>
-							<ToUserName><![CDATA[%s]]></ToUserName>
-							<FromUserName><![CDATA[%s]]></FromUserName>
-							<CreateTime>%s</CreateTime>
-							<MsgType><![CDATA[%s]]></MsgType>
-							<Content><![CDATA[%s]]></Content>
-							<FuncFlag>0</FuncFlag>
-							</xml>";             
-				if(!empty( $keyword ))
-                {
-              		$msgType = "text";
-                	$contentStr = "Welcome to wechat world!";
-                	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-                	echo $resultStr;
-                }else{
-                	echo "Input something...";
-                }
-
-        }else {
-        	echo "";
-        	exit;
+    public function responseMsg() {
+        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+        if (!empty($postStr)){
+            libxml_disable_entity_loader(true);
+            $postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+            $RX_TYPE = trim($postObj->MsgType);
+            //消息类型分离
+            switch ($RX_TYPE) {
+                case "event":
+                    $result = $this->receiveEvent($postObj);
+                    break;
+                case "image":
+                    $result = $this->receiveImage($postObj);
+                    break;
+                case "video":
+                    $result = $this->receiveVideo($postObj);
+                    break;
+                case "text":
+                    $result = $this->receiveText($postObj);
+                    break;
+                default:
+                    $result = "unknown msg type: ".$RX_TYPE;
+                    break;
+            }
+            echo $result;
+        } else {
+            echo "";
+            exit;
         }
+    }
+
+    //接收图片，回复文字消息
+    private function receiveImage($object)  {
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'picUrl'=>$object->PicUrl, 'mediaId'=>$object->MediaId);
+        $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receiveimg';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($param));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $item_str = curl_exec($ch);
+        curl_close($ch);
+
+        $xmlTpl = "<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content>%s</Content>
+        </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
+        return $result;
+    }
+
+    //接收视频，回复文字消息
+    private function receiveVideo($object)  {
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName 'mediaId'=>$object->MediaId, 'thumbMediaId'=>$object->ThumbMediaId);
+        $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receivevideo';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($param));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $item_str = curl_exec($ch);
+        curl_close($ch);
+
+        $xmlTpl = "<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content>%s</Content>
+        </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
+        return $result;
+    }
+
+    //接收文本，回复文字消息
+    private function receiveText($object)  {
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'content'=>$object->Content);
+        $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receivetext';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($param));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $item_str = curl_exec($ch);
+        curl_close($ch);
+
+        $xmlTpl = "<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content>%s</Content>
+        </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
+        return $result;
+    }
+
+    //接收关注/取消关注事件，回复文字消息
+    private function receiveEvent($object)  {
+        file_get_contents($_SERVER['SERVER_NAME'].'/index.php/wx/'.$object->FromUserName.'/'.$object->ToUserName.'/'.$object->Event));
+        $item_str = '关注成功';
+        $xmlTpl = "<xml>
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content>%s</Content>
+        </xml>";
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
+        return $result;
     }
 		
 	private function checkSignature()
