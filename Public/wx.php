@@ -54,7 +54,7 @@ class wechatCallbackapiTest
 
     //接收图片，回复文字消息
     private function receiveImage($object)  {
-        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'picUrl'=>$object->PicUrl, 'mediaId'=>$object->MediaId);
+        $param = array('fromUserName'=>(string)$object->FromUserName, 'toUserName'=>(string)$object->ToUserName, 'picUrl'=>(string)$object->PicUrl, 'mediaId'=>(string)$object->MediaId);
         $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receiveimg';
 
         $ch = curl_init();
@@ -79,7 +79,7 @@ class wechatCallbackapiTest
 
     //接收视频，回复文字消息
     private function receiveVideo($object)  {
-        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'mediaId'=>$object->MediaId, 'thumbMediaId'=>$object->ThumbMediaId);
+        $param = array('fromUserName'=>(string)$object->FromUserName, 'toUserName'=>(string)$object->ToUserName, 'mediaId'=>(string)$object->MediaId, 'thumbMediaId'=>(string)$object->ThumbMediaId);
         $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receivevideo';
 
         $ch = curl_init();
@@ -104,7 +104,7 @@ class wechatCallbackapiTest
 
     //接收文本，回复文字消息
     private function receiveText($object)  {
-        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'content'=>$object->Content);
+        $param = array('fromUserName'=>(string)$object->FromUserName, 'toUserName'=>(string)$object->ToUserName, 'content'=>(string)$object->Content);
         $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receivetext';
 
         $ch = curl_init();
