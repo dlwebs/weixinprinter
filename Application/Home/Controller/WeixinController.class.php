@@ -1,23 +1,25 @@
 <?php
 namespace Home\Controller;
 
-class WeixinController extends BaseController {
+use Think\Controller\RestController;
 
-    public function receiveimgAction(){
+class WeixinController extends RestController {
+
+    public function receiveimgAction_post(){
         $post = I('post.');
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         return '照片已收到，回复消费码开始制作打印';
     }
 
-    public function receivevideoAction(){
+    public function receivevideoAction_post(){
         $post = I('post.');
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post, 1);
         return '视频已收到';
     }
 
-    public function receivetextAction(){
+    public function receivetextAction_post(){
         $post = I('post.');
         $resource = new \Admin\Model\ResourceModel();
         $result = $resource->updateResourceCode($post);
@@ -30,21 +32,24 @@ class WeixinController extends BaseController {
         }
     }
 
-    public function eventAction() {
-        $fromUserName = I('get.from');//用户微信token
-        $toUserName = I('get.to');//微信公众号
-        $event = I('get.event');//subscribe(订阅)、unsubscribe(取消订阅)
+    public function eventAction_post() {
+        $fromUserName = I('post.fromUserName');//用户微信token
+        $toUserName = I('post.toUserName');//微信公众号
+        $event = I('post.event');//subscribe(订阅)、unsubscribe(取消订阅)
         $userobj = new \Admin\Model\UserModel();
-        $insert = array('user_id'=>$fromUserName, 'user_regdate'=>date('Y-m-d H:i:s'), 'user_weixin'=>$toUserName);
+        $insert['user_id'] = $fromUserName;
+        $insert['user_regdate'] = date('Y-m-d H:i:s');
+        $insert['user_weixin'] = $toUserName;
         if ($event == 'subscribe') {
-            $insert['user_follow'] = 1
+            $insert['user_follow'] = '1';
         } elseif ($event == 'unsubscribe') {
-            $insert['user_follow'] = 0
+            $insert['user_follow'] = '0';
         }
         $userobj->add($insert);
+        $this->response('关注成功', 'html');
     }
 
-    public function getcodeAction() {
+    public function getcodeAction_get() {
         $pid = I('get.printerid');
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($pid);
@@ -55,7 +60,7 @@ class WeixinController extends BaseController {
         }
     }
 
-    public function createcodeAction() {
+    public function createcodeAction_get() {
         $pid = I('get.printerid');
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($pid);

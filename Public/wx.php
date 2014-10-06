@@ -129,8 +129,18 @@ class wechatCallbackapiTest
 
     //接收关注/取消关注事件，回复文字消息
     private function receiveEvent($object)  {
-        file_get_contents($_SERVER['SERVER_NAME'].'/index.php/wx/'.$object->FromUserName.'/'.$object->ToUserName.'/'.$object->Event);
-        $item_str = '关注成功';
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'event'=>$object->Event);
+        $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/event';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($param));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $item_str = curl_exec($ch);
+        curl_close($ch);
+
         $xmlTpl = "<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
         <FromUserName><![CDATA[%s]]></FromUserName>

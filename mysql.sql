@@ -22,14 +22,13 @@ CREATE TABLE `wxp_user` (
   `user_pw` varchar(50) NOT NULL COMMENT '用户密码',
   `user_regdate` datetime NOT NULL COMMENT '用户注册日期',
   `user_status` enum('1','0') NOT NULL COMMENT '用户状态，1是启用，0是停用',
-  `user_printer` int(11) unsigned NOT NULL COMMENT '用户来源设备ID，关联printer表的printer_id字段',
   `user_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_number字段',
   `user_follow` enum('0','1') NOT NULL COMMENT '用户关注公众号状态，0是未关注，1是已关注',
   PRIMARY KEY (`id`),
   UNIQUE KEY user_id (user_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户表';
 
-INSERT INTO `wxp_user` VALUES (1, 'admin', '管理员',  '21232f297a57a5a743894a0e4a801fc3', now(), '1', 0, '', '0');
+INSERT INTO `wxp_user` VALUES (1, 'admin', '管理员',  '21232f297a57a5a743894a0e4a801fc3', now(), '1', '', '0');
 
 
 
