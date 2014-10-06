@@ -129,7 +129,7 @@ class wechatCallbackapiTest
 
     //接收关注/取消关注事件，回复文字消息
     private function receiveEvent($object)  {
-        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'event'=>$object->Event);
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'eventType'=>$object->Event);
         $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/event';
 
         $ch = curl_init();

@@ -35,17 +35,25 @@ class WeixinController extends RestController {
     public function eventAction_post() {
         $fromUserName = I('post.fromUserName');//用户微信token
         $toUserName = I('post.toUserName');//微信公众号
-        $event = I('post.event');//subscribe(订阅)、unsubscribe(取消订阅)
+        $eventType = I('post.eventType');//subscribe(订阅)、unsubscribe(取消订阅)
         $userobj = new \Admin\Model\UserModel();
         $insert['user_id'] = $fromUserName;
-        $insert['user_regdate'] = date('Y-m-d H:i:s');
-        $insert['user_weixin'] = $toUserName;
-        if ($event == 'subscribe') {
+        if ($eventType == 'subscribe') {
             $insert['user_follow'] = '1';
-        } elseif ($event == 'unsubscribe') {
+        } elseif ($eventType == 'unsubscribe') {
             $insert['user_follow'] = '0';
         }
-        $userobj->add($insert);
+        $userInfo = $userobj->getUserById($insert['user_id']);
+        if ($userInfo) {
+            $userobj->where('user_id = "'.$insert['user_id'].'"')->setField('user_follow', $insert['user_follow']);
+        } else {
+            $insert['user_regdate'] = date('Y-m-d H:i:s');
+            $insert['user_weixin'] = $toUserName;
+            $insert['user_name'] = '微信用户';
+            $insert['user_pw'] = '';
+            $insert['user_status'] = '1';
+            $userobj->add($insert);
+        }
         $this->response($insert, 'json');
     }
 
