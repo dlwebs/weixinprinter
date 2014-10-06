@@ -54,7 +54,7 @@ class WeixinController extends RestController {
             $insert['user_status'] = '1';
             $userobj->add($insert);
         }
-        $this->response(I('post.'), 'json');
+        $this->response($userInfo, 'json');
     }
 
     public function getcodeAction_get() {
