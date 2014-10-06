@@ -38,11 +38,7 @@ class WeixinController extends RestController {
         $eventType = I('post.eventType');//subscribe(订阅)、unsubscribe(取消订阅)
         $userobj = new \Admin\Model\UserModel();
         $insert['user_id'] = $fromUserName;
-        if ($eventType == 'subscribe') {
-            $insert['user_follow'] = '1';
-        } elseif ($eventType == 'unsubscribe') {
-            $insert['user_follow'] = '0';
-        }
+        $insert['user_follow'] = $eventType;
         $userInfo = $userobj->getUserById($insert['user_id']);
         if ($userInfo) {
             $userobj->where('user_id = "'.$insert['user_id'].'"')->setField('user_follow', $insert['user_follow']);
@@ -54,7 +50,7 @@ class WeixinController extends RestController {
             $insert['user_status'] = '1';
             $userobj->add($insert);
         }
-        $this->response($userInfo, 'json');
+        $this->response($insert, 'json');
     }
 
     public function getcodeAction_get() {
