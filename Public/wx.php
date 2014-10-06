@@ -79,7 +79,7 @@ class wechatCallbackapiTest
 
     //接收视频，回复文字消息
     private function receiveVideo($object)  {
-        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName 'mediaId'=>$object->MediaId, 'thumbMediaId'=>$object->ThumbMediaId);
+        $param = array('fromUserName'=>$object->FromUserName, 'toUserName'=>$object->ToUserName, 'mediaId'=>$object->MediaId, 'thumbMediaId'=>$object->ThumbMediaId);
         $url = $_SERVER['SERVER_NAME'].'/index.php/weixin/receivevideo';
 
         $ch = curl_init();
@@ -129,7 +129,7 @@ class wechatCallbackapiTest
 
     //接收关注/取消关注事件，回复文字消息
     private function receiveEvent($object)  {
-        file_get_contents($_SERVER['SERVER_NAME'].'/index.php/wx/'.$object->FromUserName.'/'.$object->ToUserName.'/'.$object->Event));
+        file_get_contents($_SERVER['SERVER_NAME'].'/index.php/wx/'.$object->FromUserName.'/'.$object->ToUserName.'/'.$object->Event);
         $item_str = '关注成功';
         $xmlTpl = "<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
