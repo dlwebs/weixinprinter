@@ -120,10 +120,15 @@ CREATE TABLE `wxp_printcode` (
 DROP TABLE IF EXISTS `wxp_weixin`;
 CREATE TABLE `wxp_weixin` (
   `weixin_id` smallint(6) NOT NULL auto_increment,
-  `weixin_number` varchar(50) NOT NULL COMMENT '公众号帐号',
+  `weixin_number` varchar(50) NOT NULL COMMENT '公众号原始id',
+  `weixin_name` varchar(50) NOT NULL COMMENT '公众号名称',
+  `weixin_wxname` varchar(50) NOT NULL COMMENT '微信号',
   `weixin_callbackurl` varchar(200) NOT NULL COMMENT '回调地址',
   `weixin_token` varchar(50) NOT NULL COMMENT 'token',
   `weixin_imgcode` varchar(50) NOT NULL COMMENT '公众号帐号二维码',
+  `weixin_appid` varchar(50) NOT NULL COMMENT 'appid',
+  `weixin_appsecret` varchar(50) NOT NULL COMMENT 'appsecret',
+  `weixin_userid` varchar(50) NOT NULL COMMENT '用户ID，关联wxp_user表user_id字段',
   `weixin_regdate` datetime NOT NULL COMMENT '公众号添加时间',
   PRIMARY KEY (`weixin_id`),
   UNIQUE KEY weixin_number (weixin_number)
