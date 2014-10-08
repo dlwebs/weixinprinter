@@ -43,6 +43,11 @@ $private_config = array(
                                             'Admin-Printer-add' => '添加设备',
                                             'Admin-Printer-save' => '保存设备',
                                             'Admin-Resource-list' => '资源列表',
+                                            'Admin-Printer-modprinter' => '修改打印机',
+                                            'Admin-Printer-delprinter' => '删除打印机',
+                                            'Admin-Resource-detail' => '资源详情',
+                                            'Admin-Weixin-modweixin' => '修改微信',
+                                            'Admin-Weixin-delweixin' => '删除微信',
                                             )
                         );
 

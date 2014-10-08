@@ -18,12 +18,13 @@ class BaseController extends Controller {
             }
             $auth = new Auth();
             if (!$auth->check('all', $this->userInfo['user_id'])) {
-                if (!$auth->check('Admin-'.MODULE_NAME.'-'.ACTION_NAME, $this->userInfo['user_id'])) {
+                if (!$auth->check('Admin-'.CONTROLLER_NAME.'-'.ACTION_NAME, $this->userInfo['user_id'])) {
                     $this->error('没有权限', 'Index/login');
                 }
             }
         }
-        $this->assign('current_c', MODULE_NAME);
+        $this->assign('current_m', MODULE_NAME);
+        $this->assign('current_c', CONTROLLER_NAME);
         $this->assign('current_a', ACTION_NAME);
     }
 }

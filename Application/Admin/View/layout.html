@@ -44,16 +44,14 @@
              <li <if condition="$current_c eq 'Group' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Group/list">组列表</a></li>
              <li <if condition="$current_c eq 'Group' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Group/add">添加组</a></li>
              <li <if condition="$current_c eq 'Auth' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Auth/list">权限列表</a></li>
-             <li <if condition="$current_c eq 'Weixin' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Weixin/list">公众号列表</a></li>
-             <li <if condition="$current_c eq 'Weixin' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Weixin/add">添加公众号</a></li>
+             <li <if condition="$current_c eq 'User' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/User/list">用户列表</a></li>
+             <li <if condition="$current_c eq 'User' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/User/add">添加用户</a></li>
           </ul>
           </if>
 
           <ul class="nav nav-sidebar">
-             <li <if condition="$current_c eq 'User' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/User/list">用户列表</a></li>
-             <if condition="$Think.session.userinfo.group_id eq 1">
-             <li <if condition="$current_c eq 'User' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/User/add">添加用户</a></li>
-             </if>
+              <li <if condition="$current_c eq 'Weixin' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Weixin/list">公众号列表</a></li>
+             <li <if condition="$current_c eq 'Weixin' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Weixin/add">添加公众号</a></li>
           </ul>
 
           <ul class="nav nav-sidebar">
