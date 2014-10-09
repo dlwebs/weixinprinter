@@ -73,7 +73,7 @@ class wechatCallbackapiTest
         <MsgType><![CDATA[text]]></MsgType>
         <Content>%s</Content>
         </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $object->ToUserName);
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
         return $result;
     }
 
@@ -98,7 +98,7 @@ class wechatCallbackapiTest
         <MsgType><![CDATA[text]]></MsgType>
         <Content>%s</Content>
         </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $object->ToUserName);
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
         return $result;
     }
 
@@ -123,7 +123,7 @@ class wechatCallbackapiTest
         <MsgType><![CDATA[text]]></MsgType>
         <Content>%s</Content>
         </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $object->ToUserName);
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
         return $result;
     }
 
@@ -148,7 +148,7 @@ class wechatCallbackapiTest
         <MsgType><![CDATA[text]]></MsgType>
         <Content>%s</Content>
         </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $object->ToUserName);
+        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $item_str);
         return $result;
     }
 		
