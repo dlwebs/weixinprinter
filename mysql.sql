@@ -22,7 +22,7 @@ CREATE TABLE `wxp_user` (
   `user_pw` varchar(50) NOT NULL COMMENT '用户密码',
   `user_regdate` datetime NOT NULL COMMENT '用户注册日期',
   `user_status` enum('1','0') NOT NULL COMMENT '用户状态，1是启用，0是停用',
-  `user_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_number字段',
+  `user_weixin` varchar(50) NOT NULL COMMENT '普通微信用户Token，用来识别普通微信用户',
   `user_follow` enum('unsubscribe','subscribe') NOT NULL COMMENT '用户关注公众号状态，unsubscribe是未关注，subscribe是已关注',
   PRIMARY KEY (`id`),
   UNIQUE KEY user_id (user_id)
@@ -86,7 +86,7 @@ CREATE TABLE `wxp_resource` (
   `resource_checkdate` datetime NOT NULL COMMENT '资源审核通过日期',
   `resource_user` varchar(50) NOT NULL COMMENT '资源上传者，关联user表的user_id字段',
   `resource_checker` varchar(50) NOT NULL COMMENT '资源审核者，关联user表的user_id字段',
-  `resource_weixin` varchar(50) NOT NULL COMMENT '资源是哪个公众号的，关联weixin表weixin_number字段',
+  `resource_weixin` varchar(50) NOT NULL COMMENT '资源是哪个公众号的，关联weixin表weixin_token字段',
   `resource_printer` varchar(50) NOT NULL COMMENT '资源的消费码',
   PRIMARY KEY (`resource_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='资源表';
@@ -99,7 +99,7 @@ CREATE TABLE `wxp_printer` (
   `printer_name` varchar(50) NOT NULL COMMENT '打印机名称',
   `printer_code` varchar(20) NOT NULL COMMENT '打印机消费码前缀',
   `printer_type` enum('1','2') NOT NULL COMMENT '打印机终端类型，1是横屏，2是竖屏',
-  `printer_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_number字段',
+  `printer_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_token字段',
   PRIMARY KEY (`printer_id`),
   UNIQUE KEY printer_code (printer_code)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='设备表';
@@ -122,7 +122,6 @@ CREATE TABLE `wxp_weixin` (
   `weixin_id` smallint(6) NOT NULL auto_increment,
   `weixin_number` varchar(50) NOT NULL COMMENT '公众号原始id',
   `weixin_name` varchar(50) NOT NULL COMMENT '公众号名称',
-  `weixin_wxname` varchar(50) NOT NULL COMMENT '微信号',
   `weixin_callbackurl` varchar(200) NOT NULL COMMENT '回调地址',
   `weixin_token` varchar(50) NOT NULL COMMENT 'token',
   `weixin_imgcode` varchar(50) NOT NULL COMMENT '公众号帐号二维码',
@@ -131,6 +130,7 @@ CREATE TABLE `wxp_weixin` (
   `weixin_userid` varchar(50) NOT NULL COMMENT '用户ID，关联wxp_user表user_id字段',
   `weixin_regdate` datetime NOT NULL COMMENT '公众号添加时间',
   PRIMARY KEY (`weixin_id`),
-  UNIQUE KEY weixin_number (weixin_number)
+  UNIQUE KEY weixin_number (weixin_number),
+  UNIQUE KEY weixin_token (weixin_token)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='公众号表';
 

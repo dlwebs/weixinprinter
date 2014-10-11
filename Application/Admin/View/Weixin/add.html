@@ -3,29 +3,60 @@
     <div class="col-md-7">
         <form class="form-horizontal" role="form" method="post" id="wxform" action="__MODULE__/Weixin/save" enctype="multipart/form-data">
             <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">公众号帐号</label>
+              <label for="weixin_number" class="col-sm-3 control-label">公众号原始ID</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="weixin_number" name="weixin_number" value="" required autofocus>
               </div>
             </div>
             <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">回调地址</label>
+              <label for="weixin_name" class="col-sm-3 control-label">公众号名称</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="weixin_callbackurl" name="weixin_callbackurl" value="" required>
+                <input type="text" class="form-control" id="weixin_name" name="weixin_name" value="" required>
               </div>
             </div>
             <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">Token</label>
+              <label for="weixin_appid" class="col-sm-3 control-label">AppID</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="weixin_token" name="weixin_token" value="" required>
+                <input type="text" class="form-control" id="weixin_appid" name="weixin_appid" value="" required>
               </div>
             </div>
             <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">二维码</label>
+              <label for="weixin_appsecret" class="col-sm-3 control-label">AppSecret</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="weixin_appsecret" name="weixin_appsecret" value="" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weixin_callbackurl" class="col-sm-3 control-label">回调地址</label>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control" id="weixin_callbackurl" name="weixin_callbackurl" value="{$callbackUrl}" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weixin_token" class="col-sm-3 control-label">Token</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="weixin_token" name="weixin_token" value="{$token}" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weixin_imgcode" class="col-sm-3 control-label">二维码</label>
               <div class="col-sm-8">
                 <input type="file" id="weixin_imgcode" name="weixin_imgcode">
               </div>
             </div>
+            <if condition="$Think.session.userinfo.group_id eq 1">
+            <div class="form-group">
+              <label for="weixin_imgcode" class="col-sm-3 control-label">用户列表</label>
+              <div class="col-sm-8">
+                <select class="form-control" name="weixin_userid" id="weixin_userid">
+                  <option value="">请选择用户</option>
+                <foreach name="userlist" item="user">
+                  <option value="{$user.user_id}">{$user.user_name}</option>
+                </foreach>
+                </select>
+              </div>
+            </div>
+            </if>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <button type="button" class="btn btn-default" id="addbtn">添加</button>
@@ -38,25 +69,37 @@
 $(function () {
     $("#addbtn").click(function () {
         var weixin_number = $("#weixin_number").val();
-        var weixin_callbackurl = $("#weixin_callbackurl").val();
-        var weixin_token = $("#weixin_token").val();
+        var weixin_name = $("#weixin_name").val();
+        var weixin_appid = $("#weixin_appid").val();
         var weixin_imgcode = $("#weixin_imgcode").val();
+        var weixin_appsecret = $("#weixin_appsecret").val();
         if (!weixin_number) {
-            alert("请填写公众号帐号");
+            alert("请填写公众号原始ID");
             return false;
         }
-        if (!weixin_callbackurl) {
-            alert("请填写回调地址");
+        if (!weixin_name) {
+            alert("请填写公众号名称");
             return false;
         }
-        if (!weixin_token) {
-            alert("请填写Token");
+        if (!weixin_appid) {
+            alert("请填写AppID");
+            return false;
+        }
+        if (!weixin_appsecret) {
+            alert("请填写AppSecret");
             return false;
         }
         if (!weixin_imgcode) {
             alert("请上传公众号二维码");
             return false;
         }
+        <if condition="$Think.session.userinfo.group_id eq 1">
+        var weixin_userid = $("#weixin_userid").val();
+        if (!weixin_userid) {
+            alert("请选择用户");
+            return false;
+        }
+        </if>
         $("#wxform").submit();
     });
 });

@@ -4,35 +4,65 @@ namespace Admin\Controller;
 class WeixinController extends BaseController {
 
     public function listAction(){
-        $weixin_number = I('post.weixin_number');
+        $group_id = $this->userInfo['group_id'];
+        $user_id = $this->userInfo['user_id'];
         $weixin = D('weixin');
-        if ($weixin_number) {
-            $wxdata = $weixin->searchWeixin($weixin_number);
-        } else {
+        if ($group_id == 1) {
             $wxdata = $weixin->getWeixinList();
+        } else {
+            $wxdata = $weixin->getWeixinList('', 'weixin_userid = "'.$user_id.'"');
         }
-        $this->assign('weixin_number', $weixin_number);
         $this->assign('wxlist', $wxdata['data']);
         $this->assign('page', $wxdata['page']);
         $this->display();
     }
 
     public function addAction(){
+        $randToken = \Org\Util\String::randString(10, 5);
+        $callbackUrl = 'http://'.$_SERVER['SERVER_NAME'].'/index.php/api/'.$randToken;
+        $this->assign('token', $randToken);
+        $this->assign('callbackUrl', $callbackUrl);
+        
+        $userobj = D('user');
+        $userlist = $userobj->getUserList('id != 1 and user_pw != ""', 'all');
+        $this->assign('userlist', $userlist);
         $this->display();
     }
 
     public function modweixinAction(){
         $weixin_id = I('get.wxid');
         $weixin = D('weixin');
-        $wxinfo = $weixin->getWeixinById($weixin_id);
+        
+        $group_id = $this->userInfo['group_id'];
+        $user_id = $this->userInfo['user_id'];
+        if ($group_id == 1) {
+            $wxinfo = $weixin->getWeixinById($weixin_id);
+        } else {
+            $wxinfo = $weixin->getOwnWeixinById($weixin_id, $user_id);
+        }
+        if (!$wxinfo) {
+            $this->error('公众号不存在');
+        }
         $this->assign('wxinfo', $wxinfo);
+        
+        $userobj = D('user');
+        $userlist = $userobj->getUserList('id != 1 and user_pw != ""', 'all');
+        $this->assign('userlist', $userlist);
         $this->display();
     }
 
     public function delweixinAction(){
         $weixin_id = I('get.wxid');
         $weixin = D('weixin');
-        $wxinfo = $weixin->deleteWeixin($weixin_id);
+        
+        $group_id = $this->userInfo['group_id'];
+        $user_id = $this->userInfo['user_id'];
+        if ($group_id == 1) {
+            $wxinfo = $weixin->deleteWeixin($weixin_id);
+        } else {
+            $wxinfo = $weixin->deleteOwnWeixin($weixin_id, $user_id);
+        }
+        
         if ($wxinfo) {
             // todo $this->success('保存公众号成功', 'list');
         } else {
@@ -43,13 +73,30 @@ class WeixinController extends BaseController {
     public function saveAction() {
         $post = filterAllParam('post');
         if (!$post['id'] && !$post['weixin_number']) {
-            $this->error('请填写公众号帐号');
+            $this->error('请填写公众号原始ID');
         }
         if (!$post['weixin_callbackurl']) {
             $this->error('请填写回调地址');
         }
+        if (!$post['weixin_name']) {
+            $this->error('请填写公众号名称');
+        }
+        if (!$post['weixin_appid']) {
+            $this->error('请填写AppID');
+        }
+        if (!$post['weixin_appsecret']) {
+            $this->error('请填写AppSecret');
+        }
         if (!$post['weixin_token']) {
             $this->error('请填写Token');
+        }
+        if (!$post['weixin_userid']) {
+            $post['weixin_userid'] = $this->userInfo['user_id'];
+        }
+        $weixin = D('weixin');
+        $haveNumber = $weixin->getWeixinByNumber($post['weixin_number']);
+        if ($haveNumber) {
+            $this->error('公众号原始ID已经存在');
         }
         $isdelimage = $post['delweixin_imgcode'];
         if ($isdelimage) {
@@ -71,7 +118,6 @@ class WeixinController extends BaseController {
                 $this->error('请上传公众号二维码');
             }
         }
-        $weixin = D('weixin');
         if (isset($post['id']) && $post['id']) {
             $edunumber = $weixin->updateWeixin($post);
             if ($edunumber) {

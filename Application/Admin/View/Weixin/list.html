@@ -1,31 +1,13 @@
-<h1 class="page-header">搜索微信公众号</h1>
-    <div class="row placeholders">
-        <div class="col-md-7">
-            <form class="form-horizontal" role="form" method="post" action="__MODULE__/weixin/list">
-                <div class="form-group">
-                  <label for="helpername" class="col-sm-2 control-label">公众号帐号</label>
-                  <div class="col-sm-10">
-                      <input type="text" class="form-control" id="weixin_number" name="weixin_number" value="{$weixin_number}">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">搜索</button>
-                  </div>
-                </div>
-              </form>
-      </div>
-    </div>
-
 <h2 class="sub-header">公众号列表</h2>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>公众号帐号</th>
-            <th>回调地址</th>
+            <th>公众号原始ID</th>
+            <th>公众号名称</th>
             <th>token</th>
-            <th>注册时间</th>
+            <th>AppID</th>
+            <th>AppSecret</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -33,9 +15,10 @@
         <foreach name="wxlist" item="wx">
           <tr>
             <td class="col-sm-2">{$wx.weixin_number}</td>
-            <td class="col-sm-2">{$wx.weixin_callbackurl}</td>
+            <td class="col-sm-2">{$wx.weixin_name}</td>
             <td class="col-sm-2">{$wx.weixin_token}</td>
-            <td class="col-sm-2">{$wx.weixin_regdate}</td>
+            <td class="col-sm-2">{$wx.weixin_appid}</td>
+            <td class="col-sm-2">{$wx.weixin_appsecret}</td>
             <td class="col-sm-2">
                 <a href="__MODULE__/modweixin/{$wx.weixin_id}">编辑</a>
                 <a href="javascript:;" id="delweixin_{$wx.weixin_id}">删除</a>
