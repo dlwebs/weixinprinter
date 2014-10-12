@@ -120,18 +120,25 @@ class WeixinController extends BaseController {
         return '关注成功';
     }
 
-    public function getcode() {
+    public function getcodeAction() {
         $pid = I('get.printerid');
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($pid);
         if ($printerInfo) {
             $printcode = D('printcode');
             $code = $printcode->getCode($printerInfo['printer_code']);
-            return $code;
+            if ($code) {
+                return $code;
+            } else {
+                $code = $printcode->createCode($printerInfo['printer_code']);
+                return $code;
+            }
+        } else {
+            return 'No printer';
         }
     }
 
-    public function createcode() {
+    public function createcodeAction() {
         $pid = I('get.printerid');
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($pid);
@@ -139,6 +146,8 @@ class WeixinController extends BaseController {
             $printcode = D('printcode');
             $code = $printcode->createCode($printerInfo['printer_code']);
             return $code;
+        } else {
+            return 'No printer';
         }
     }
 }

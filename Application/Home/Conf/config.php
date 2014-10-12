@@ -8,6 +8,8 @@ $private_config = array(
                         'URL_CASE_INSENSITIVE' =>true,
                         'URL_ROUTE_RULES' => array(
                                                   'api/:token' => 'Weixin/index',
+                                                  'getcode/:printerid' => 'Weixin/getcode',
+                                                  'createcode/:printerid' => 'Weixin/createcode',
                                                   )
                         );
 
