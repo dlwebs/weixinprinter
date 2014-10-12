@@ -38,7 +38,7 @@ class WeixinController extends BaseController {
                 $this->valid();
                 break;
         }
-        $this->_wechat->response($result, 'html');
+        $this->_wechat->response($result);
     }
 
     public function valid() {
