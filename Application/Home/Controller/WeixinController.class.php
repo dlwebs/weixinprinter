@@ -35,7 +35,7 @@ class WeixinController extends BaseController {
                 $result = $this->receiveVideo($data);
                 break;
             default:
-                $result = $this->valid();
+                $this->valid();
                 break;
         }
         $this->_wechat->response($result, 'html');
@@ -44,7 +44,8 @@ class WeixinController extends BaseController {
     public function valid() {
         $echoStr = $_GET["echostr"];
         if($this->checkSignature()){
-            return $echoStr;
+            echo $echoStr;
+            exit;
         }
     }
 
