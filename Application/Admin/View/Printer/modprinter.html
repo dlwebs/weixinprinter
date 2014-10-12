@@ -30,7 +30,7 @@
             <div class="form-group">
               <label for="userid" class="col-sm-3 control-label">公众帐号</label>
               <div class="col-sm-8">
-				<select class="form-control" name="printer_weixin">
+				<select class="form-control" name="printer_weixin" id="printer_weixin">
 					<option value="">请选择公众帐号</option>
 					<foreach name="weixinlist" item="weixin">
 					  <option value="{$weixin.weixin_id}"<if condition="$weixin.weixin_id eq $printerinfo['printer_weixin']"> selected</if>>{$weixin.weixin_number}</option>
@@ -61,7 +61,7 @@ $(function () {
             return false;
         }
 		if (!printer_weixin) {
-            alert("请填写公共帐号");
+            alert("请选择公共帐号");
             return false;
         }
         $("#printerform").submit();
