@@ -4,7 +4,7 @@ namespace Admin\Model;
 class PrinterModel extends BaseModel {
 
     public function getPrinterInfo($printer_id) {
-        $data['printer_id'] = $group_id;
+        $data['printer_id'] = $printer_id;
         $printerInfo = $this->where($data)->find();
         return $printerInfo;
     }

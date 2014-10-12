@@ -128,13 +128,13 @@ class WeixinController extends BaseController {
             $printcode = D('printcode');
             $code = $printcode->getCode($printerInfo['printer_code']);
             if ($code) {
-                return $code;
+                echo $code;
             } else {
                 $code = $printcode->createCode($printerInfo['printer_code']);
-                return $code;
+                echo $code;
             }
         } else {
-            return 'No printer';
+            echo 'No printer';
         }
     }
 
