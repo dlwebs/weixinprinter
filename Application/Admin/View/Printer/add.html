@@ -31,7 +31,7 @@
 				<select class="form-control" name="printer_weixin" id="printer_weixin">
 					<option value="">请选择公众帐号</option>
 					<foreach name="weixinlist" item="weixin">
-					  <option value="{$weixin.weixin_id}">{$weixin.weixin_number}</option>
+					  <option value="{$weixin.weixin_token}">{$weixin.weixin_name}</option>
 					</foreach>
                 </select>
               </div>
@@ -56,6 +56,11 @@ $(function () {
         }
 		if (!printer_code) {
             alert("请填写消费码");
+            return false;
+        }
+		var reg= /^[A-Za-z]+$/;
+		if (printer_code.length != 3 || !reg.test(printer_code)) {
+            alert("消费码只能是三位英文字母");
             return false;
         }
         if (!printer_weixin) {

@@ -17,11 +17,22 @@ class ResourceController extends BaseController {
 				$this->assign('search_printer', $searchArray['search_printer']);
 			}
         }
-		if($condition){
-			$resourcedata = $resourceobj->getResourceList($condition);
+		if ($group_id != 1) {
+			$wxobj = D('weixin');
+			$wxdata = $wxobj->getWeixinList('', 'weixin_userid = "'.$user_id.'"');
+			$array = $wxdata["data"];
+			for($i = 0; $i < count($array); $i ++){
+				$tokenArray[] = $array[$i]["weixin_token"];
+			}
+			if(count($tokenArray)){
+				$condition = $condition." AND resource_weixin in ('".implode("','", $tokenArray)."')";
+				$resourcedata = $resourceobj->getResourceList('', $condition);
+			}else{
+				$resourcedata = "";
+			}
 		}else{
-            $resourcedata = $resourceobj->getResourceList();
-        }
+			$resourcedata = $resourceobj->getResourceList('', $condition);
+		}
         $this->assign('resourcelist', $resourcedata['data']);
         $this->assign('page', $resourcedata['page']);
         $this->display();
