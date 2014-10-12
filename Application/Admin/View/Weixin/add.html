@@ -4,50 +4,50 @@
         <form class="form-horizontal" role="form" method="post" id="wxform" action="__MODULE__/Weixin/save" enctype="multipart/form-data">
             <div class="form-group">
               <label for="weixin_number" class="col-sm-3 control-label">公众号原始ID</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                 <input type="text" class="form-control" id="weixin_number" name="weixin_number" value="" required autofocus>
               </div>
             </div>
             <div class="form-group">
               <label for="weixin_name" class="col-sm-3 control-label">公众号名称</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                 <input type="text" class="form-control" id="weixin_name" name="weixin_name" value="" required>
               </div>
             </div>
             <div class="form-group">
               <label for="weixin_appid" class="col-sm-3 control-label">AppID</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                 <input type="text" class="form-control" id="weixin_appid" name="weixin_appid" value="" required>
               </div>
             </div>
             <div class="form-group">
               <label for="weixin_appsecret" class="col-sm-3 control-label">AppSecret</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                 <input type="text" class="form-control" id="weixin_appsecret" name="weixin_appsecret" value="" required>
               </div>
             </div>
             <div class="form-group">
               <label for="weixin_callbackurl" class="col-sm-3 control-label">回调地址</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                   <input type="text" class="form-control" id="weixin_callbackurl" name="weixin_callbackurl" value="{$callbackUrl}" readonly>
               </div>
             </div>
             <div class="form-group">
               <label for="weixin_token" class="col-sm-3 control-label">Token</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                 <input type="text" class="form-control" id="weixin_token" name="weixin_token" value="{$token}" readonly>
               </div>
             </div>
             <div class="form-group">
               <label for="weixin_imgcode" class="col-sm-3 control-label">二维码</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                 <input type="file" id="weixin_imgcode" name="weixin_imgcode">
               </div>
             </div>
             <if condition="$Think.session.userinfo.group_id eq 1">
             <div class="form-group">
               <label for="weixin_imgcode" class="col-sm-3 control-label">用户列表</label>
-              <div class="col-sm-8">
+              <div class="col-sm-9">
                 <select class="form-control" name="weixin_userid" id="weixin_userid">
                   <option value="">请选择用户</option>
                 <foreach name="userlist" item="user">

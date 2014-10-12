@@ -81,30 +81,30 @@ class WeixinController extends BaseController {
         }
     }
 
-    public function receiveVideo(){
-        $post = I('post.');
+    public function receiveVideo($data){
+        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>(string)$data['ToUserName'], 'mediaId'=>(string)$data['MediaId'], 'thumbMediaId'=>(string)$data['ThumbMediaId']);
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post, 1);
-        $this->response('视频已收到', 'html');
+        return '视频已收到';
     }
 
-    public function receiveText(){
-        $post = I('post.');
+    public function receiveText($data){
+        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>(string)$data['ToUserName'], 'content'=>(string)$data['Content']);
         $resource = new \Admin\Model\ResourceModel();
         $result = $resource->updateResourceCode($post);
         if ($result == 'a') {
-            $this->response('请先上传资源', 'html');
+            return '请先上传资源';
         } elseif ($result == 'b') {
-            $this->response('消费码错误', 'html');
+            return '消费码错误';
         } else {
-            $this->response('开始打印，请在打印机前稍候', 'html');
+            return '开始打印，请在打印机前稍候';
         }
     }
 
-    public function receiveEvent() {
-        $fromUserName = I('post.fromUserName');//用户微信token
-        $toUserName = I('post.toUserName');//微信公众号
-        $eventType = I('post.eventType');//subscribe(订阅)、unsubscribe(取消订阅)
+    public function receiveEvent($data) {
+        $fromUserName = (string)$data[FromUserName];//用户微信token
+        $toUserName = (string)$data[ToUserName];//微信公众号
+        $eventType = (string)$data[Event];//subscribe(订阅)、unsubscribe(取消订阅)
         $userobj = new \Admin\Model\UserModel();
         $insert['user_id'] = $fromUserName;
         $insert['user_follow'] = $eventType;
@@ -117,7 +117,7 @@ class WeixinController extends BaseController {
             $insert['user_name'] = '微信用户';
             $userobj->add($insert);
         }
-        $this->response('关注成功', 'html');
+        return '关注成功';
     }
 
     public function getcode() {
