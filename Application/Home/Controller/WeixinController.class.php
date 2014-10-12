@@ -38,25 +38,17 @@ class WeixinController extends BaseController {
                 $result = $this->valid();
                 break;
         }
-        echo $result;
+        $this->_wechat->response($result, 'html');
     }
 
     public function valid() {
         $echoStr = $_GET["echostr"];
-
-        //valid signature , option
         if($this->checkSignature()){
-            echo $echoStr;
-            exit;
+            return $echoStr;
         }
     }
 
     private function checkSignature() {
-        // you must define TOKEN by yourself
-        if (!$this->_token) {
-            throw new Exception('TOKEN is not defined!');
-        }
-
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
@@ -82,9 +74,9 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         if ($resourceid) {
-            $this->_wechat->response('照片已收到，回复消费码开始制作打印', 'html');
+            return '照片已收到，回复消费码开始制作打印';
         } else {
-            $this->_wechat->response('照片发送失败，请重新发送', 'html');
+            return '照片发送失败，请重新发送';
         }
     }
 
