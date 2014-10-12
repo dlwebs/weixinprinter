@@ -59,10 +59,11 @@ class ResourceModel extends BaseModel {
             $printcode = new \Home\Model\PrintcodeModel();;
             $isok = $printcode->where('p_code_number = "'.$post['content'].'" and p_status = "0"')->find();
             if ($isok) {
-                $isprint = $this->where('resource_id="'.$hasprint['resource_id'].'"')->setField('resource_printer', $post['content']);
+                $resetfield = array('resource_printer'=>$post['content'], 'resource_print' => 2);
+                $isprint = $this->where('resource_id="'.$hasprint['resource_id'].'"')->setField($resetfield);
                 if ($isprint) {
-                    $printerCode = preg_replace('/([a-zA-Z]+)/i', '$1', $post['content']);
-                    $printcode->createCode($printerCode);
+                    $printerCode = preg_replace('/\d+/i', '', $post['content']);
+                    return $printcode->createCode($printerCode);
                 }
             } else {
                 $result = 'b';
