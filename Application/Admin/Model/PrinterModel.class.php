@@ -21,36 +21,43 @@ class PrinterModel extends BaseModel {
         }
         return array('data' => $printerlist, 'page' => $pageinfo);
     }
-	public function getPrinterByName($printername = '') {
+
+    public function getPrinterByName($printername = '') {
         return $this->where('printer_name = "'.$printername.'"')->find();
     }
-	public function getPrinterByCode($printercode = '') {
+
+    public function getPrinterByCode($printercode = '') {
         return $this->where('printer_code = "'.$printercode.'"')->find();
     }
-	public function getPrinterByWeixin($printerweixin = '') {
+    public function getPrinterByWeixin($printerweixin = '') {
         return $this->where('printer_weixin = "'.$printerweixin.'"')->find();
     }
+
     public function getPrinterById($printerid = '') {
         return $this->where('printer_id = "'.$printerid.'"')->find();
     }
 
     public function addPrinter($data = array()) {
-		foreach($data as $key=>$value){
-			$insert[$key] = $value;
-		}
+        foreach($data as $key=>$value){
+            $insert[$key] = $value;
+        }
         return $this->add($insert);
     }
 
     public function updatePrinter($data = array()) {
-		foreach($data as $key=>$value){
-			if($key != "id"){
-				$insert[$key] = $value;
-			}
-		}
+        foreach($data as $key=>$value){
+            if($key != "id"){
+                $insert[$key] = $value;
+            }
+        }
         return $this->where('printer_id ="'.$data['printer_id'].'"')->save($insert);
     }
 
     public function deletePrinterById($printerid = '') {
         return $this->where('printer_id = "'.$printerid.'"')->delete();
+    }
+
+    public function deletePrinterByWx($printer_weixin = '') {
+        return $this->where('printer_weixin = "'.$printer_weixin.'"')->delete();
     }
 }

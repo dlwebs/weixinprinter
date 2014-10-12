@@ -1,29 +1,101 @@
 <?php
 namespace Home\Controller;
 
-use Think\Controller\RestController;
+use Com\Wechat;
 
-class WeixinController extends RestController {
+class WeixinController extends BaseController {
 
-    public function receiveimgAction_post(){
-        $post = I('post.');
-        $resource = new \Admin\Model\ResourceModel();
-        $resourceid = $resource->insertResource($post);
-        if ($resourceid) {
-            $this->response('照片已收到，回复消费码开始制作打印', 'html');
-        } else {
-            $this->response('照片发送失败，请重新发送', 'html');
+    private $_token;
+
+    private $_wechat;
+
+    public function indexAction() {
+        $this->_token = I('get.token');
+
+        $weixin = new \Admin\Model\WeixinModel();
+        $wxinfo = $weixin->getWeixinByToken($this->_token);
+        if(!$wxinfo){
+            exit('error token');
+        }
+
+        $this->_wechat = new Wechat($this->_token);
+        $data = $this->_wechat->request();
+        $RX_TYPE = trim($data['MsgType']);
+        switch($RX_TYPE){
+            case Wechat::MSG_TYPE_TEXT:
+                $result = $this->receiveText($data);
+                break;
+            case Wechat::MSG_TYPE_IMAGE:
+                $result = $this->receiveImage($data);
+                break;
+            case Wechat::MSG_TYPE_EVENT:
+                $result = $this->receiveEvent($data);
+                break;
+            case Wechat::MSG_TYPE_VIDEO:
+                $result = $this->receiveVideo($data);
+                break;
+            default:
+                $result = $this->valid();
+                break;
+        }
+        echo $result;
+    }
+
+    public function valid() {
+        $echoStr = $_GET["echostr"];
+
+        //valid signature , option
+        if($this->checkSignature()){
+            echo $echoStr;
+            exit;
         }
     }
 
-    public function receivevideoAction_post(){
+    private function checkSignature() {
+        // you must define TOKEN by yourself
+        if (!$this->_token) {
+            throw new Exception('TOKEN is not defined!');
+        }
+
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+
+        $token = $this->_token;
+        $tmpArr = array($token, $timestamp, $nonce);
+        // use SORT_STRING rule
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
+    public function receiveImage($data){
+        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>(string)$data['ToUserName'], 'picUrl'=>(string)$data['PicUrl'], 'mediaId'=>(string)$data['MediaId']);
+        $resource = new \Admin\Model\ResourceModel();
+        $resourceid = $resource->insertResource($post);
+        if ($resourceid) {
+            $this->_wechat->response('照片已收到，回复消费码开始制作打印', 'html');
+        } else {
+            $this->_wechat->response('照片发送失败，请重新发送', 'html');
+        }
+    }
+
+    public function receiveVideo(){
         $post = I('post.');
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post, 1);
         $this->response('视频已收到', 'html');
     }
 
-    public function receivetextAction_post(){
+    public function receiveText(){
         $post = I('post.');
         $resource = new \Admin\Model\ResourceModel();
         $result = $resource->updateResourceCode($post);
@@ -36,7 +108,7 @@ class WeixinController extends RestController {
         }
     }
 
-    public function eventAction_post() {
+    public function receiveEvent() {
         $fromUserName = I('post.fromUserName');//用户微信token
         $toUserName = I('post.toUserName');//微信公众号
         $eventType = I('post.eventType');//subscribe(订阅)、unsubscribe(取消订阅)
@@ -55,7 +127,7 @@ class WeixinController extends RestController {
         $this->response('关注成功', 'html');
     }
 
-    public function getcodeAction_get() {
+    public function getcode() {
         $pid = I('get.printerid');
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($pid);
@@ -66,7 +138,7 @@ class WeixinController extends RestController {
         }
     }
 
-    public function createcodeAction_get() {
+    public function createcode() {
         $pid = I('get.printerid');
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($pid);

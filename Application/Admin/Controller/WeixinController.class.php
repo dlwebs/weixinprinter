@@ -54,17 +54,23 @@ class WeixinController extends BaseController {
     public function delweixinAction(){
         $weixin_id = I('get.wxid');
         $weixin = D('weixin');
-        
         $group_id = $this->userInfo['group_id'];
         $user_id = $this->userInfo['user_id'];
-        if ($group_id == 1) {
-            $wxinfo = $weixin->deleteWeixin($weixin_id);
-        } else {
-            $wxinfo = $weixin->deleteOwnWeixin($weixin_id, $user_id);
-        }
-        
+        $wxinfo = $weixin->getWeixinById($weixin_id);
         if ($wxinfo) {
-            // todo $this->success('保存公众号成功', 'list');
+            if ($group_id == 1) {
+                $isok = $weixin->deleteWeixin($weixin_id);
+            } else {
+                $isok = $weixin->deleteOwnWeixin($weixin_id, $user_id);
+            }
+        }
+
+        if ($isok) {
+            $printer = D('printer');
+            $isprinterdel = $printer->deletePrinterByWx($wxinfo['weixin_token']);
+            $resource = D('resource');
+            $isresourcedel = $resource->deleteResourceByWx($wxinfo['weixin_token']);
+            $this->success('删除公众号成功');
         } else {
             $this->error('删除公众号失败');
         }
@@ -94,10 +100,6 @@ class WeixinController extends BaseController {
             $post['weixin_userid'] = $this->userInfo['user_id'];
         }
         $weixin = D('weixin');
-        $haveNumber = $weixin->getWeixinByNumber($post['weixin_number']);
-        if ($haveNumber) {
-            $this->error('公众号原始ID已经存在');
-        }
         $isdelimage = $post['delweixin_imgcode'];
         if ($isdelimage) {
             $post['weixin_imgcode'] = '';

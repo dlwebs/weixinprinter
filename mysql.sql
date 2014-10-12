@@ -130,7 +130,6 @@ CREATE TABLE `wxp_weixin` (
   `weixin_userid` varchar(50) NOT NULL COMMENT '用户ID，关联wxp_user表user_id字段',
   `weixin_regdate` datetime NOT NULL COMMENT '公众号添加时间',
   PRIMARY KEY (`weixin_id`),
-  UNIQUE KEY weixin_number (weixin_number),
   UNIQUE KEY weixin_token (weixin_token)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='公众号表';
 

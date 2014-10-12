@@ -66,4 +66,8 @@ class ResourceModel extends BaseModel {
         }
         return $result;
     }
+
+    public function deleteResourceByWx($resource_weixin = '') {
+        return $this->where('resource_weixin = "'.$resource_weixin.'"')->delete();
+    }
 }

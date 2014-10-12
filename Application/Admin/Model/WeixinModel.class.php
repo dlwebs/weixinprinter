@@ -27,10 +27,6 @@ class WeixinModel extends BaseModel {
     public function getWeixinByToken($token) {
         return $this->where('weixin_token = "'.$token.'"')->find();
     }
-    
-    public function getWeixinByNumber($number) {
-        return $this->where('weixin_number = "'.$number.'"')->find();
-    }
 
     public function getWeixinById($id) {
         return $this->where('weixin_id = "'.$id.'"')->find();
