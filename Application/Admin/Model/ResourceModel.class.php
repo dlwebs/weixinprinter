@@ -63,7 +63,7 @@ class ResourceModel extends BaseModel {
                 $isprint = $this->where('resource_id="'.$hasprint['resource_id'].'"')->setField($resetfield);
                 if ($isprint) {
                     $printerCode = preg_replace('/\d+/i', '', $post['content']);
-                    return $printcode->createCode($printerCode);
+                    $result = $printcode->createCode($printerCode);
                 }
             } else {
                 $result = 'b';
