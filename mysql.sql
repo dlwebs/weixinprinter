@@ -133,3 +133,13 @@ CREATE TABLE `wxp_weixin` (
   UNIQUE KEY weixin_token (weixin_token)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='公众号表';
 
+
+
+DROP TABLE IF EXISTS `wxp_template`;
+CREATE TABLE `wxp_template` (
+  `template_id` tinyint (4) NOT NULL auto_increment,
+  `template_name` varchar(50) NOT NULL COMMENT '模板显示名称',
+  `template_code` varchar(20) NOT NULL COMMENT '模板代码，模板显示名称的拼音',
+  `template_pic` varchar(20) NOT NULL COMMENT '模板缩略图',
+  PRIMARY KEY (`template_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='模板表';

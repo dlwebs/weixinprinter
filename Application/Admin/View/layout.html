@@ -59,6 +59,13 @@
              <li <if condition="$current_c eq 'Printer' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Printer/add">添加设备</a></li>
              <li <if condition="$current_c eq 'Resource' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Resource/list">资源列表</a></li>
           </ul>
+            
+          <ul class="nav nav-sidebar">
+             <li <if condition="$current_c eq 'Template' and $current_a eq 'ad'">class="active"</if>><a href="__MODULE__/Template/ad">广告机</a></li>
+          <if condition="$Think.session.userinfo.group_id eq 1">
+             <li <if condition="$current_c eq 'Template' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Template/add">添加广告模板</a></li>
+          </if>
+          </ul>
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
