@@ -17,6 +17,8 @@ $private_config = array(
                                                   'modprinter/:printerid' => 'Printer/modprinter',
                                                   'delprinter/:printerid' => 'Printer/delprinter',
                                                   'detailresource/:resourceid' => 'Resource/detailresource',
+                                                  'modtpl/:tid' => 'Template/modtpl',
+                                                  'deltpl/:tid' => 'Template/deltpl',
                                                   ),
                         'AUTH_NAME' => array(
                                             'Admin-Auth-list' => '查看权限列表',

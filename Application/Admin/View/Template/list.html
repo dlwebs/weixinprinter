@@ -1,0 +1,35 @@
+<h2 class="sub-header">模板列表</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>模板显示名称</th>
+            <th>模板代码</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <foreach name="tpllist" item="tpl">
+          <tr>
+            <td class="col-sm-2">{$tpl.template_name}</td>
+            <td class="col-sm-2">{$tpl.template_code}</td>
+            <td class="col-sm-2">
+                <a href="__MODULE__/modtpl/{$tpl.template_id}">编辑</a>
+                <a href="javascript:;" id="deltpl_{$tpl.template_id}">删除</a>
+            </td>
+          </tr>
+        </foreach>
+        </tbody>
+      </table>
+      {$page}
+    </div>
+<script type="text/javascript">
+$(function () {
+    $("a[id^='deltpl_']").click(function () {
+        if (confirm("确认要删除此模板吗？")) {
+            var id = this.id.split("_");
+            location.href = "__MODULE__/deltpl/"+id[1];
+        }
+    });
+});
+</script>

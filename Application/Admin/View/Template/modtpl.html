@@ -1,0 +1,52 @@
+<h2 class="sub-header">修改模板</h2>
+<div class="row placeholders">
+    <div class="col-md-7">
+        <form class="form-horizontal" role="form" method="post" id="wxform" action="__MODULE__/Template/save" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{$tplinfo.template_id}">
+            <div class="form-group">
+              <label for="weixin_number" class="col-sm-3 control-label">模板显示名称</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="template_name" name="template_name" value="{$tplinfo.template_name}" required autofocus>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weixin_number" class="col-sm-3 control-label">模板代码</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="template_code" name="template_code" value="{$tplinfo.template_code}" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weixin_imgcode" class="col-sm-3 control-label">模板缩略图</label>
+              <div class="col-sm-9">
+                <input type="file" id="template_pic" name="template_pic">
+                <if condition="$tplinfo.template_pic neq ''">
+                      <img src="/upload/{$tplinfo.template_pic}" width="100" height="50">
+                      <input type="checkbox" name="deltemplate_pic" value='{$tplinfo.template_pic}'>删除模板
+                 </if>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" id="addbtn">修改</button>
+              </div>
+            </div>
+          </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function () {
+    $("#addbtn").click(function () {
+        var template_name = $("#template_name").val();
+        var template_code = $("#template_code").val();
+        if (!template_name) {
+            alert("请填写模板显示名称");
+            return false;
+        }
+        if (!template_code) {
+            alert("请选择模板代码");
+            return false;
+        }
+        $("#wxform").submit();
+    });
+});
+</script>

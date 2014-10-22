@@ -100,6 +100,7 @@ CREATE TABLE `wxp_printer` (
   `printer_code` varchar(20) NOT NULL COMMENT '打印机消费码前缀',
   `printer_type` enum('1','2') NOT NULL COMMENT '打印机终端类型，1是横屏，2是竖屏',
   `printer_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_token字段',
+  `printer_template` tinyint (4) unsigned NOT NULL COMMENT '打印机模板，关联template表template_id字段',
   PRIMARY KEY (`printer_id`),
   UNIQUE KEY printer_code (printer_code)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='设备表';
@@ -140,6 +141,6 @@ CREATE TABLE `wxp_template` (
   `template_id` tinyint (4) NOT NULL auto_increment,
   `template_name` varchar(50) NOT NULL COMMENT '模板显示名称',
   `template_code` varchar(20) NOT NULL COMMENT '模板代码，模板显示名称的拼音',
-  `template_pic` varchar(20) NOT NULL COMMENT '模板缩略图',
+  `template_pic` varchar(50) NOT NULL COMMENT '模板缩略图',
   PRIMARY KEY (`template_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='模板表';
