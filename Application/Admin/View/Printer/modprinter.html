@@ -1,3 +1,54 @@
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/lightbox.min.js"></script>
+<link href="/css/lightbox.css" rel="stylesheet">
+<style> 
+    #masonry 
+    { 
+        padding: 0; 
+        width: 180px;
+		height: 207px;
+        margin: 0 auto; 
+		float: left;
+    } 
+    #masonry .thumbnail 
+    { 
+        width: 150px;
+		height: 183px;
+        margin: 20px; 
+        padding: 0; 
+        border-width: 1px; 
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); 
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); 
+    } 
+    #masonry .thumbnail .imgs 
+    { 
+        padding: 10px; 
+    } 
+    #masonry .thumbnail .imgs img 
+    { 
+        margin-bottom: 5px; 
+    } 
+    #masonry .thumbnail .caption 
+    { 
+        background-color: #fff; 
+        padding-top: 0; 
+        font-size: 13px; 
+		margin-top: -15px;
+    } 
+    #masonry .thumbnail .caption .title 
+    { 
+        font-size: 13px; 
+        font-weight: normal; 
+        margin: 5px 0; 
+        text-align: center; 
+    } 
+    #masonry .thumbnail .caption .author 
+    { 
+        font-size: 11px; 
+        text-align: right; 
+    } 
+    
+</style>
 <h2 class="sub-header">修改设备信息</h2>
 <div class="row placeholders">
     <div class="col-md-7">
@@ -38,6 +89,35 @@
                 </select>
               </div>
             </div>
+			<div class="form-group">
+			  <label for="userid" class="col-sm-3 control-label">选择模板</label>
+				<div id="masonry" class="container-fluid">
+					<div class="thumbnail"> 
+						<div class="imgs"> 
+							<a class="example-image-link" href="/upload/default.jpg" data-lightbox="example-set" data-title="默认模板">
+								<img class="example-image" src="/upload/default.jpg" alt="" width="130" height="130"/>
+							</a>
+						</div> 
+						<div class="caption"> 
+							<div class="title"><input type="radio" name="printer_template" value="0"<if condition="$printerinfo.printer_template eq 0"> checked</if>>默认模板</div> 
+						</div> 
+					</div> 
+				</div>
+				<foreach name="tpllist" item="template">
+				<div id="masonry" class="container-fluid">
+					<div class="thumbnail"> 
+						<div class="imgs"> 
+							<a class="example-image-link" href="/upload/{$template.template_pic}" data-lightbox="example-set" data-title="{$template.template_name}">
+								<img class="example-image" src="/upload/{$template.template_pic}" alt="" width="130" height="160"/>
+							</a>
+						</div> 
+						<div class="caption"> 
+							<div class="title"><input type="radio" name="printer_template" value="{$template.template_id}"<if condition="$template.template_id eq $printerinfo['printer_template']"> checked</if>>{$template.template_name}</div> 
+						</div> 
+					</div> 
+				</div>
+				</foreach>
+			</div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <button type="button" class="btn btn-default" id="addbtn">修改</button>

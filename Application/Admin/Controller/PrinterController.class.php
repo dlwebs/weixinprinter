@@ -53,6 +53,10 @@ class PrinterController extends BaseController {
         } else {
             $weixindata = $wxobj->getWeixinList('', 'weixin_userid = "'.$user_id.'"');
         }
+		$template = D('Template');
+        $tpldata = $template->getTemplateList();
+        $this->assign('tpllist', $tpldata['data']);
+
         //$weixindata = $wxobj->getWeixinList('all');
         $this->assign('weixinlist', $weixindata['data']);
         $this->display();
@@ -63,6 +67,10 @@ class PrinterController extends BaseController {
         $printerobj = D("printer");
         $printerinfo = $printerobj->getPrinterById($printer_id);
         $this->assign('printerinfo', $printerinfo);
+		
+		$template = D('Template');
+        $tpldata = $template->getTemplateList();
+        $this->assign('tpllist', $tpldata['data']);
 
         $weixin = D('weixin');
 		$group_id = $this->userInfo['group_id'];
