@@ -39,7 +39,7 @@ class WeixinController extends BaseController {
                 break;
         }
         if (is_array($result)) {
-            $this->_wechat->response($result, Wechat::MSG_TYPE_IMAGE);
+            $this->_wechat->response($result, Wechat::MSG_TYPE_NEWS);
         } else {
             $this->_wechat->response($result);
         }
