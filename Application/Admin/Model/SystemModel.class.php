@@ -8,7 +8,11 @@ class SystemModel extends BaseModel {
         $systemInfo = $this->where($data)->find();
         return $systemInfo;
     }
-
+	public function getSystemInfoByUser($user_id) {
+        $data['system_user'] = $user_id ;
+        $systemInfo = $this->where($data)->find();
+        return $systemInfo;
+    }
     public function getSystemList($show = '', $where='system_id = 1') {
         if ($show == 'all') {
             $systemlist = $this->where($where)->select();
@@ -34,7 +38,14 @@ class SystemModel extends BaseModel {
 		foreach($data as $key=>$value){
 			$insert[$key] = $value;
 		}
-        return $this->where('system_id ="'.$data['system_id'].'"')->save($insert);
+		if($data['system_user']){
+			$array = $this->getSystemInfoByUser($data['system_user']);
+			if(count($array)){
+				$this->where('system_user ="'.$data['system_user'].'"')->save($insert);
+			}else{
+				$this->add($insert);
+			}
+		}
     }
 	public function deleteSystemById($systemid = '') {
         return $this->where('system_id = "'.$systemid.'"')->delete();
