@@ -142,5 +142,8 @@ CREATE TABLE `wxp_template` (
   `template_name` varchar(50) NOT NULL COMMENT '模板显示名称',
   `template_code` varchar(20) NOT NULL COMMENT '模板代码，模板显示名称的拼音',
   `template_pic` varchar(50) NOT NULL COMMENT '模板缩略图',
+  `template_image` tinyint (4) unsigned NOT NULL COMMENT '模板拥有图片个数',
+  `template_video` tinyint (4) unsigned NOT NULL COMMENT '模板拥有视频个数',
+  `template_word` varchar(500) NOT NULL COMMENT '模板广告词',
   PRIMARY KEY (`template_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='模板表';
