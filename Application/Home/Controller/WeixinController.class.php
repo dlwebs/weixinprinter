@@ -173,7 +173,7 @@ class WeixinController extends BaseController {
     }
 
     public function cropAction() {
-        $uid = $_GET["picurl"];
+        $uid = $_GET["uid"];
         $src = I('post.src');
         $x = I('post.x1');
         $y = I('post.y1');
@@ -189,10 +189,9 @@ class WeixinController extends BaseController {
         $width = intval($cropwidth * $sxbl);
         $height = intval($cropheight * $sxbl);
 
-        $imgArray = array("src"=>$src, "x"=>$x, "y"=>$y, "cropwidth"=>$width, "cropheight"=>$height, "sxbl"=>$sxbl);
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $imgobj = new \Think\Image();
-        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 800, 600)->save($src);
+        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 800, 600)->save($fileSavePath.$src);
 
         $resource = new \Admin\Model\ResourceModel();
         $resinfo = $resource->getUserNoPrintResource($uid);
