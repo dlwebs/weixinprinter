@@ -7,10 +7,9 @@ CREATE TABLE `wxp_system` (
   `system_subscribe` varchar(200) NOT NULL COMMENT '关注公众号后发送的欢迎消息',
   `system_sendimg` varchar(200) NOT NULL COMMENT '发送资源后的回复消息',
   `system_printimg` varchar(200) NOT NULL COMMENT '打印图片后的回复消息',
+  `system_user` varchar(50) NOT NULL COMMENT '系统设置的用户，关联user表user_id字段',
   PRIMARY KEY (`system_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='系统信息表';
-
-INSERT INTO `wxp_system` VALUES (1, '', '', '', '', '');
 
 
 
