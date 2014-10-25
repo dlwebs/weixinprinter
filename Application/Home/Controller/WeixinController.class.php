@@ -79,7 +79,7 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         if ($resourceid) {
-            return $post['picUrl'];//array('item' => array("Title"=>"图片上传成功",  "Description"=>"照片已收到，可以点击图片进行剪裁，也可回复消费码直接开始制作打印", "Url"=>$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'], "PicUrl"=>$post['picUrl']));
+            return '照片已收到，可以<a href="'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>图片进行剪裁，也可直接回复消费码开始打印';//array('item' => array("Title"=>"图片上传成功",  "Description"=>"照片已收到，可以点击图片进行剪裁，也可回复消费码直接开始制作打印", "Url"=>$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'], "PicUrl"=>$post['picUrl']));
         } else {
             return '照片发送失败，请重新发送';
         }
