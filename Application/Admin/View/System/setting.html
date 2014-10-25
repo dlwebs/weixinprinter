@@ -13,7 +13,7 @@
 			<div class="form-group">
               <label for="userid" class="col-sm-3 control-label">用户</label>
               <div class="col-sm-8">
-                <select class="form-control" name="system_user">
+                <select class="form-control" name="system_user" id="system_user">
                   <option value="">请选择用户</option>
 					<foreach name="userlist" item="user">
 					  <option value="{$user.user_id}" <if condition="$user.user_id eq $userId"> selected</if>>{$user.user_name}</option>
@@ -64,6 +64,13 @@
 <script type="text/javascript">
 $(function () {
     $("#systembtn").click(function () {
+		<if condition="$Think.session.userinfo.group_id eq 1">
+        var system_user = $("#system_user").val();
+        if (!system_user) {
+            alert("请选择用户名");
+            return false;
+        }
+		</if>
         $("#systemform").submit();
     });
 });

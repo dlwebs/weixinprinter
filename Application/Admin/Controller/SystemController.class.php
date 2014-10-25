@@ -31,19 +31,15 @@ class SystemController extends BaseController {
 				}
 			}
             $systemnumber = $systemobj->updateSystem($systemArray);
-			if ($systemnumber) {
-				if($group_id == 1){
-					$this->success('修改成功', 'list');
-				}else{
-					$this->success('修改成功', 'setting');
-				}
-			} else {
-				$this->error('修改失败');
+			if($group_id == 1){
+				$this->success('修改成功', 'list');
+			}else{
+				$this->success('修改成功', 'setting');
 			}
 			exit;
         }
 		
-		$userdata = $userobj->getUserList($condition);
+		$userdata = $userobj->getUserList();
         $this->assign('userlist', $userdata['data']);
 		
         $systeminfo = $systemobj->getSystemInfoByUser($user_id);
