@@ -196,7 +196,7 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $resinfo = $resource->getUserNoPrintResource($uid);
         if ($resinfo) {
-            $isok = $resource->updateResourceContent($resinfo['resource_id'], $fileSavePath.$src);
+            $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$src);
             if ($isok) {
                 echo $src;
             } else {
