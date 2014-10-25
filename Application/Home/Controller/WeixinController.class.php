@@ -75,7 +75,7 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         if ($resourceid) {
-            return '照片已收到，可以<a href="http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>图片进行剪裁，也可直接回复消费码开始打印';
+            return '照片已收到，可以<a href="http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>对图片进行剪裁，也可直接回复消费码开始打印';
         } else {
             return '照片发送失败，请重新发送';
         }
@@ -184,15 +184,15 @@ class WeixinController extends BaseController {
         if(!$src) die();
 
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
-        $x = intval($x*$sxbl);
-        $y = intval($y*$sxbl);
-        $width = intval($cropwidth*$sxbl);
-        $height = intval($cropheight*$sxbl);
+        $x = intval($x * $sxbl);
+        $y = intval($y * $sxbl);
+        $width = intval($cropwidth * $sxbl);
+        $height = intval($cropheight * $sxbl);
 
         $imgArray = array("src"=>$src, "x"=>$x, "y"=>$y, "cropwidth"=>$width, "cropheight"=>$height, "sxbl"=>$sxbl);
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
-        $imgobj = new \Think\Image($fileSavePath.$src);
-        $imgobj= $imgobj->crop($width, $height, $x, $y, 800, 600);
+        $imgobj = new \Think\Image();
+        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 800, 600)->save($src);
 
         $resource = new \Admin\Model\ResourceModel();
         $resinfo = $resource->getUserNoPrintResource($uid);
