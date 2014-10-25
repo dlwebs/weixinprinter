@@ -24,25 +24,25 @@ class WeixinController extends BaseController {
         switch($RX_TYPE){
             case Wechat::MSG_TYPE_TEXT:
                 $result = $this->receiveText($data);
-                $reponseType = Wechat::MSG_TYPE_TEXT;
                 break;
             case Wechat::MSG_TYPE_IMAGE:
                 $result = $this->receiveImage($data);
-                $reponseType = Wechat::MSG_TYPE_IMAGE;
                 break;
             case Wechat::MSG_TYPE_EVENT:
                 $result = $this->receiveEvent($data);
-                $reponseType = Wechat::MSG_TYPE_TEXT;
                 break;
             case Wechat::MSG_TYPE_VIDEO:
                 $result = $this->receiveVideo($data);
-                $reponseType = Wechat::MSG_TYPE_TEXT;
                 break;
             default:
                 $this->valid();
                 break;
         }
-        $this->_wechat->response($result, $reponseType);
+        if (is_array($result)) {
+            $this->_wechat->response($result, Wechat::MSG_TYPE_IMAGE);
+        } else {
+            $this->_wechat->response($result);
+        }
     }
 
     public function valid() {
@@ -79,7 +79,7 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         if ($resourceid) {
-            return array("Title"=>"图片上传成功",  "Description"=>"照片已收到，可以点击图片进行剪裁，也可回复消费码直接开始制作打印", "PicUrl"=>$post['picUrl'], "Url"=>'http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.urlencode($post['fromUserName'])."/?picurl=".$post['picUrl']);
+            return array('item' => array("Title"=>"图片上传成功",  "Description"=>"照片已收到，可以点击图片进行剪裁，也可回复消费码直接开始制作打印", "PicUrl"=>$post['picUrl'], "Url"=>'http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.urlencode($post['fromUserName'])."/?picurl=".$post['picUrl']));
         } else {
             return '照片发送失败，请重新发送';
         }
