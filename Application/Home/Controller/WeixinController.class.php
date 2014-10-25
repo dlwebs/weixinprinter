@@ -38,11 +38,7 @@ class WeixinController extends BaseController {
                 $this->valid();
                 break;
         }
-        if (is_array($result)) {
-            $this->_wechat->response($result, Wechat::MSG_TYPE_NEWS);
-        } else {
-            $this->_wechat->response($result);
-        }
+        $this->_wechat->response($result);
     }
 
     public function valid() {
@@ -79,7 +75,7 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         if ($resourceid) {
-            return '照片已收到，可以<a href="'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>图片进行剪裁，也可直接回复消费码开始打印';//array('item' => array("Title"=>"图片上传成功",  "Description"=>"照片已收到，可以点击图片进行剪裁，也可回复消费码直接开始制作打印", "Url"=>$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'], "PicUrl"=>$post['picUrl']));
+            return '照片已收到，可以<a href="http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>图片进行剪裁，也可直接回复消费码开始打印';
         } else {
             return '照片发送失败，请重新发送';
         }
@@ -152,6 +148,63 @@ class WeixinController extends BaseController {
             return $code;
         } else {
             return 'No printer';
+        }
+    }
+
+    public function zoomAction() {
+        $uid = I('get.uid');
+        $picurl = $_GET["picurl"];
+        $fileSaveName = date("YmdHis").rand(1000,9999).'.jpg';
+        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
+        $fileContents = file_get_contents($picurl);
+        $fileResource = fopen($fileSavePath.$fileSaveName, 'a');
+        fwrite($fileResource, $fileContents);
+        fclose($fileResource);
+        list($img_width, $img_height, $type, $attr) = getimagesize($fileSavePath.$fileSaveName);
+        $sxbl = 1;
+        if($img_width>300){
+            $sxbl = floatval($img_width/300);
+            $width = 300;
+        }
+        $picinfo=array("img_width"=>$img_width, "sxbl"=>$sxbl, "width"=>$width, "imagename"=>$fileSaveName, "picurl"=>$picurl);
+        $this->assign('picinfo', $picinfo);
+        $this->assign('uid', $uid);
+        $this->display();
+    }
+
+    public function cropAction() {
+        $uid = $_GET["picurl"];
+        $src = I('post.src');
+        $x = I('post.x1');
+        $y = I('post.y1');
+        $cropwidth = I('post.cropwidth');
+        $cropheight = I('post.cropheight');
+        $sxbl = I('post.sxbl');
+        $src = trim($src);
+        if(!$src) die();
+
+        //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
+        $x = intval($x*$sxbl);
+        $y = intval($y*$sxbl);
+        $width = intval($cropwidth*$sxbl);
+        $height = intval($cropheight*$sxbl);
+
+        $imgArray = array("src"=>$src, "x"=>$x, "y"=>$y, "cropwidth"=>$width, "cropheight"=>$height, "sxbl"=>$sxbl);
+        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
+        $imgobj = new \Think\Image($fileSavePath.$src);
+        $imgobj= $imgobj->crop($width, $height, $x, $y, 800, 600);
+
+        $resource = new \Admin\Model\ResourceModel();
+        $resinfo = $resource->getUserNoPrintResource($uid);
+        if ($resinfo) {
+            $isok = $resource->updateResourceContent($resinfo['resource_id'], $fileSavePath.$src);
+            if ($isok) {
+                echo $src;
+            } else {
+                echo 'error';
+            }
+        } else {
+            echo 'error';
         }
     }
 }

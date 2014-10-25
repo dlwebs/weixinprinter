@@ -11,6 +11,14 @@ class ResourceModel extends BaseModel {
         return $resourceInfo;
     }
 
+    public function getUserNoPrintResource($uid) {
+        $data['resource_user'] = $uid;
+        $data['resource_printer'] = '';
+        $data['resource_print'] = '1';
+        $resourceInfo = $this->where($data)->find();
+        return $resourceInfo;
+    }
+
     public function getResourceList($where='1') {
         $count = $this->join(' wxp_printer p on wxp_resource.resource_printer=p.printer_id')->where($where)->count();
         $page = new \Think\Page($count, 10);
@@ -70,6 +78,10 @@ class ResourceModel extends BaseModel {
             }
         }
         return $result;
+    }
+
+    public function updateResourceContent($rid, $rescontent) {
+        return $this->where('resource_id="'.$rid.'"')->setField('resource_content', $rescontent);
     }
 
     public function deleteResourceByWx($resource_weixin = '') {
