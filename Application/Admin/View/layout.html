@@ -35,8 +35,11 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-
-          <if condition="$Think.session.userinfo.group_id neq 1">
+		  <if condition="$Think.session.userinfo.group_id eq 1">
+		  <ul class="nav nav-sidebar">
+             <li <if condition="$current_c eq 'System' and $current_a eq 'setting'">class="active"</if>><a href="__MODULE__/System/list">系统设置</a></li>
+          </ul>
+		  <else />
           <ul class="nav nav-sidebar">
              <li <if condition="$current_c eq 'System' and $current_a eq 'setting'">class="active"</if>><a href="__MODULE__/System/setting">系统设置</a></li>
           </ul>

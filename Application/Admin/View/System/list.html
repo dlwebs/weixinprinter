@@ -1,40 +1,38 @@
-<h1 class="page-header">搜索组</h1>
-    <div class="row placeholders">
-        <div class="col-md-7">
-            <form class="form-horizontal" role="form" method="post" action="__MODULE__/Group/list">
-                <div class="form-group">
-                  <label for="helpername" class="col-sm-2 control-label">组名称</label>
-                  <div class="col-sm-10">
-                      <input type="text" class="form-control" id="group_name" name="group_name" value="{$group_name}">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">搜索</button>
-                  </div>
-                </div>
-			</form>
-		</div>
-    </div>
-
-<h2 class="sub-header">组列表</h2>
+<h1 class="page-header">搜索用户</h1>
+<div class="row placeholders">
+	<div class="col-md-7">
+		<form class="form-horizontal" role="form" method="post" action="__MODULE__/system/list">
+			<div class="form-group">
+			  <label for="helpername" class="col-sm-2 control-label">用户ID</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" id="edu_id" name="edu_id" value="{$edu_id}">
+			  </div>
+			</div>
+			<div class="form-group">
+			  <div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-default">搜索</button>
+			  </div>
+			</div>
+		  </form>
+	</div>
+</div>
+<h2 class="sub-header">系统设置列表</h2>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>组名称</th>
-            <th>状态</th>
+            <th>用户ID</th>
+            <th>用户名</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-        <foreach name="grouplist" item="group">
+        <foreach name="userlist" item="user">
           <tr>
-            <td class="col-sm-2">{$group.group_name}</td>
-            <td class="col-sm-2"><if condition="$group.group_status eq 1">启用<else />停用</if></td>
+            <td class="col-sm-2">{$user.user_id}</td>
+            <td class="col-sm-2">{$user.user_name}</td>
             <td class="col-sm-2">
-                <a href="__MODULE__/Group/modgroup/groupid/{$group.group_id}">编辑</a>
-                <a href="javascript:;" id="delgroup_{$group.group_id}">删除</a>
+                <a href="__MODULE__/setting/{$user.user_id}">设置</a>
             </td>
           </tr>
         </foreach>
@@ -42,13 +40,3 @@
       </table>
       {$page}
     </div>
-<script type="text/javascript">
-$(function () {
-    $("a[id^='delgroup_']").click(function () {
-        if (confirm("确认要删除此用户组吗？")) {
-            var id = this.id.split("_");
-            location.href = "__MODULE__/Group/delgroup/groupid/"+id[1];
-        }
-    });
-});
-</script>

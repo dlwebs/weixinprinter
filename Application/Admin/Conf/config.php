@@ -19,6 +19,7 @@ $private_config = array(
                                                   'detailresource/:resourceid' => 'Resource/detailresource',
                                                   'modtpl/:tid' => 'Template/modtpl',
                                                   'deltpl/:tid' => 'Template/deltpl',
+												  'setting/:userid' => 'System/setting',
                                                   ),
                         'AUTH_NAME' => array(
                                             'Admin-Auth-list' => '查看权限列表',

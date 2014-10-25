@@ -41,9 +41,9 @@ class SystemModel extends BaseModel {
 		if($data['system_user']){
 			$array = $this->getSystemInfoByUser($data['system_user']);
 			if(count($array)){
-				$this->where('system_user ="'.$data['system_user'].'"')->save($insert);
+				return $this->where('system_user ='.$data['system_user'])->save($insert);
 			}else{
-				$this->add($insert);
+				return $this->addSystem($insert);
 			}
 		}
     }
