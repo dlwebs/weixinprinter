@@ -9,6 +9,19 @@
                 <input type="text" class="form-control" id="system_name" name="system_name" value="{$systeminfo.system_name}" autofocus>
               </div>
             </div>
+			<if condition="$Think.session.userinfo.group_id neq 1">
+			<div class="form-group">
+              <label for="userid" class="col-sm-3 control-label">用户</label>
+              <div class="col-sm-8">
+                <select class="form-control" name="system_user">
+                  <option value="">请选择用户</option>
+					<foreach name="userlist" item="user">
+					  <option value="{$user.user_id}">{$user.user_name}</option>
+					</foreach>
+                </select>
+              </div>
+            </div>
+			</if>
             <div class="form-group">
               <label for="userid" class="col-sm-3 control-label">系统描述</label>
               <div class="col-sm-8">
