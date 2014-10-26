@@ -19,7 +19,7 @@ $private_config = array(
                                                   'detailresource/:resourceid' => 'Resource/detailresource',
                                                   'modtpl/:tid' => 'Template/modtpl',
                                                   'deltpl/:tid' => 'Template/deltpl',
-												  'setting/:userid' => 'System/setting',
+                                                  'setting/:userid' => 'System/setting',
                                                   ),
                         'AUTH_NAME' => array(
                                             'Admin-Auth-list' => '查看权限列表',
@@ -51,6 +51,12 @@ $private_config = array(
                                             'Admin-Resource-detail' => '资源详情',
                                             'Admin-Weixin-modweixin' => '修改微信',
                                             'Admin-Weixin-delweixin' => '删除微信',
+                                            'Admin-Template-save' => '保存模板',
+                                            'Admin-Template-deltpl' => '删除模板',
+                                            'Admin-Template-modtpl' => '修改模板',
+                                            'Admin-Template-add' => '添加模板',
+                                            'Admin-Template-list' => '模板列表',
+                                            'Admin-System-list' => '系统设置列表',
                                             )
                         );
 

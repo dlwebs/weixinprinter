@@ -64,7 +64,7 @@ class ResourceModel extends BaseModel {
         $hasprint = $this->where($where)->find();
         $result = 'a';
         if ($hasprint) {
-            $printcode = new \Home\Model\PrintcodeModel();;
+            $printcode = new \Home\Model\PrintcodeModel();
             $isok = $printcode->where('p_code_number = "'.$post['content'].'" and p_status = "0"')->find();
             if ($isok) {
                 $resetfield = array('resource_printer'=>$post['content'], 'resource_print' => 2);

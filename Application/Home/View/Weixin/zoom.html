@@ -7,7 +7,6 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery.jcrop.js"></script>
     <link rel="stylesheet" href="/css/jquery.jcrop.css" type="text/css" />
-
     <script type="text/javascript">
         $(function(){
             $('#cropbox').Jcrop({
@@ -51,9 +50,9 @@
                 <div id="status"></div>
                 <form id="cropform" >
                     <input type="hidden" name="x1" id="x1" size="3">
-                    <input type="hidden" id="y1" name="y1">
-                    <input type="hidden" id="cropwidth" name="cropwidth">
-                    <input type="hidden" id="cropheight" name="cropheight">
+                    <input type="hidden" name="y1" id="y1">
+                    <input type="hidden" name="cropwidth" id="cropwidth">
+                    <input type="hidden" name="cropheight" id="cropheight">
                     <input type="hidden" name="sxbl" id="sxbl" value="{$picinfo.sxbl}"><!--当前图片缩小比例，php中用于计算裁剪-->
                     <input type="hidden" name="src" id="src" value="{$picinfo.imagename}">
                     <input type="hidden" name="input" id="input" value="">
@@ -68,7 +67,7 @@
 <script>
     $(function(){
         $("#saveBtn").on("click",function(){
-            $("#status").html("图片处理中..") ;
+            $("#status").html("图片处理中...") ;
             if(checkCoords()){
                 $.ajax({
                     type: "POST",
@@ -80,11 +79,11 @@
                     } else {
                         $("h1").html("裁剪完成，请回到微信输入验证码进行打印！");
                         $("#cropbox").hide();
-                        $("#status").html("<p style='color: red'>裁剪完成,请回到微信输入验证码进行打印</p> <img width='300' src='/upload/"+d+"' />");
+                        $("#status").html("<p style='color: red'>裁剪完成，请回到微信输入验证码进行打印</p><img width='300' src='/upload/"+d+"' />");
                     }
-                })
+                });
             };
-        })
-    }) ;
+        });
+    });
 </script>
 </html>
