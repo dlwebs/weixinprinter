@@ -7,6 +7,8 @@ class ResourceController extends BaseController {
         $resourceobj = D('resource');
         $searchArray = I('post.');
 		$condition = " resource_status='2' AND resource_print='2' ";
+		$group_id = $this->userInfo['group_id'];
+        $user_id = $this->userInfo['user_id'];
         if(count($searchArray)){
 			if($searchArray["search_weixin"]){
 				$condition = $condition." AND resource_weixin = '".$searchArray["search_weixin"]."'";
@@ -26,13 +28,14 @@ class ResourceController extends BaseController {
 			}
 			if(count($tokenArray)){
 				$condition = $condition." AND resource_weixin in ('".implode("','", $tokenArray)."')";
-				$resourcedata = $resourceobj->getResourceList('', $condition);
+				$resourcedata = $resourceobj->getResourceList($condition);
 			}else{
 				$resourcedata = "";
 			}
 		}else{
-			$resourcedata = $resourceobj->getResourceList('', $condition);
+			$resourcedata = $resourceobj->getResourceList($condition);
 		}
+		//print_r($resourcedata);
         $this->assign('resourcelist', $resourcedata['data']);
         $this->assign('page', $resourcedata['page']);
         $this->display();

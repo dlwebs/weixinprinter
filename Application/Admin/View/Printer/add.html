@@ -51,44 +51,44 @@
 </style>
 <h2 class="sub-header">添加设备</h2>
 <div class="row placeholders">
-    <div class="col-md-7">
-        <form class="form-horizontal" role="form" method="post" id="printerform" action="__MODULE__/printer/save" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">设备名称</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="printer_name" name="printer_name" value="" required autofocus>
-              </div>
-            </div>
+	<div class="col-md-7">
+		<form class="form-horizontal" role="form" method="post" id="printerform" action="__MODULE__/printer/save" enctype="multipart/form-data">
 			<div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">设备ID</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="printer_code" name="printer_code" value="">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">设备类屏</label>
-              <div class="col-sm-8">
-                <label class="checkbox-inline">
-                  <input type="radio" name="printer_type" value="1" checked> 横屏
-                </label>
-                <label class="checkbox-inline">
-                  <input type="radio" name="printer_type" value="2"> 竖屏
-                </label>
-              </div>
-            </div>
+				<label for="userid" class="col-sm-3 control-label">设备名称</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" id="printer_name" name="printer_name" value="" required autofocus>
+				</div>
+			</div>
 			<div class="form-group">
-              <label for="userid" class="col-sm-3 control-label">公众帐号</label>
-              <div class="col-sm-8">
-				<select class="form-control" name="printer_weixin" id="printer_weixin">
-					<option value="">请选择公众帐号</option>
-					<foreach name="weixinlist" item="weixin">
-					  <option value="{$weixin.weixin_token}">{$weixin.weixin_name}</option>
-					</foreach>
-                </select>
-              </div>
-            </div>
+				<label for="userid" class="col-sm-3 control-label">设备ID</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" id="printer_code" name="printer_code" value="">
+				</div>
+			</div>
 			<div class="form-group">
-			  <label for="userid" class="col-sm-3 control-label">选择模板</label>
+				<label for="userid" class="col-sm-3 control-label">设备类屏</label>
+				<div class="col-sm-8">
+					<label class="checkbox-inline">
+						<input type="radio" name="printer_type" value="1" checked> 横屏
+					</label>
+					<label class="checkbox-inline">
+						<input type="radio" name="printer_type" value="2"> 竖屏
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="userid" class="col-sm-3 control-label">公众帐号</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="printer_weixin" id="printer_weixin">
+						<option value="">请选择公众帐号</option>
+							<foreach name="weixinlist" item="weixin">
+								<option value="{$weixin.weixin_token}">{$weixin.weixin_name}</option>
+							</foreach>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="userid" class="col-sm-3 control-label">选择模板</label>
 				<div id="masonry" class="container-fluid">
 					<div class="thumbnail"> 
 						<div class="imgs"> 
@@ -97,35 +97,140 @@
 							</a>
 						</div> 
 						<div class="caption"> 
-							<div class="title"><input type="radio" name="printer_template" value="0" checked>默认模板</div> 
+							<div class="title">
+								<input type="radio" id="printer_template" name="printer_template" value="0" checked>默认模板
+							</div> 
 						</div> 
 					</div> 
 				</div>
 				<foreach name="tpllist" item="template">
-				<div id="masonry" class="container-fluid">
-					<div class="thumbnail"> 
-						<div class="imgs"> 
-							<a class="example-image-link" href="/upload/{$template.template_pic}" data-lightbox="example-set" data-title="{$template.template_name}">
-								<img class="example-image" src="/upload/{$template.template_pic}" alt="" width="130" height="160"/>
-							</a>
+					<div id="masonry" class="container-fluid">
+						<div class="thumbnail"> 
+							<div class="imgs"> 
+								<a class="example-image-link" href="/upload/{$template.template_pic}" data-lightbox="example-set" data-title="{$template.template_name}">
+									<img class="example-image" src="/upload/{$template.template_pic}" alt="" width="130" height="160"/>
+								</a>
+							</div> 
+							<div class="caption"> 
+								<div class="title">
+									<input type="radio" id="printer_template" name="printer_template" value="{$template.template_id}">{$template.template_name}
+								</div> 
+							</div> 
 						</div> 
-						<div class="caption"> 
-							<div class="title"><input type="radio" name="printer_template" value="{$template.template_id}">{$template.template_name}</div> 
-						</div> 
-					</div> 
-				</div>
+					</div>
 				</foreach>
 			</div>
-            <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" class="btn btn-default" id="addbtn">添加</button>
-              </div>
-            </div>
-          </form>
-  </div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">模板详细设置</label>
+				<div class="col-sm-8" id="show_temp_detail_div">
+					<div class="form-group">
+						<label for="userid" class="col-sm-3 control-label">视频:</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline">
+								<input type="radio" name="video" value="file" checked> 本地
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" name="video" value="text"> 远程
+							</label>
+							<input type="file" id="video_file" name="video_file">
+							<input type="text" id="video_text" name="video_text" value="" class="form-control" style="display:none">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="userid" class="col-sm-3 control-label">图片1:</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline">
+								<input type="radio" name="image1" value="file" checked> 本地
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" name="image1" value="text"> 远程
+							</label>
+							<input type="file" id="image1_file" name="image1_file">
+							<input type="text" id="image1_text" name="image1_text" value="" class="form-control" style="display:none">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="userid" class="col-sm-3 control-label">图片2:</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline">
+								<input type="radio" name="image2" value="file" checked> 本地
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" name="image2" value="text"> 远程
+							</label>
+							<input type="file" id="image2_file" name="image2_file">
+							<input type="text" id="image2_text" name="image2_text" value="" class="form-control" style="display:none">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="userid" class="col-sm-3 control-label">图片3:</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline">
+								<input type="radio" name="image3" value="file" checked> 本地
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" name="image3" value="text"> 远程
+							</label>
+							<input type="file" id="image3_file" name="image3_file">
+							<input type="text" id="image3_text" name="image3_text" value="" class="form-control" style="display:none">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="userid" class="col-sm-3 control-label">图片4:</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline">
+								<input type="radio" name="image4" value="file" checked> 本地
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" name="image4" value="text"> 远程
+							</label>
+							<input type="file" id="image4_file" name="image4_file">
+							<input type="text" id="image4_text" name="image4_text" value="" class="form-control" style="display:none">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="userid" class="col-sm-3 control-label">图片5:</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline">
+								<input type="radio" name="image5" value="file" checked> 本地
+							</label>
+							<label class="checkbox-inline">
+								<input type="radio" name="image5" value="text"> 远程
+							</label>
+							<input type="file" id="image5_file" name="image5_file">
+							<input type="text" id="image5_text" name="image5_text" value="" class="form-control" style="display:none">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="userid" class="col-sm-3 control-label">广告词:</label>
+						<div class="col-sm-8">
+							<input type="text" name="ads" value="" class="form-control">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="button" class="btn btn-default" id="addbtn">添加</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 <script type="text/javascript">
 $(function () {
+	var video_type;
+	$("input[name=video]").click(function(){
+		video_type = $("input[name=video]:checked").val();
+		if(video_type == "text"){
+			$("#video_text").css('display','block');
+			$("#video_file").css('display','none');
+		}
+		if(video_type == "file"){
+			$("#video_text").css('display','none');
+			$("#video_file").css('display','block');
+		}
+	});
     $("#addbtn").click(function () {
         var printer_name = $("#printer_name").val();
 		var printer_code = $("#printer_code").val();
@@ -150,4 +255,5 @@ $(function () {
         $("#printerform").submit();
     });
 });
+function 
 </script>

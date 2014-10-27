@@ -20,9 +20,8 @@ class ResourceModel extends BaseModel {
     }
 
     public function getResourceList($where='1') {
-        $count = $this->join(' wxp_printer p on wxp_resource.resource_printer=p.printer_id')->where($where)->count();
         $page = new \Think\Page($count, 10);
-        $grouplist = $this->where($where)->limit($page->firstRow.','.$page->listRows)->select();
+        $grouplist = $this->where($where)->join(' wxp_printer p on left(resource_printer, 3)=p.printer_code')->limit($page->firstRow.','.$page->listRows)->select();
         $pageinfo = $page->show();
         return array('data' => $grouplist, 'page' => $pageinfo);
     }
