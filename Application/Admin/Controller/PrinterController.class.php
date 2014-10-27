@@ -43,7 +43,18 @@ class PrinterController extends BaseController {
         $this->assign('page', $printerdata['page']);
         $this->display();
     }
-
+	public function gettemplatenumAction(){
+		$templateId = I('get.templateid');
+		$template = D('Template');
+		if(!$templateId){
+			$tplinfo["template_video"] = "1";
+			$tplinfo["template_image"] = "5";
+			$tplinfo["template_word"] = "1";
+		}else{
+			$tplinfo = $template->getTemplateById($templateId);
+		}
+		echo json_encode($tplinfo);
+	}
     public function addAction(){
         $wxobj = D('weixin');
         $group_id = $this->userInfo['group_id'];

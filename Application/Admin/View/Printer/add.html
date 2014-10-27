@@ -122,7 +122,7 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">模板详细设置</label>
-				<div class="col-sm-8" id="show_temp_detail_div">
+				<div class="col-sm-8" id="show_temp_detail_div" name="show_temp_detail_div">
 					<div class="form-group">
 						<label for="userid" class="col-sm-3 control-label">视频:</label>
 						<div class="col-sm-8">
@@ -220,16 +220,10 @@
 <script type="text/javascript">
 $(function () {
 	var video_type;
-	$("input[name=video]").click(function(){
-		video_type = $("input[name=video]:checked").val();
-		if(video_type == "text"){
-			$("#video_text").css('display','block');
-			$("#video_file").css('display','none');
-		}
-		if(video_type == "file"){
-			$("#video_text").css('display','none');
-			$("#video_file").css('display','block');
-		}
+	initHtml(0);
+	$("input[name=printer_template]").click(function(){
+		var printer_template = $("input[name=printer_template]:checked").val();
+		initHtml(printer_template);
 	});
     $("#addbtn").click(function () {
         var printer_name = $("#printer_name").val();
@@ -255,5 +249,44 @@ $(function () {
         $("#printerform").submit();
     });
 });
-function 
+function initHtml(printer_template){
+	$.get("__MODULE__/Printer/gettemplatenum/",{ templateid: printer_template } ,function(result,status){
+		var data = $.parseJSON(result);
+		var i = 0;
+		var returnHtml = "";
+		$("#show_temp_detail_div").html('');
+		for(i = 1; i <= data["template_video"]; i ++){
+			returnHtml += "<div class=\"form-group\">";
+			returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">视频:</label>";
+			returnHtml += "		<div class=\"col-sm-8\">";
+			returnHtml += "			<label class=\"checkbox-inline\">";
+			returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"file\" checked> 本地";
+			returnHtml += "			</label>";
+			returnHtml += "			<label class=\"checkbox-inline\">";
+			returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"text\"> 远程";
+			returnHtml += "			</label>";
+			returnHtml += "			<input type=\"file\" id=\"video"+i+"_file\" name=\"video_file\">";
+			returnHtml += "			<input type=\"text\" id=\"video"+i+"_text\" name=\"video_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
+			returnHtml += "		</div>";
+			returnHtml += "	</div>";
+		}
+		for(i = 1; i <= data["template_image"]; i ++){
+			
+		}
+		$("#show_temp_detail_div").html() = returnHtml;
+	});
+}
+function checkSrc(radioName){
+	$("input[name="+radioName+"]").click(function(){
+		video_type = $("input[name="+radioName+"]:checked").val();
+		if(video_type == "text"){
+			$("#"+radioName+"_text").css('display','block');
+			$("#"+radioName+"_file").css('display','none');
+		}
+		if(video_type == "file"){
+			$("#"+radioName+"_text").css('display','none');
+			$("#"+radioName+"_file").css('display','block');
+		}
+	});
+}
 </script>

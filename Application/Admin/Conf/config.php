@@ -16,6 +16,7 @@ $private_config = array(
                                                   'delweixin/:wxid' => 'Weixin/delweixin',
                                                   'modprinter/:printerid' => 'Printer/modprinter',
                                                   'delprinter/:printerid' => 'Printer/delprinter',
+												  'gettemplatenum/:templateid' => 'Printer/gettemplatenum',
                                                   'detailresource/:resourceid' => 'Resource/detailresource',
                                                   'modtpl/:tid' => 'Template/modtpl',
                                                   'deltpl/:tid' => 'Template/deltpl',
