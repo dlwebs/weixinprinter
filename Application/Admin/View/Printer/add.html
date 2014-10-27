@@ -254,10 +254,10 @@ function initHtml(printer_template){
 		var data = $.parseJSON(result);
 		var i = 0;
 		var returnHtml = "";
-		$("#show_temp_detail_div").html('');
+		$("div[name=show_temp_detail_div]").html('');
 		for(i = 1; i <= data["template_video"]; i ++){
 			returnHtml += "<div class=\"form-group\">";
-			returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">视频:</label>";
+			returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">视频"+i+":</label>";
 			returnHtml += "		<div class=\"col-sm-8\">";
 			returnHtml += "			<label class=\"checkbox-inline\">";
 			returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"file\" checked> 本地";
@@ -271,9 +271,35 @@ function initHtml(printer_template){
 			returnHtml += "	</div>";
 		}
 		for(i = 1; i <= data["template_image"]; i ++){
-			
+			returnHtml += "<div class=\"form-group\">";
+			returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">图片"+i+":</label>";
+			returnHtml += "		<div class=\"col-sm-8\">";
+			returnHtml += "			<label class=\"checkbox-inline\">";
+			returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"file\" checked> 本地";
+			returnHtml += "			</label>";
+			returnHtml += "			<label class=\"checkbox-inline\">";
+			returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\"> 远程";
+			returnHtml += "			</label>";
+			returnHtml += "			<input type=\"file\" id=\"image"+i+"_file\" name=\"video_file\">";
+			returnHtml += "			<input type=\"text\" id=\"image"+i+"_text\" name=\"video_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
+			returnHtml += "		</div>";
+			returnHtml += "	</div>";
 		}
-		$("#show_temp_detail_div").html() = returnHtml;
+		for(i = 1; i <= data["template_word"]; i ++){
+			returnHtml += "<div class=\"form-group\">";
+			returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">广告词"+i+":</label>";
+			returnHtml += "		<div class=\"col-sm-8\">";
+			returnHtml += "			<input type=\"text\" id=\"ads"+i+"_text\" name=\"video_text\" value=\"\" class=\"form-control\">";
+			returnHtml += "		</div>";
+			returnHtml += "	</div>";
+		}
+		$("div[name=show_temp_detail_div]").html(returnHtml);
+		for(i = 1; i <= data["template_video"]; i ++){
+			checkSrc("video" + i);
+		}
+		for(i = 1; i <= data["template_image"]; i ++){
+			checkSrc("image" + i);
+		}
 	});
 }
 function checkSrc(radioName){
