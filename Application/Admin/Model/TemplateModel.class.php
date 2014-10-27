@@ -24,6 +24,10 @@ class TemplateModel extends BaseModel {
         return $this->where('template_id = "'.$id.'"')->find();
     }
 
+    public function getTemplateByCode($code) {
+        return $this->where('template_code = "'.$code.'"')->find();
+    }
+
     public function addTemplate($data = array()) {
         return $this->add($data);
     }

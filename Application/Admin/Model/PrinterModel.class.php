@@ -53,6 +53,10 @@ class PrinterModel extends BaseModel {
         return $this->where('printer_id ="'.$data['printer_id'].'"')->save($insert);
     }
 
+    public function updatePrinterTpl($template_id) {
+        return $this->where('printer_template = "'.$template_id.'"')->setField('printer_template', 0);
+    }
+
     public function deletePrinterById($printerid = '') {
         return $this->where('printer_id = "'.$printerid.'"')->delete();
     }

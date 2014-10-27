@@ -35,6 +35,9 @@ class TemplateController extends BaseController {
         }
         if ($isok) {
             unlink('./upload/'.$tplinfo['template_pic']);
+            unlink(APP_PATH.'Home/View/Index/'.$tplinfo['template_code'].'.html');
+            $printer = D('Printer');
+            $printer->updatePrinterTpl($tplinfo['template_id']);
             $this->success('删除模板成功');
         } else {
             $this->error('删除模板失败');
@@ -43,6 +46,14 @@ class TemplateController extends BaseController {
 
     public function saveAction() {
         $post = filterAllParam('post');
+        $template = D('Template');
+        $isHaveCode = $template->getTemplateByCode($post['template_code']);
+        if ($isHaveCode) {
+            $this->error('模板代码重复');
+        }
+        if(!preg_match ("/^[A-Za-z0-9_]+$/", $post['template_code'])){
+            $this->error("模板代码只能是数字、字母和下划线");
+        }
         $isdelimage = $post['deltemplate_pic'];
         if ($isdelimage) {
             $post['template_pic'] = '';
@@ -59,7 +70,6 @@ class TemplateController extends BaseController {
             }
             $post['template_pic'] = $uploadinfo['savepath'].$uploadinfo['savename'];
         }
-        $template = D('Template');
         if (isset($post['id']) && $post['id']) {
             $tplnumber = $template->updateTemplate($post);
             if ($tplnumber) {
@@ -69,6 +79,10 @@ class TemplateController extends BaseController {
             }
         } else {
             $id = $template->addTemplate($post);
+            if ($id) {
+                $tplFile = APP_PATH.'Home/View/Index/'.$post['template_code'].'.html';
+                file_put_contents($tplFile, '请编辑Home/View/Index/'.$post['template_code'].'.html文件');
+            }
         }
         if ($id) {
             $this->success('保存模板成功', 'list');

@@ -64,6 +64,11 @@ $(function () {
             alert("请选择模板代码");
             return false;
         }
+        var reg= /^[A-Za-z0-9_]+$/;
+        if (!reg.test(template_code)) {
+            alert("模板代码只能是数字、字母和下划线");
+            return false;
+        }
         $("#wxform").submit();
     });
 });
