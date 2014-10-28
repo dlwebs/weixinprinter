@@ -58,6 +58,7 @@ $private_config = array(
                                             'Admin-Template-add' => '添加模板',
                                             'Admin-Template-list' => '模板列表',
                                             'Admin-System-list' => '系统设置列表',
+                                            'Admin-Printer-gettemplatenum' => '设备选择模板'
                                             )
                         );
 
