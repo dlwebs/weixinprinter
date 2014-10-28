@@ -52,6 +52,7 @@ class PrinterController extends BaseController {
 			$tplinfo["template_word"] = "1";
 		}else{
 			$tplinfo = $template->getTemplateById($templateId);
+
 		}
 		echo json_encode($tplinfo);
 	}
@@ -136,6 +137,8 @@ class PrinterController extends BaseController {
     public function saveAction() {
         $post = I('post.');
         $printerobj = D('printer');
+		$printertplobj = D('printertpl');
+		$updatePrintArray = array();
         if (isset($post['id']) && $post['id']) {
             if (!trim($post['printer_name'])) {
                 $this->error("打印机名称不能为空");
@@ -150,7 +153,13 @@ class PrinterController extends BaseController {
             if(!$post['printer_weixin']){
                 $this->error("公共帐号不能为空");
             }
-            $printernumber = $printerobj->updatePrinter($post);
+			$updatePrintArray["printer_id"] = $post["printer_id"];
+			$updatePrintArray["printer_name"] = $post["printer_name"];
+			$updatePrintArray["printer_code"] = $post["printer_code"];
+			$updatePrintArray["printer_type"] = $post["printer_type"];
+			$updatePrintArray["printer_weixin"] = $post["printer_weixin"];
+			$updatePrintArray["printer_template"] = $post["printer_template"];
+            $printernumber = $printerobj->updatePrinter($updatePrintArray);
             $id = $post['id'];
         } else {
             if (!trim($post['printer_name'])) {
@@ -169,12 +178,86 @@ class PrinterController extends BaseController {
             if(!$post['printer_weixin']){
                 $this->error("公共帐号不能为空");
             }
-            $id = $printerobj->addPrinter($post);
+			$updatePrintArray["printer_name"] = $post["printer_name"];
+			$updatePrintArray["printer_code"] = $post["printer_code"];
+			$updatePrintArray["printer_type"] = $post["printer_type"];
+			$updatePrintArray["printer_weixin"] = $post["printer_weixin"];
+			$updatePrintArray["printer_template"] = $post["printer_template"];
+            $id = $printerobj->addPrinter($updatePrintArray);
             if ($id) {
                 $printcode = new \Home\Model\PrintcodeModel();
                 $code_number = $printcode->createCode($post['printer_code']);
             }
         }
+		//处理模板里的设定
+		if($id){
+			$printertplobj->delPrintertplByPrinterId($id);
+			$printer_template = $post["printer_template"];
+			if($printer_template){
+				$templateObj = D('template');
+				$tempInfo = $templateObj->getTemplateById($printer_template);
+			}else{
+				$tempInfo["template_video"] = "1";
+				$tempInfo["template_image"] = "5";
+				$tempInfo["template_word"] = "1";
+			}
+			
+			for($i = 1; $i <= $tempInfo["template_video"]; $i ++){
+				$insertArray = array();
+				if($post["video".$i] == "file"){
+					if ($_FILES['video'.$i.'_file']['name']) {
+						$upload = new \Think\Upload();
+						$upload->maxSize = 3145728;//3M
+						$upload->exts = array('jpg', 'gif', 'png', 'jpeg');
+						$upload->rootPath = './upload/';
+						$uploadinfo = $upload->uploadOne($_FILES['video'.$i.'_file']);
+						if(!$uploadinfo) {
+							$this->error($upload->getError());
+						}
+						$insertArray['printertpl_content'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+					}
+				}elseif($post["video".$i] == "text"){
+					$insertArray['printertpl_content'] = $post["video".$i."_text"];
+				}
+				if($insertArray['printertpl_content']){
+					$insertArray['printertpl_printer'] = $id;
+					$insertArray['printertpl_type'] = 'video';
+					$printertplid = $printertplobj->addPrintertpl($insertArray);
+				}
+			}
+			for($i = 1; $i <= $tempInfo["template_image"]; $i ++){
+				$insertArray = array();
+				if($post["image".$i] == "file"){
+					if ($_FILES['image'.$i.'_file']['name']) {
+						$upload = new \Think\Upload();
+						$upload->maxSize = 3145728;//3M
+						$upload->exts = array('jpg', 'gif', 'png', 'jpeg');
+						$upload->rootPath = './upload/';
+						$uploadinfo = $upload->uploadOne($_FILES['image'.$i.'_file']);
+						if(!$uploadinfo) {
+							$this->error($upload->getError());
+						}
+						$insertArray['printertpl_content'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+					}
+				}elseif($post["image".$i] == "text"){
+					$insertArray['printertpl_content'] = $post["image".$i."_text"];
+				}
+				if($insertArray['printertpl_content']){
+					$insertArray['printertpl_printer'] = $id;
+					$insertArray['printertpl_type'] = 'image';
+					$printertplid = $printertplobj->addPrintertpl($insertArray);
+				}
+			}
+			for($i = 1; $i <= $tempInfo["template_word"]; $i ++){
+				$insertArray = array();
+				$insertArray['printertpl_content'] = $post["ads".$i."_text"];
+				$insertArray['printertpl_printer'] = $id;
+				$insertArray['printertpl_type'] = 'word';
+				if($insertArray['printertpl_content']){
+					$printertplid = $printertplobj->addPrintertpl($insertArray);
+				}
+			}
+		}
         if ($id) {
             $this->success('保存成功', 'list');
         } else {

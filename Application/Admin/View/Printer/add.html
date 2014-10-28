@@ -123,90 +123,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">模板详细设置</label>
 				<div class="col-sm-8" id="show_temp_detail_div" name="show_temp_detail_div">
-					<div class="form-group">
-						<label for="userid" class="col-sm-3 control-label">视频:</label>
-						<div class="col-sm-8">
-							<label class="checkbox-inline">
-								<input type="radio" name="video" value="file" checked> 本地
-							</label>
-							<label class="checkbox-inline">
-								<input type="radio" name="video" value="text"> 远程
-							</label>
-							<input type="file" id="video_file" name="video_file">
-							<input type="text" id="video_text" name="video_text" value="" class="form-control" style="display:none">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="userid" class="col-sm-3 control-label">图片1:</label>
-						<div class="col-sm-8">
-							<label class="checkbox-inline">
-								<input type="radio" name="image1" value="file" checked> 本地
-							</label>
-							<label class="checkbox-inline">
-								<input type="radio" name="image1" value="text"> 远程
-							</label>
-							<input type="file" id="image1_file" name="image1_file">
-							<input type="text" id="image1_text" name="image1_text" value="" class="form-control" style="display:none">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="userid" class="col-sm-3 control-label">图片2:</label>
-						<div class="col-sm-8">
-							<label class="checkbox-inline">
-								<input type="radio" name="image2" value="file" checked> 本地
-							</label>
-							<label class="checkbox-inline">
-								<input type="radio" name="image2" value="text"> 远程
-							</label>
-							<input type="file" id="image2_file" name="image2_file">
-							<input type="text" id="image2_text" name="image2_text" value="" class="form-control" style="display:none">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="userid" class="col-sm-3 control-label">图片3:</label>
-						<div class="col-sm-8">
-							<label class="checkbox-inline">
-								<input type="radio" name="image3" value="file" checked> 本地
-							</label>
-							<label class="checkbox-inline">
-								<input type="radio" name="image3" value="text"> 远程
-							</label>
-							<input type="file" id="image3_file" name="image3_file">
-							<input type="text" id="image3_text" name="image3_text" value="" class="form-control" style="display:none">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="userid" class="col-sm-3 control-label">图片4:</label>
-						<div class="col-sm-8">
-							<label class="checkbox-inline">
-								<input type="radio" name="image4" value="file" checked> 本地
-							</label>
-							<label class="checkbox-inline">
-								<input type="radio" name="image4" value="text"> 远程
-							</label>
-							<input type="file" id="image4_file" name="image4_file">
-							<input type="text" id="image4_text" name="image4_text" value="" class="form-control" style="display:none">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="userid" class="col-sm-3 control-label">图片5:</label>
-						<div class="col-sm-8">
-							<label class="checkbox-inline">
-								<input type="radio" name="image5" value="file" checked> 本地
-							</label>
-							<label class="checkbox-inline">
-								<input type="radio" name="image5" value="text"> 远程
-							</label>
-							<input type="file" id="image5_file" name="image5_file">
-							<input type="text" id="image5_text" name="image5_text" value="" class="form-control" style="display:none">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="userid" class="col-sm-3 control-label">广告词:</label>
-						<div class="col-sm-8">
-							<input type="text" name="ads" value="" class="form-control">
-						</div>
-					</div>
+					
 				</div>
 			</div>
 			<div class="form-group">
@@ -265,8 +182,8 @@ function initHtml(printer_template){
 			returnHtml += "			<label class=\"checkbox-inline\">";
 			returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"text\"> 远程";
 			returnHtml += "			</label>";
-			returnHtml += "			<input type=\"file\" id=\"video"+i+"_file\" name=\"video_file\">";
-			returnHtml += "			<input type=\"text\" id=\"video"+i+"_text\" name=\"video_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
+			returnHtml += "			<input type=\"file\" id=\"video"+i+"_file\" name=\"video"+i+"_file\">";
+			returnHtml += "			<input type=\"text\" id=\"video"+i+"_text\" name=\"video"+i+"_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
 			returnHtml += "		</div>";
 			returnHtml += "	</div>";
 		}
@@ -280,8 +197,8 @@ function initHtml(printer_template){
 			returnHtml += "			<label class=\"checkbox-inline\">";
 			returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\"> 远程";
 			returnHtml += "			</label>";
-			returnHtml += "			<input type=\"file\" id=\"image"+i+"_file\" name=\"video_file\">";
-			returnHtml += "			<input type=\"text\" id=\"image"+i+"_text\" name=\"video_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
+			returnHtml += "			<input type=\"file\" id=\"image"+i+"_file\" name=\"image"+i+"_file\">";
+			returnHtml += "			<input type=\"text\" id=\"image"+i+"_text\" name=\"image"+i+"_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
 			returnHtml += "		</div>";
 			returnHtml += "	</div>";
 		}
@@ -289,7 +206,7 @@ function initHtml(printer_template){
 			returnHtml += "<div class=\"form-group\">";
 			returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">广告词"+i+":</label>";
 			returnHtml += "		<div class=\"col-sm-8\">";
-			returnHtml += "			<input type=\"text\" id=\"ads"+i+"_text\" name=\"video_text\" value=\"\" class=\"form-control\">";
+			returnHtml += "			<input type=\"text\" id=\"ads"+i+"_text\" name=\"ads"+i+"_text\" value=\"\" class=\"form-control\">";
 			returnHtml += "		</div>";
 			returnHtml += "	</div>";
 		}
