@@ -48,7 +48,7 @@ class TemplateController extends BaseController {
         $post = filterAllParam('post');
         $template = D('Template');
         $isHaveCode = $template->getTemplateByCode($post['template_code']);
-        if ($isHaveCode) {
+        if (!isset($post['id']) && $isHaveCode) {
             $this->error('模板代码重复');
         }
         if(!preg_match ("/^[A-Za-z0-9_]+$/", $post['template_code'])){
@@ -71,6 +71,9 @@ class TemplateController extends BaseController {
             $post['template_pic'] = $uploadinfo['savepath'].$uploadinfo['savename'];
         }
         if (isset($post['id']) && $post['id']) {
+//            if (!$isdelimage && !$post['template_pic']) {
+//                $post['template_pic'] = $isHaveCode['template_pic'];
+//            }
             $tplnumber = $template->updateTemplate($post);
             if ($tplnumber) {
                 $id = $post['id'];
