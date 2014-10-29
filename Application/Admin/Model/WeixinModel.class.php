@@ -32,8 +32,12 @@ class WeixinModel extends BaseModel {
         return $this->where('weixin_id = "'.$id.'"')->find();
     }
     
-    public function getOwnWeixinById($wxid, $userid) {
-        return $this->where('weixin_id = "'.$wxid.'" and weixin_userid = "'.$userid.'"')->find();
+    public function getOwnWeixinById($wxid = '', $userid) {
+        if ($wxid) {
+            return $this->where('weixin_id = "'.$wxid.'" and weixin_userid = "'.$userid.'"')->find();
+        } else {
+            return $this->where('weixin_userid = "'.$userid.'"')->select();
+        }
     }
 
     public function addWeixin($data = array()) {

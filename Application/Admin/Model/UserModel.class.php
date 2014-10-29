@@ -24,6 +24,10 @@ class UserModel extends BaseModel {
     public function getUserById($userid = '') {
         return $this->where('user_id = "'.$userid.'"')->find();
     }
+    
+    public function getFans($user_token = '') {
+        return $this->where('user_weixin = "'.$user_token.'"')->select();
+    }
 
     public function deleteUserById($userid = '') {
         return $this->where('user_id = "'.$userid.'"')->delete();
