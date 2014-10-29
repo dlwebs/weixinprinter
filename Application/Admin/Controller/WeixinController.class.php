@@ -2,6 +2,21 @@
 namespace Admin\Controller;
 
 class WeixinController extends BaseController {
+    
+    public function fansAction() {
+        $group_id = $this->userInfo['group_id'];
+        $user_id = $this->userInfo['user_id'];
+        $userobj = D('user');
+        $weixin = D('weixin');
+        $fans = array();
+        $ownWeixin = $weixin->getOwnWeixinById('', $user_id);
+        foreach ($ownWeixin as $key => $wx) {
+            $fanslist = $userobj->getFans($wx['weixin_number']);
+            $fans[$key] = array('name'=>$wx['weixin_name'],'number'=>$wx['weixin_number'],'token'=>$wx['weixin_token'],'fans'=>$fanslist);
+        }
+        $this->assign('fanslist', $fans);
+        $this->display();
+    }
 
     public function listAction(){
         $group_id = $this->userInfo['group_id'];
