@@ -46,6 +46,7 @@ class PrinterController extends BaseController {
 	public function gettemplatenumAction(){
 		$templateId = I('get.templateid');
 		$template = D('Template');
+		$printertplobj = D('printertpl');
 		if(!$templateId){
 			$tplinfo["template_video"] = "1";
 			$tplinfo["template_image"] = "5";
@@ -53,6 +54,19 @@ class PrinterController extends BaseController {
 		}else{
 			$tplinfo = $template->getTemplateById($templateId);
 
+		}
+		$printer_id = I('get.printer_id');
+		if($printer_id){
+			$printerobj = D("printer");
+			$printerinfo = $printerobj->getPrinterById($printer_id);
+			$tplArray = $printertplobj->getPrintertplById($printer_id);
+			$resultArray = array();
+			for($i = 0; $i < count($tplArray); $i ++){
+				if($printerinfo['printer_template'] == $templateId){
+					$resultArray[$tplArray[$i]['printertpl_type'].$tplArray[$i]['printertpl_num']] = $tplArray[$i]['printertpl_content'];
+				}
+			}
+			$tplinfo['tplObj'] = $resultArray;		
 		}
 		echo json_encode($tplinfo);
 	}
@@ -191,7 +205,7 @@ class PrinterController extends BaseController {
         }
 		//处理模板里的设定
 		if($id){
-			$printertplobj->delPrintertplByPrinterId($id);
+			//$printertplobj->delPrintertplByPrinterId($id);
 			$printer_template = $post["printer_template"];
 			if($printer_template){
 				$templateObj = D('template');
@@ -204,6 +218,8 @@ class PrinterController extends BaseController {
 			
 			for($i = 1; $i <= $tempInfo["template_video"]; $i ++){
 				$insertArray = array();
+				$tplArray = array();
+				$tplArray = $printertplobj->getPrintertplByCondition("printertpl_type='video' and printertpl_num=".$i." and printertpl_printer=".$id);
 				if($post["video".$i] == "file"){
 					if ($_FILES['video'.$i.'_file']['name']) {
 						$upload = new \Think\Upload();
@@ -220,13 +236,21 @@ class PrinterController extends BaseController {
 					$insertArray['printertpl_content'] = $post["video".$i."_text"];
 				}
 				if($insertArray['printertpl_content']){
+					$insertArray['printertpl_num'] = $i;
 					$insertArray['printertpl_printer'] = $id;
 					$insertArray['printertpl_type'] = 'video';
-					$printertplid = $printertplobj->addPrintertpl($insertArray);
+					if(count($tplArray)){
+						$insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
+						$printertplid = $printertplobj->updatePrintertpl($insertArray);
+					}else{
+						$printertplid = $printertplobj->addPrintertpl($insertArray);
+					}
 				}
 			}
 			for($i = 1; $i <= $tempInfo["template_image"]; $i ++){
 				$insertArray = array();
+				$tplArray = array();
+				$tplArray = $printertplobj->getPrintertplByCondition("printertpl_type='image' and printertpl_num=".$i." and printertpl_printer=".$id);
 				if($post["image".$i] == "file"){
 					if ($_FILES['image'.$i.'_file']['name']) {
 						$upload = new \Think\Upload();
@@ -243,18 +267,32 @@ class PrinterController extends BaseController {
 					$insertArray['printertpl_content'] = $post["image".$i."_text"];
 				}
 				if($insertArray['printertpl_content']){
+					$insertArray['printertpl_num'] = $i;
 					$insertArray['printertpl_printer'] = $id;
 					$insertArray['printertpl_type'] = 'image';
-					$printertplid = $printertplobj->addPrintertpl($insertArray);
+					if(count($tplArray)){
+						$insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
+						$printertplid = $printertplobj->updatePrintertpl($insertArray);
+					}else{
+						$printertplid = $printertplobj->addPrintertpl($insertArray);
+					}
 				}
 			}
 			for($i = 1; $i <= $tempInfo["template_word"]; $i ++){
 				$insertArray = array();
+				$tplArray = array();
+				$tplArray = $printertplobj->getPrintertplByCondition("printertpl_type='word' and printertpl_num=".$i." and printertpl_printer=".$id);
 				$insertArray['printertpl_content'] = $post["ads".$i."_text"];
-				$insertArray['printertpl_printer'] = $id;
-				$insertArray['printertpl_type'] = 'word';
 				if($insertArray['printertpl_content']){
-					$printertplid = $printertplobj->addPrintertpl($insertArray);
+					$insertArray['printertpl_num'] = $i;
+					$insertArray['printertpl_printer'] = $id;
+					$insertArray['printertpl_type'] = 'word';
+					if(count($tplArray)){
+						$insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
+						$printertplid = $printertplobj->updatePrintertpl($insertArray);
+					}else{
+						$printertplid = $printertplobj->addPrintertpl($insertArray);
+					}
 				}
 			}
 		}
