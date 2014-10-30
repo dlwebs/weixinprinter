@@ -111,6 +111,7 @@ CREATE TABLE `wxp_printertpl` (
   `printertpl_id` int(11) NOT NULL auto_increment,
   `printertpl_content` varchar(500) NOT NULL COMMENT '设备内容，video和image时是视频和图片的地址，word时是广告文本',
   `printertpl_type` enum('video','image','word') NOT NULL COMMENT '设备内容类型，video是视频，image是图片，word是广告词',
+  `printertpl_num` tinyint (4) unsigned NOT NULL COMMENT '内容位置',
   `printertpl_printer` int(11) unsigned NOT NULL COMMENT '设备ID，关联printer表printer_id字段',
   PRIMARY KEY (`printertpl_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='设备内容表';
