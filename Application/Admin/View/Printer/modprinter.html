@@ -118,6 +118,12 @@
 				</div>
 				</foreach>
 			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">模板详细设置</label>
+				<div class="col-sm-8" id="show_temp_detail_div" name="show_temp_detail_div">
+					
+				</div>
+			</div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <button type="button" class="btn btn-default" id="addbtn">修改</button>
@@ -128,6 +134,12 @@
 </div>
 <script type="text/javascript">
 $(function () {
+	var video_type;
+	initHtml({$printerinfo.printer_template}, {$printerinfo.printer_id});
+	$("input[name=printer_template]").click(function(){
+		var printer_template = $("input[name=printer_template]:checked").val();
+		initHtml(printer_template, {$printerinfo.printer_id});
+	});
     $("#addbtn").click(function () {
         var printer_name = $("#printer_name").val();
 		var printer_code = $("#printer_code").val();
@@ -156,4 +168,179 @@ $(function () {
         $("#printerform").submit();
     });
 });
+function initHtml(printer_template, printer_id){
+	$.get("__MODULE__/Printer/gettemplatenum/",{ templateid: printer_template,printer_id: printer_id} ,function(result,status){
+		var data = $.parseJSON(result);
+		var i = 0;
+		var returnHtml = "";
+		var result = new Array();
+		result = data['tplObj'];
+		$("div[name=show_temp_detail_div]").html('');
+		if(result == ""){
+			for(i = 1; i <= data["template_video"]; i ++){
+				returnHtml += "<div class=\"form-group\">";
+				returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">视频"+i+":</label>";
+				returnHtml += "		<div class=\"col-sm-8\">";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"file\" checked> 本地";
+				returnHtml += "			</label>";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"text\"> 远程";
+				returnHtml += "			</label>";
+				returnHtml += "			<input type=\"file\" id=\"video"+i+"_file\" name=\"video"+i+"_file\">";
+				returnHtml += "			<input type=\"text\" id=\"video"+i+"_text\" name=\"video"+i+"_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
+				returnHtml += "		</div>";
+				returnHtml += "	</div>";
+			}
+			for(i = 1; i <= data["template_image"]; i ++){
+				returnHtml += "<div class=\"form-group\">";
+				returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">图片"+i+":</label>";
+				returnHtml += "		<div class=\"col-sm-8\">";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"file\" checked> 本地";
+				returnHtml += "			</label>";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\"> 远程";
+				returnHtml += "			</label>";
+				returnHtml += "			<input type=\"file\" id=\"image"+i+"_file\" name=\"image"+i+"_file\">";
+				returnHtml += "			<input type=\"text\" id=\"image"+i+"_text\" name=\"image"+i+"_text\" value=\"\" class=\"form-control\" style=\"display:none\">";
+				returnHtml += "		</div>";
+				returnHtml += "	</div>";
+			}
+		}else{
+			for(i = 1; i <= data["template_video"]; i ++){
+				var videoSult = data['tplObj']["image"+i];
+				returnHtml += "<div class=\"form-group\">";
+				returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">视频"+i+":</label>";
+				returnHtml += "		<div class=\"col-sm-8\">";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				if(videoSult != "" && videoSult != null){
+					if(videoSult.substring(0, 4) != "http"){
+						returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"file\" checked> 本地";
+					}else{
+						returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"file\"> 本地";
+					}
+				}else{
+					returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"file\" checked> 本地";
+				}
+				returnHtml += "			</label>";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				if(videoSult != "" && videoSult != null){
+					if(videoSult.substring(0, 4) == "http"){
+						returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"text\" checked> 远程";
+					}else{
+						returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"text\"> 远程";
+					}
+				}else{
+					returnHtml += "				<input type=\"radio\" name=\"video"+i+"\" value=\"text\"> 远程";
+				}
+				returnHtml += "			</label>";
+				if(videoSult != "" && videoSult != null){
+					if(videoSult.substring(0, 4) != "http"){
+						returnHtml += "				<input type=\"file\" id=\"video"+i+"_file\" name=\"video"+i+"_file\">";
+					}else{
+						returnHtml += "				<input type=\"file\" id=\"video"+i+"_file\" name=\"video"+i+"_file\" style=\"display:none\">";
+					}
+				}else{
+					returnHtml += "				<input type=\"file\" id=\"video"+i+"_file\" name=\"video"+i+"_file\">";
+				}
+				if(videoSult != "" && videoSult != null){
+					if(videoSult.substring(0, 4) == "http"){
+						returnHtml += "				<input type=\"text\" id=\"video"+i+"_text\" name=\"video"+i+"_text\" value=\""+videoSult+"\" class=\"form-control\">";
+					}else{
+						returnHtml += "				<input type=\"text\" id=\"video"+i+"_text\" name=\"video"+i+"_text\" class=\"form-control\" style=\"display:none\">";
+					}
+				}else{
+					returnHtml += "				<input type=\"text\" id=\"video"+i+"_text\" name=\"video"+i+"_file\" class=\"form-control\" style=\"display:none\">";
+				}
+				returnHtml += "		</div>";
+				returnHtml += "	</div>";
+			}
+			for(i = 1; i <= data["template_image"]; i ++){
+				var imageSult = data['tplObj']["image"+i];
+				returnHtml += "<div class=\"form-group\">";
+				returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">图片"+i+":</label>";
+				returnHtml += "		<div class=\"col-sm-8\">";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				if(imageSult != "" && imageSult != null){
+					if(imageSult.substring(0, 4) != "http"){
+						returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"file\" checked> 本地";
+					}else{
+						returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"file\"> 本地";
+					}
+				}else{
+					returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"file\" checked> 本地";
+				}
+				returnHtml += "			</label>";
+				returnHtml += "			<label class=\"checkbox-inline\">";
+				if(imageSult != "" && imageSult != null){
+					if(imageSult == "http"){
+						returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\" checked> 远程";
+					}else{
+						returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\"> 远程";
+					}
+				}else{
+					returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\"> 远程";
+				}
+				returnHtml += "			</label>";
+				if(imageSult != "" && imageSult != null){
+					if(imageSult.substring(0, 4) != "http"){
+						returnHtml += "				<input type=\"file\" id=\"image"+i+"_file\" name=\"image"+i+"_file\">";
+						if(imageSult){
+							returnHtml += "<img src=\"/upload/"+imageSult+"\" width=\"100\" height=\"50\">";
+						}
+					}else{
+						returnHtml += "				<input type=\"file\" id=\"image"+i+"_file\" name=\"image"+i+"_file\" style=\"display:none\">";
+					}
+				}else{
+					returnHtml += "				<input type=\"file\" id=\"image"+i+"_file\" name=\"image"+i+"_file\">";
+				}
+				if(imageSult != "" && imageSult != null){
+					if(imageSult.substring(0, 4) == "http"){
+						returnHtml += "				<input type=\"text\" id=\"image"+i+"_text\" name=\"image"+i+"_text\" value=\""+imageSult+"\" class=\"form-control\">";
+					}else{
+						returnHtml += "				<input type=\"text\" id=\"image"+i+"_text\" name=\"image"+i+"_text\" class=\"form-control\" style=\"display:none\">";
+					}
+				}else{
+					returnHtml += "				<input type=\"text\" id=\"image"+i+"_text\" name=\"image"+i+"_file\" class=\"form-control\" style=\"display:none\">";
+				}
+				returnHtml += "		</div>";
+				returnHtml += "	</div>";
+			}
+		}
+		for(i = 1; i <= data["template_word"]; i ++){
+			var adsSult = data['tplObj']["word"+i];
+			returnHtml += "<div class=\"form-group\">";
+			returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">广告词"+i+":</label>";
+			returnHtml += "		<div class=\"col-sm-8\">";
+			if(adsSult != "" && adsSult != null){
+				returnHtml += "			<input type=\"text\" id=\"ads"+i+"_text\" name=\"ads"+i+"_text\" value=\""+adsSult+"\" class=\"form-control\">";
+			}else{
+				returnHtml += "			<input type=\"text\" id=\"ads"+i+"_text\" name=\"ads"+i+"_text\" value=\"\" class=\"form-control\">";
+			}
+			returnHtml += "		</div>";
+			returnHtml += "	</div>";
+		}
+		$("div[name=show_temp_detail_div]").html(returnHtml);
+		for(i = 1; i <= data["template_video"]; i ++){
+			checkSrc("video" + i);
+		}
+		for(i = 1; i <= data["template_image"]; i ++){
+			checkSrc("image" + i);
+		}
+	});
+}
+function checkSrc(radioName){
+	$("input[name="+radioName+"]").click(function(){
+		video_type = $("input[name="+radioName+"]:checked").val();
+		if(video_type == "text"){
+			$("#"+radioName+"_text").css('display','block');
+			$("#"+radioName+"_file").css('display','none');
+		}
+		if(video_type == "file"){
+			$("#"+radioName+"_text").css('display','none');
+			$("#"+radioName+"_file").css('display','block');
+		}
+	});
+}
 </script>
