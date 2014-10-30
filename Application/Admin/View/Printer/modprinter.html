@@ -209,7 +209,7 @@ function initHtml(printer_template, printer_id){
 			}
 		}else{
 			for(i = 1; i <= data["template_video"]; i ++){
-				var videoSult = data['tplObj']["image"+i];
+				var videoSult = data['tplObj']["video"+i];
 				returnHtml += "<div class=\"form-group\">";
 				returnHtml += "	<label for=\"userid\" class=\"col-sm-3 control-label\">视频"+i+":</label>";
 				returnHtml += "		<div class=\"col-sm-8\">";
@@ -274,7 +274,7 @@ function initHtml(printer_template, printer_id){
 				returnHtml += "			</label>";
 				returnHtml += "			<label class=\"checkbox-inline\">";
 				if(imageSult != "" && imageSult != null){
-					if(imageSult == "http"){
+					if(imageSult.substring(0, 4) == "http"){
 						returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\" checked> 远程";
 					}else{
 						returnHtml += "				<input type=\"radio\" name=\"image"+i+"\" value=\"text\"> 远程";
