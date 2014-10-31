@@ -38,6 +38,11 @@ class TemplateController extends BaseController {
             unlink(APP_PATH.'Home/View/Index/'.$tplinfo['template_code'].'.html');
             $printer = D('Printer');
             $printer->updatePrinterTpl($tplinfo['template_id']);
+            $printerlist = $printer->getPrinterByTpl($tplinfo['template_id']);
+            $printertpl = D('Printertpl');
+            foreach ($printerlist as $p) {
+                $printertpl->delPrintertplByPrinterId($p['printer_id']);
+            }
             $this->success('删除模板成功');
         } else {
             $this->error('删除模板失败');

@@ -30,7 +30,7 @@
 <script type="text/javascript">
 $(function () {
     $("a[id^='deltpl_']").click(function () {
-        if (confirm("删除此模板将导致所有使用该模板的设备改成使用默认模板。\n确认要删除此模板吗？")) {
+        if (confirm("删除此模板将导致所有使用该模板的设备改成使用默认模板。\n并且该设备显示的视频与图片也将删除。\n确认要删除此模板吗？")) {
             var id = this.id.split("_");
             location.href = "__MODULE__/deltpl/"+id[1];
         }

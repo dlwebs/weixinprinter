@@ -26,7 +26,11 @@ class UserModel extends BaseModel {
     }
     
     public function getFans($user_token = '') {
-        return $this->where('user_weixin = "'.$user_token.'"')->select();
+        $count = $this->where('user_weixin = "'.$user_token.'"')->count();
+        $page = new \Think\Page($count, 10);
+        $fanslist = $this->where('user_weixin = "'.$user_token.'"')->order('user_regdate')->limit($page->firstRow.','.$page->listRows)->select();
+        $pageinfo = $page->show();
+        return array('data' => $userlist, 'page' => $fanslist);
     }
 
     public function deleteUserById($userid = '') {
@@ -41,6 +45,19 @@ class UserModel extends BaseModel {
             $count = $this->where($where)->count();
             $page = new \Think\Page($count, 10);
             $userlist = $this->where($where)->field('user_pw', true)->order('user_regdate')->limit($page->firstRow.','.$page->listRows)->select();
+            $pageinfo = $page->show();
+            return array('data' => $userlist, 'page' => $pageinfo);
+        }
+    }
+    
+    public function getUserGroupList($where='id != 1', $type = ''){
+        if ($type == 'all') {
+            $userlist = $this->where($where)->join(' wxp_usergroup g on g.uid = wxp_user.user_id')->field('user_pw', true)->order('user_regdate')->select();
+            return $userlist;
+        } else {
+            $count = $this->where($where)->count();
+            $page = new \Think\Page($count, 10);
+            $userlist = $this->where($where)->join(' wxp_usergroup g on g.uid = wxp_user.user_id')->field('user_pw', true)->order('user_regdate')->limit($page->firstRow.','.$page->listRows)->select();
             $pageinfo = $page->show();
             return array('data' => $userlist, 'page' => $pageinfo);
         }

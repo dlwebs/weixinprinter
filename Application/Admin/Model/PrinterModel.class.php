@@ -36,6 +36,10 @@ class PrinterModel extends BaseModel {
     public function getPrinterById($printerid = '') {
         return $this->where('printer_id = "'.$printerid.'"')->find();
     }
+    
+    public function getPrinterByTpl($tplid = '') {
+        return $this->where('printer_template = "'.$tplid.'"')->select();
+    }
 
     public function addPrinter($data = array()) {
         foreach($data as $key=>$value){

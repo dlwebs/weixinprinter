@@ -64,7 +64,7 @@
 <script type="text/javascript">
 $(function () {
     $("a[id^='delprinter_']").click(function () {
-        if (confirm("确认要删除此设备吗？")) {
+        if (confirm("删除此设备将导致该设备显示的视频与图片一起被删除，确认要删除此设备吗？")) {
             var id = this.id.split("_");
             location.href = "__MODULE__/delprinter/"+id[1];
         }

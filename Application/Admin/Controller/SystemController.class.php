@@ -39,7 +39,7 @@ class SystemController extends BaseController {
 			exit;
         }
 		
-		$userdata = $userobj->getUserList();
+		$userdata = $userobj->getUserGroupList("id != 1 and gid>0");
         $this->assign('userlist', $userdata['data']);
 		
         $systeminfo = $systemobj->getSystemInfoByUser($user_id);

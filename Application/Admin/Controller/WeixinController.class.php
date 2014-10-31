@@ -9,11 +9,16 @@ class WeixinController extends BaseController {
         $userobj = D('user');
         $weixin = D('weixin');
         $fans = array();
-        $ownWeixin = $weixin->getOwnWeixinById('', $user_id);
+        if ($group_id == 1) {
+            $ownWeixin = $weixin->getWeixinList('all');
+        } else {
+            $ownWeixin = $weixin->getOwnWeixinById('', $user_id);
+        }
         foreach ($ownWeixin as $key => $wx) {
             $fanslist = $userobj->getFans($wx['weixin_number']);
             $fans[$key] = array('name'=>$wx['weixin_name'],'number'=>$wx['weixin_number'],'token'=>$wx['weixin_token'],'fans'=>$fanslist);
         }
+        $this->assign('wxlist', $ownWeixin);
         $this->assign('fanslist', $fans);
         $this->display();
     }

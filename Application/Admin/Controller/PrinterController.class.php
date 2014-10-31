@@ -153,7 +153,10 @@ class PrinterController extends BaseController {
         $printerobj = D('printer');
 		$printertplobj = D('printertpl');
 		$updatePrintArray = array();
+		
         if (isset($post['id']) && $post['id']) {
+			//get old info
+			$poldinfo = $printerobj->getPrinterByCode($post['printer_id']);
             if (!trim($post['printer_name'])) {
                 $this->error("打印机名称不能为空");
             }
@@ -205,8 +208,10 @@ class PrinterController extends BaseController {
         }
 		//处理模板里的设定
 		if($id){
-			//$printertplobj->delPrintertplByPrinterId($id);
 			$printer_template = $post["printer_template"];
+			if(count($poldinfo) && $poldinfo["printer_template"] != $post["printer_template"]){
+				$printertplobj->delPrintertplByPrinterId($id);
+			}
 			if($printer_template){
 				$templateObj = D('template');
 				$tempInfo = $templateObj->getTemplateById($printer_template);
@@ -215,7 +220,6 @@ class PrinterController extends BaseController {
 				$tempInfo["template_image"] = "5";
 				$tempInfo["template_word"] = "1";
 			}
-			
 			for($i = 1; $i <= $tempInfo["template_video"]; $i ++){
 				$insertArray = array();
 				$tplArray = array();
@@ -240,6 +244,9 @@ class PrinterController extends BaseController {
 					$insertArray['printertpl_printer'] = $id;
 					$insertArray['printertpl_type'] = 'video';
 					if(count($tplArray)){
+						if($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0,4) != "http"){
+							unlink("./upload/".$tplArray[0]["printertpl_content"]);
+						}
 						$insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
 						$printertplid = $printertplobj->updatePrintertpl($insertArray);
 					}else{
@@ -271,6 +278,9 @@ class PrinterController extends BaseController {
 					$insertArray['printertpl_printer'] = $id;
 					$insertArray['printertpl_type'] = 'image';
 					if(count($tplArray)){
+						if($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0,4) != "http"){
+							unlink("./upload/".$tplArray[0]["printertpl_content"]);
+						}
 						$insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
 						$printertplid = $printertplobj->updatePrintertpl($insertArray);
 					}else{
