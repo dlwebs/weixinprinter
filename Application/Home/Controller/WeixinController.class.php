@@ -93,7 +93,7 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $result = $resource->updateResourceCode($post);
         if ($result == 'a') {
-            return '请先上传资源';
+            return '没有上传资源或上传资源正在审核中...';
         } elseif ($result == 'b') {
             return '消费码错误';
         } else {
