@@ -64,6 +64,9 @@
              <li <if condition="$current_c eq 'Printer' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Printer/list">设备列表</a></li>
              <li <if condition="$current_c eq 'Printer' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Printer/add">添加设备</a></li>
              <li <if condition="$current_c eq 'Resource' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Resource/list">已打印列表</a></li>
+			 <if condition="$Think.session.userinfo.group_id eq 1">
+				 <li <if condition="$current_c eq 'Resource' and $current_a eq 'manage'">class="active"</if>><a href="__MODULE__/Resource/manage">资源管理</a></li>
+			  </if>
           </ul>
             
             <if condition="$Think.session.userinfo.group_id eq 1">
