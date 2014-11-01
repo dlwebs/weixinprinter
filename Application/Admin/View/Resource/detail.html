@@ -1,0 +1,96 @@
+<style>
+.form-group{
+	display: inline;
+    float: left;
+    margin-bottom: 15px;
+    width: 100%;
+}
+</style>
+<h2 class="sub-header">资源详情</h2>
+<div class="row placeholders">
+    <div class="col-md-7">
+	 <form class="form-horizontal" role="form" method="post" id="resourceform" action="__MODULE__/Resource/verify" enctype="multipart/form-data">
+      <input type="hidden" name="id" value="{$resourceinfo.resource_id}">
+		<div class="form-group">
+		  <label for="userid" class="col-sm-3 control-label">资源内容</label>
+		  <div class="col-sm-8">
+				<if condition="$resourceinfo.resource_type eq 2"><img src="{$resourceinfo.resource_content}" width="130">
+				<else/>
+					{$resourceinfo.resource_content}
+				</if>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="userid" class="col-sm-3 control-label">资源类型</label>
+		  <div class="col-sm-8">
+			<label class="checkbox-inline">
+			  <if condition="$resourceinfo.resource_type eq 1">视频</if>
+			  <if condition="$resourceinfo.resource_type eq 2">图片</if>
+			</label>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="userid" class="col-sm-3 control-label">资源内容</label>
+		  <div class="col-sm-8">
+			<label class="checkbox-inline">
+				<if condition="$resourceinfo.resource_print eq 1">未打印</if>
+				<if condition="$resourceinfo.resource_print eq 2">打印</if>
+			</label>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="userid" class="col-sm-3 control-label">上传日期</label>
+		  <div class="col-sm-8">
+			<label class="checkbox-inline">
+			{$resourceinfo.resource_date}
+			</label>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="userid" class="col-sm-3 control-label">上传者</label>
+		  <div class="col-sm-8">
+			<label class="checkbox-inline">
+			{$resourceinfo.user_name}
+			</label>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="userid" class="col-sm-3 control-label">公众号</label>
+		  <div class="col-sm-8">
+			<label class="checkbox-inline">
+			{$resourceinfo.weixin_name}
+			</label>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="userid" class="col-sm-3 control-label">消费码</label>
+		  <div class="col-sm-8">
+			<label class="checkbox-inline">
+			{$resourceinfo.resource_printer}
+			</label>
+		  </div>
+		</div>
+		<div class="form-group">
+		  <div class="col-sm-offset-2 col-sm-10">
+			<if condition="$resourceinfo.resource_print eq 1">
+				<if condition="$resourceinfo.resource_status eq 1 or $resourceinfo.resource_status eq 3">
+					<input type="hidden" name="resource_status" value="2" id="resource_status">
+					<button type="button" class="btn btn-default" id="verifybtn">通过审核</button>
+				<else/>
+					<input type="hidden" name="resource_status" value="3" id="resource_status">
+					<button type="button" class="btn btn-default" id="verifybtn">取消审核</button>
+				</if>
+			</if>
+			<button type="button" class="btn btn-default" id="backbtn">返回</button>
+		  </div>
+		</div>
+	 </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function () {
+    $("#verifybtn").click(function () {
+        $("#resourceform").submit();
+    });
+});
+</script>

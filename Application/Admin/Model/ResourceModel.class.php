@@ -18,7 +18,11 @@ class ResourceModel extends BaseModel {
         $resourceInfo = $this->where($data)->find();
         return $resourceInfo;
     }
-
+	public function getDetailById($resourceid) {
+        $data['resource_id'] = $resourceid;
+        $resourceInfo = $this->where($data)->join(' wxp_user u on resource_user=u.user_id')->join(' wxp_weixin w on resource_weixin=w.weixin_number')->find();
+        return $resourceInfo;
+    }
     public function getResourceList($where='1') {
         $page = new \Think\Page($count, 10);
         $grouplist = $this->where($where)->join(' wxp_printer p on left(resource_printer, 3)=p.printer_code')->limit($page->firstRow.','.$page->listRows)->select();
@@ -26,7 +30,7 @@ class ResourceModel extends BaseModel {
         return array('data' => $grouplist, 'page' => $pageinfo);
     }
 
-    public function updatePrinter($data = array()) {
+    public function updateResource($data = array()) {
         foreach($data as $key=>$value){
             if($key != "id"){
                 $insert[$key] = $value;
