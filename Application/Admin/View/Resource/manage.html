@@ -6,7 +6,7 @@
             <th>资源类型</th>
 			<th>公共帐号</th>
 			<th>设备名称</th>
-			<th>上传者</th>
+			<th>资源状态</th>
 			<th>上传日期</th>
             <th>Action</th>
           </tr>
@@ -15,9 +15,9 @@
         <foreach name="resourcelist" item="resource">
           <tr>
             <td class="col-sm-2"><if condition="$resource.resource_type eq 1">视频<else />图片</if></td>
-            <td class="col-sm-2">{$resource.resource_weixin}</td>
+            <td class="col-sm-2">{$resource.weixin_name}</td>
 			<td class="col-sm-2">{$resource.printer_name}</td>
-			<td class="col-sm-2">{$resource.resource_user}</td>
+			<td class="col-sm-2"><if condition="$resource.resource_status eq 1">审核中<elseif condition="$resource.resource_status eq 2"/>通过审核<else/>审核未通过</if></td>
 			<td class="col-sm-2">{$resource.resource_date}</td>
             <td class="col-sm-2">
                 <a href="__MODULE__/detail/{$resource.resource_id}">查看详情</a>

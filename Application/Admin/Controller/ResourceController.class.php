@@ -80,6 +80,8 @@ class ResourceController extends BaseController {
 		$resourceobj = D('resource');
 		$update["resource_id"] = $resource_id;
 		$update["resource_status"] = $resource_status;
+		$update["resource_checker"] = $this->userInfo['user_id'];
+		$update["resource_checkdate"] = date('Y-m-d H:i:s');
 		$resnumber = $resourceobj->updateResource($update);
 		if ($resnumber) {
             $this->success('审核保存成功', 'manage');
