@@ -25,7 +25,7 @@ class ResourceModel extends BaseModel {
     }
     public function getResourceList($where='1') {
         $page = new \Think\Page($count, 10);
-        $grouplist = $this->where($where)->join(' wxp_printer p on left(resource_printer, 3)=p.printer_code')->join(' wxp_weixin w on resource_weixin=w.weixin_number')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->select();
+        $grouplist = $this->join(' left join  wxp_printer p on left(resource_printer, 3)=p.printer_code left join  wxp_weixin w on resource_weixin=w.weixin_number')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
         $pageinfo = $page->show();
         return array('data' => $grouplist, 'page' => $pageinfo);
     }
