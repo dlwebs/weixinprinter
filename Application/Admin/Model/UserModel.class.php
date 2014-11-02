@@ -22,11 +22,10 @@ class UserModel extends BaseModel {
     }
 
     public function getBlackList() {
-        $data['user_follow'] = 'unsubscribe';
-        $data['user_pw'] = '';
-        $count = $this->where($data)->join(' wxp_resource on wxp_resource.resource_user = wxp_user.user_id')->count();
+        $where['user_follow'] = 'user_follow = "unsubscribe" and user_pw = "" and resource_content != ""'; 
+        $count = $this->where($where)->field('distinct(user_id) as user_id, user_weixin,user_regdate')->join(' wxp_resource on wxp_resource.resource_user = wxp_user.user_id')->count();
         $page = new \Think\Page($count, 10);
-        $userlist = $this->where($data)->join(' wxp_resource on wxp_resource.resource_user = wxp_user.user_id')->limit($page->firstRow.','.$page->listRows)->select();
+        $userlist = $this->where($where)->field('distinct(user_id) as user_id, user_weixin,user_regdate')->join(' wxp_resource on wxp_resource.resource_user = wxp_user.user_id')->limit($page->firstRow.','.$page->listRows)->select();
         $pageinfo = $page->show();
         return array('data' => $userlist, 'page' => $fanslist);
     }
