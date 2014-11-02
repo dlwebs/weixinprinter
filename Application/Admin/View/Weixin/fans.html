@@ -39,26 +39,24 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>公众号原始ID</th>
-            <th>公众号名称</th>
-            <th>token</th>
-            <th>AppID</th>
-            <th>AppSecret</th>
-            <th>Action</th>
+            <th>来源公众号</th>
+            <th>关注状态</th>
+            <th>关注日期</th>
+            <th>上传资源数</th>
+            <!-- <th>Action</th> -->
           </tr>
         </thead>
         <tbody>
-        <foreach name="wxlist" item="wx">
+        <foreach name="fanslist" item="fans">
           <tr>
-            <td class="col-sm-2">{$wx.weixin_number}</td>
-            <td class="col-sm-2">{$wx.weixin_name}</td>
-            <td class="col-sm-2">{$wx.weixin_token}</td>
-            <td class="col-sm-2">{$wx.weixin_appid}</td>
-            <td class="col-sm-2">{$wx.weixin_appsecret}</td>
-            <td class="col-sm-2">
-                <a href="__MODULE__/modweixin/{$wx.weixin_id}">编辑</a>
-                <a href="javascript:;" id="delweixin_{$wx.weixin_id}">删除</a>
-            </td>
+            <td class="col-sm-2">{$fans.weixin_name}</td>
+            <td class="col-sm-2"><if condition="$fans.user_follow eq 'subscribe'">已关注<else /> 取消关注</if></td>
+            <td class="col-sm-2">{$fans.user_regdate}</td>
+            <td class="col-sm-2">{$fans.resource_number}</td>
+            <!-- <td class="col-sm-2">
+                <a href="__MODULE__/viewfans/{$fans.user_id}">查看详情</a>
+                <a href="javascript:;" id="delfans_{$fans.user_id}">删除</a>
+            </td> -->
           </tr>
         </foreach>
         </tbody>
@@ -67,10 +65,10 @@
     </div>
 <script type="text/javascript">
 $(function () {
-    $("a[id^='delweixin_']").click(function () {
-        if (confirm("确认要删除此公众号吗？")) {
+    $("a[id^='delfans_']").click(function () {
+        if (confirm("确认要删除此粉丝吗？")) {
             var id = this.id.split("_");
-            location.href = "__MODULE__/delweixin/"+id[1];
+            location.href = "__MODULE__/delfans/"+id[1];
         }
     });
 });

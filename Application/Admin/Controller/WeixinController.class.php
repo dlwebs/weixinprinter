@@ -32,18 +32,6 @@ class WeixinController extends BaseController {
             $userfans['resource_number'] = $resource->countResourceByUserid($userfans['user_id']);
             $fans[] = $userfans;
         }
-        echo '<pre>';
-        print_r($is_follow);
-        echo '</pre>';
-        echo '<pre>';
-        print_r($search_token);
-        echo '</pre>';
-        echo '<pre>';
-        print_r($ownWeixin);
-        echo '</pre>';
-        echo '<pre>';
-        print_r($fans);
-        echo '</pre>';exit;
         $this->assign('is_follow', $is_follow);
         $this->assign('search_token', $search_token);
         $this->assign('wxlist', $ownWeixin);
