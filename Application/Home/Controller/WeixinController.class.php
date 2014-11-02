@@ -103,7 +103,7 @@ class WeixinController extends BaseController {
 
     public function receiveEvent($data) {
         $fromUserName = (string)$data[FromUserName];//用户微信token
-        $toUserName = $this->_token;(string)$data[ToUserName]//微信公众号
+        $toUserName = $this->_token;//(string)$data[ToUserName]微信公众号
         $eventType = (string)$data[Event];//subscribe(订阅)、unsubscribe(取消订阅)
         $userobj = new \Admin\Model\UserModel();
         $insert['user_id'] = $fromUserName;
