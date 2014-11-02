@@ -30,6 +30,10 @@ function getPage($url = '', $method = 'get', $data = array()) {
     }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HEADER, 0);
+    if (substr($url, 0, 5) == "https"){
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    }
     $output = curl_exec($ch);
     curl_close($ch);
     return $output;
