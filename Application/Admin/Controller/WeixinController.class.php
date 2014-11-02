@@ -4,22 +4,51 @@ namespace Admin\Controller;
 class WeixinController extends BaseController {
     
     public function fansAction() {
+        $is_follow = $_GET['is_follow'];
+        $search_token = $_GET['search_token'];
+
         $group_id = $this->userInfo['group_id'];
         $user_id = $this->userInfo['user_id'];
         $userobj = D('user');
         $weixin = D('weixin');
+        $resource = D('resource');
         $fans = array();
         if ($group_id == 1) {
             $ownWeixin = $weixin->getWeixinList('all');
+            $ownWeixin = $ownWeixin['data'];
+            $fansList = $userobj->getUserList('user_pw = ""');
         } else {
             $ownWeixin = $weixin->getOwnWeixinById('', $user_id);
+            $weixin_number = array();
+            foreach ($ownWeixin as $wx) {
+                $weixin_number[] = $wx['weixin_number'];
+            }
+            $user_weixin = implode('","', $weixin_number);
+            $fansList = $userobj->getUserList('user_weixin in ("'.$user_weixin.'")');
         }
-        foreach ($ownWeixin as $key => $wx) {
-            $fanslist = $userobj->getFans($wx['weixin_number']);
-            $fans[$key] = array('name'=>$wx['weixin_name'],'number'=>$wx['weixin_number'],'token'=>$wx['weixin_token'],'fans'=>$fanslist);
+        foreach ($fansList['data'] as $userfans) {
+            $wxinfo = $weixin->getWeixinByToken($userfans['user_weixin']);
+            $userfans['weixin_name'] = $wxinfo['weixin_name'];
+            $userfans['resource_number'] = $resource->countResourceByUserid($userfans['user_id']);
+            $fans[] = $userfans;
         }
+        echo '<pre>';
+        print_r($is_follow);
+        echo '</pre>';
+        echo '<pre>';
+        print_r($search_token);
+        echo '</pre>';
+        echo '<pre>';
+        print_r($ownWeixin);
+        echo '</pre>';
+        echo '<pre>';
+        print_r($fans);
+        echo '</pre>';exit;
+        $this->assign('is_follow', $is_follow);
+        $this->assign('search_token', $search_token);
         $this->assign('wxlist', $ownWeixin);
         $this->assign('fanslist', $fans);
+        $this->assign('page', $fansList['page']);
         $this->display();
     }
 

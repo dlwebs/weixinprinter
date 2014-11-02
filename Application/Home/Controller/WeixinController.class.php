@@ -71,7 +71,7 @@ class WeixinController extends BaseController {
 
 
     public function receiveImage($data){
-        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>(string)$data['ToUserName'], 'picUrl'=>(string)$data['PicUrl'], 'mediaId'=>(string)$data['MediaId']);
+        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'picUrl'=>(string)$data['PicUrl'], 'mediaId'=>(string)$data['MediaId']);
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         if ($resourceid) {
@@ -82,14 +82,14 @@ class WeixinController extends BaseController {
     }
 
     public function receiveVideo($data){
-        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>(string)$data['ToUserName'], 'mediaId'=>(string)$data['MediaId'], 'thumbMediaId'=>(string)$data['ThumbMediaId']);
+        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'mediaId'=>(string)$data['MediaId'], 'thumbMediaId'=>(string)$data['ThumbMediaId']);
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post, 1);
         return '视频已收到';
     }
 
     public function receiveText($data){
-        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>(string)$data['ToUserName'], 'content'=>(string)$data['Content']);
+        $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'content'=>(string)$data['Content']);
         $resource = new \Admin\Model\ResourceModel();
         $result = $resource->updateResourceCode($post);
         if ($result == 'a') {
@@ -103,7 +103,7 @@ class WeixinController extends BaseController {
 
     public function receiveEvent($data) {
         $fromUserName = (string)$data[FromUserName];//用户微信token
-        $toUserName = (string)$data[ToUserName];//微信公众号
+        $toUserName = $this->_token;(string)$data[ToUserName]//微信公众号
         $eventType = (string)$data[Event];//subscribe(订阅)、unsubscribe(取消订阅)
         $userobj = new \Admin\Model\UserModel();
         $insert['user_id'] = $fromUserName;

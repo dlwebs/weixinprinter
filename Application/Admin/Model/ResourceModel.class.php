@@ -18,11 +18,13 @@ class ResourceModel extends BaseModel {
         $resourceInfo = $this->where($data)->find();
         return $resourceInfo;
     }
-	public function getDetailById($resourceid) {
+
+    public function getDetailById($resourceid) {
         $data['resource_id'] = $resourceid;
         $resourceInfo = $this->where($data)->join(' wxp_user u on resource_user=u.user_id')->join(' wxp_weixin w on resource_weixin=w.weixin_number')->find();
         return $resourceInfo;
     }
+
     public function getResourceList($where='1') {
         $page = new \Think\Page($count, 10);
         $grouplist = $this->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_number')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
@@ -52,6 +54,8 @@ class ResourceModel extends BaseModel {
         $data['resource_status'] = 1;
         $data['resource_print'] = 1;
         $data['resource_date'] = date('Y-m-d H:i:s');
+        $data['resource_checker'] = '';
+        $data['resource_checkdate'] = '';
 
         $where = array('resource_print'=>1, 'resource_weixin'=>$post['toUserName'], 'resource_user'=>$post['fromUserName'], 'resource_printer'=>'');
         $hasprint = $this->where($where)->find();
@@ -89,5 +93,9 @@ class ResourceModel extends BaseModel {
 
     public function deleteResourceByWx($resource_weixin = '') {
         return $this->where('resource_weixin = "'.$resource_weixin.'"')->delete();
+    }
+
+    public function countResourceByUserid($userid) {
+        return $this->where('resource_user = "'.$userid.'"')->count();
     }
 }
