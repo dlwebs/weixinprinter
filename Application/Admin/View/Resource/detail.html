@@ -16,7 +16,19 @@
 		  <div class="col-sm-8">
 				<if condition="$resourceinfo.resource_type eq 2"><img src="{$resourceinfo.resource_content}" width="130">
 				<else/>
-					{$resourceinfo.resource_content}
+					<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" 
+						codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" height="120" width="190"> 
+						<param name="movie" 
+						value="http://www.jb51.net/player/vcastr22.swf?vcastr_file={$resourceinfo.resource_content}"> 
+						<param name="quality" value="high"> 
+						<param name="allowFullScreen" value="true" /> 
+						<embed 
+						src="http://www.jb51.net/player/vcastr22.swf?vcastr_file={$resourceinfo.resource_content}" 
+						quality="high" 
+						pluginspage="http://www.macromedia.com/go/getflashplayer" 
+						type="application/x-shockwave-flash" width="320" height="240"> 
+						</embed> 
+					</object>
 				</if>
 		  </div>
 		</div>

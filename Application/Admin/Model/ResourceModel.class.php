@@ -21,10 +21,35 @@ class ResourceModel extends BaseModel {
 
     public function getDetailById($resourceid) {
         $data['resource_id'] = $resourceid;
-        $resourceInfo = $this->where($data)->join(' wxp_user u on resource_user=u.user_id')->join(' wxp_weixin w on resource_weixin=w.weixin_number')->find();
+        $resourceInfo = $this->where($data)->join(' left join wxp_user u on resource_user=u.user_id left join wxp_weixin w on resource_weixin=w.weixin_number')->find();
+        if($resourceInfo['resource_type'] == '1'){
+            $weixin_appsecret = $resourceInfo["weixin_appsecret"];
+            $weixin_appid = $resourceInfo["weixin_appid"];
+            $curl_url = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$weixin_appid."&secret=".$weixin_appsecret);
+            $output = getPage($curl_url);
+            $jsoninfo = json_decode($output, true);
+            $access_token = $jsoninfo["access_token"];
+            $resource_url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=".$access_token."&media_id=".$resourceInfo['resource_mediaid'];
+            $output = getPage($resource_url);
+            echo $output;
+            exit;
+            $resourceInfo['resource_content'] = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=".$access_token."&media_id=".$resourceInfo['resource_mediaid'];
+            print_r($resourceInfo);
+            $access_token = ""; //下载图片 
+            $mediaid = "QQ9nj-7ctrqA8t3WKU3dQN24IuFV_516MfZRZNnQ0c-BFVkk66jUkPXF49QE9L1l"; 
+            $url = "$access_token&media_id=$mediaid"; 
+            $fileInfo = downloadWeixinFile($url); 
+            $filename = "down_image.jpg"; 
+            saveWeixinFile($filename, $fileInfo["body"]); 
+        }
         return $resourceInfo;
     }
-
+    public function json_decode_nice($json, $assoc = FALSE){ 
+        $json = str_replace(array("\n","\r"),"",$json); 
+        $json = preg_replace('/([{,]+)(\s*)([^"]+?)\s*:/','$1"$3":',$json);
+        $json = preg_replace('/(,)\s*}$/','}',$json);
+        return json_decode($json,$assoc); 
+    }
     public function getResourceList($where='1') {
         $page = new \Think\Page($count, 10);
         $grouplist = $this->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_number')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
