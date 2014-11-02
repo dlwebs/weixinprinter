@@ -16,7 +16,14 @@ class WeixinController extends BaseController {
         if ($group_id == 1) {
             $ownWeixin = $weixin->getWeixinList('all');
             $ownWeixin = $ownWeixin['data'];
-            $fansList = $userobj->getUserList('user_pw = ""');
+            $where = 'user_pw = ""';
+            if ($is_follow) {
+                $where .= ' and user_follow = "'.$is_follow.'"';
+            }
+            if ($search_token) {
+                $where .= ' and user_weixin = "'.$search_token.'"';
+            }
+            $fansList = $userobj->getUserList($where);
         } else {
             $ownWeixin = $weixin->getOwnWeixinById('', $user_id);
             $weixin_number = array();
