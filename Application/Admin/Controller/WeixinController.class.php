@@ -2,7 +2,7 @@
 namespace Admin\Controller;
 
 class WeixinController extends BaseController {
-    
+
     public function fansAction() {
         $is_follow = $_GET['is_follow'];
         $search_token = $_GET['search_token'];
@@ -43,6 +43,25 @@ class WeixinController extends BaseController {
         $this->assign('search_token', $search_token);
         $this->assign('wxlist', $ownWeixin);
         $this->assign('fanslist', $fans);
+        $this->assign('page', $fansList['page']);
+        $this->display();
+    }
+
+    public function blacklistAction() {
+        $group_id = $this->userInfo['group_id'];
+        $user_id = $this->userInfo['user_id'];
+        $userobj = D('user');
+        $weixin = D('weixin');
+        $resource = D('resource');
+        $blacklist = array();
+        $fansList = $userobj->getBlackList();
+        foreach ($fansList['data'] as $userfans) {
+            $wxinfo = $weixin->getWeixinByToken($userfans['user_weixin']);
+            $userfans['weixin_name'] = $wxinfo['weixin_name'];
+            $userfans['resource_number'] = $resource->countResourceByUserid($userfans['user_id']);
+            $blacklist[] = $userfans;
+        }
+        $this->assign('blacklist', $blacklist);
         $this->assign('page', $fansList['page']);
         $this->display();
     }

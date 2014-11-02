@@ -1,0 +1,37 @@
+<h2 class="sub-header">黑名单列表</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>来源公众号</th>
+            <th>关注日期</th>
+            <th>上传资源数</th>
+            <!-- <th>Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+        <foreach name="blacklist" item="fans">
+          <tr>
+            <td class="col-sm-2">{$fans.weixin_name}</td>
+            <td class="col-sm-2">{$fans.user_regdate}</td>
+            <td class="col-sm-2">{$fans.resource_number}</td>
+            <!-- <td class="col-sm-2">
+                <a href="__MODULE__/viewfans/{$fans.user_id}">查看详情</a>
+                <a href="javascript:;" id="delfans_{$fans.user_id}">删除</a>
+            </td> -->
+          </tr>
+        </foreach>
+        </tbody>
+      </table>
+      {$page}
+    </div>
+<script type="text/javascript">
+$(function () {
+    $("a[id^='delfans_']").click(function () {
+        if (confirm("确认要删除此粉丝吗？")) {
+            var id = this.id.split("_");
+            location.href = "__MODULE__/delfans/"+id[1];
+        }
+    });
+});
+</script>
