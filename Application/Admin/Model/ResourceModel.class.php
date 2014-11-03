@@ -21,7 +21,8 @@ class ResourceModel extends BaseModel {
 
     public function getDetailById($resourceid) {
         $data['resource_id'] = $resourceid;
-        $resourceInfo = $this->where($data)->join(' left join wxp_user u on resource_user=u.user_id left join wxp_weixin w on resource_weixin=w.weixin_number')->find();
+        $resourceInfo = $this->where($data)->join(' left join wxp_user u on resource_user=u.user_id left join wxp_weixin w on resource_weixin=w.weixin_token')->find();
+        /**
         if($resourceInfo['resource_type'] == '1'){
             $weixin_appsecret = $resourceInfo["weixin_appsecret"];
             $weixin_appid = $resourceInfo["weixin_appid"];
@@ -40,17 +41,12 @@ class ResourceModel extends BaseModel {
             $filename = "down_image.jpg"; 
             saveWeixinFile($filename, $fileInfo["body"]); 
         }
+        */
         return $resourceInfo;
-    }
-    public function json_decode_nice($json, $assoc = FALSE){ 
-        $json = str_replace(array("\n","\r"),"",$json); 
-        $json = preg_replace('/([{,]+)(\s*)([^"]+?)\s*:/','$1"$3":',$json);
-        $json = preg_replace('/(,)\s*}$/','}',$json);
-        return json_decode($json,$assoc); 
     }
     public function getResourceList($where='1') {
         $page = new \Think\Page($count, 10);
-        $grouplist = $this->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_number')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
+        $grouplist = $this->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_token')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
         $pageinfo = $page->show();
         return array('data' => $grouplist, 'page' => $pageinfo);
     }

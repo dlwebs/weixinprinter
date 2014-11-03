@@ -84,13 +84,15 @@
 		</div>
 		<div class="form-group">
 		  <div class="col-sm-offset-2 col-sm-10">
+			<input type="hidden" name="resource_status" value="" id="resource_status">
 			<if condition="$resourceinfo.resource_print eq 1">
-				<if condition="$resourceinfo.resource_status eq 1 or $resourceinfo.resource_status eq 3">
-					<input type="hidden" name="resource_status" value="2" id="resource_status">
-					<button type="button" class="btn btn-default" id="verifybtn">通过审核</button>
+				<if condition="$resourceinfo.resource_status eq 1">
+					<button type="button" class="btn btn-default" value="2" id="verifybtn">通过审核</button>
+					<button type="button" class="btn btn-default" value="3" id="cancelbtn">取消审核</button>
+				<elseif condition ="$resourceinfo.resource_status eq 2"/>
+					<button type="button" class="btn btn-default" value="3" id="cancelbtn">取消审核</button>
 				<else/>
-					<input type="hidden" name="resource_status" value="3" id="resource_status">
-					<button type="button" class="btn btn-default" id="verifybtn">取消审核</button>
+					<button type="button" class="btn btn-default" value="2" id="verifybtn">通过审核</button>
 				</if>
 			</if>
 			<button type="button" class="btn btn-default" id="backbtn">返回</button>
@@ -102,6 +104,11 @@
 <script type="text/javascript">
 $(function () {
     $("#verifybtn").click(function () {
+		$("#resource_status").attr("value","2");
+        $("#resourceform").submit();
+    });
+	$("#cancelbtn").click(function () {
+		$("#resource_status").attr("value","3");
         $("#resourceform").submit();
     });
 	$("#backbtn").click(function () {
