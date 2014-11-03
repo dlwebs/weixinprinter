@@ -31,8 +31,6 @@ class ResourceModel extends BaseModel {
             $access_token = $jsoninfo["access_token"];
             $resource_url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=".$access_token."&media_id=".$resourceInfo['resource_mediaid'];
             $output = getPage($resource_url);
-            echo $output;
-            exit;
             $resourceInfo['resource_content'] = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=".$access_token."&media_id=".$resourceInfo['resource_mediaid'];
             print_r($resourceInfo);
             $access_token = ""; //下载图片 
