@@ -29,19 +29,9 @@ class IndexController extends BaseController {
             foreach ($printer_content as $value) {
                 if ($value['printertpl_type'] == 'video') {
                     $video[] = $value['printertpl_content'];
-                    $this->assign('video'.$value['printertpl_num'], '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" 
-                                                                                                                        codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" height="120" width="190"> 
-                                                                                                                        <param name="movie" 
-                                                                                                                        value="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'"> 
-                                                                                                                        <param name="quality" value="high"> 
-                                                                                                                        <param name="allowFullScreen" value="true" /> 
-                                                                                                                        <embed 
-                                                                                                                        src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" 
-                                                                                                                        quality="high" 
-                                                                                                                        pluginspage="http://www.macromedia.com/go/getflashplayer" 
-                                                                                                                        type="application/x-shockwave-flash" width="320" height="240"> 
-                                                                                                                        </embed> 
-                                                                                                                    </object>');
+                    $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="640" height="450" data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
+                                                  <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="video/x-flv"></video>';
+                    $this->assign('video'.$value['printertpl_num'], $object_str);
                 } elseif ($value['printertpl_type'] == 'image') {
                     $image[] = $value['printertpl_content'];
                     $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" width="100%" height="100%">');
