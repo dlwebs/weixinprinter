@@ -152,6 +152,7 @@ CREATE TABLE `wxp_template` (
   `template_id` tinyint (4) NOT NULL auto_increment,
   `template_name` varchar(50) NOT NULL COMMENT '模板显示名称',
   `template_code` varchar(20) NOT NULL COMMENT '模板代码，模板显示名称的拼音',
+  `template_content` text NOT NULL COMMENT '模板内容',
   `template_pic` varchar(50) NOT NULL COMMENT '模板缩略图',
   `template_image` tinyint (4) unsigned NOT NULL COMMENT '模板拥有图片个数',
   `template_video` tinyint (4) unsigned NOT NULL COMMENT '模板拥有视频个数',
