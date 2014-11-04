@@ -154,6 +154,48 @@ class PrinterController extends BaseController {
 		$printertplobj = D('printertpl');
 		$updatePrintArray = array();
 		
+        $printer_template = $post["printer_template"];
+        if(count($poldinfo) && $poldinfo["printer_template"] != $post["printer_template"]){
+            $printertplobj->delPrintertplByPrinterId($id);
+        }
+        if($printer_template){
+            $templateObj = D('template');
+            $tempInfo = $templateObj->getTemplateById($printer_template);
+        }else{
+            $tempInfo["template_video"] = "1";
+            $tempInfo["template_image"] = "5";
+            $tempInfo["template_word"] = "1";
+        }
+        for($i = 1; $i <= $tempInfo["template_video"]; $i ++){
+            if($post["video".$i] == "file"){
+                if ($_FILES['video'.$i.'_file']['name']) {
+                    $upload = new \Think\Upload();
+                    $upload->maxSize = 10485760;//3M
+                    $upload->exts = array('flv', 'avi', 'rmvb', 'mp4');
+                    $upload->rootPath = './upload/';
+                    $uploadinfo = $upload->uploadOne($_FILES['video'.$i.'_file']);
+                    if(!$uploadinfo) {
+                        $this->error($upload->getError());
+                    }
+                    $upload_file['video'.$i.'_file'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+                }
+            }
+        }
+        for($i = 1; $i <= $tempInfo["template_image"]; $i ++){
+            if($post["image".$i] == "file"){
+                if ($_FILES['image'.$i.'_file']['name']) {
+                    $upload = new \Think\Upload();
+                    $upload->maxSize = 3145728;//3M
+                    $upload->exts = array('jpg', 'gif', 'png', 'jpeg');
+                    $upload->rootPath = './upload/';
+                    $uploadinfo = $upload->uploadOne($_FILES['image'.$i.'_file']);
+                    if(!$uploadinfo) {
+                        $this->error($upload->getError());
+                    }
+                    $upload_file['video'.$i.'_file'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+                }
+            }
+        }
         if (isset($post['id']) && $post['id']) {
 			//get old info
 			$poldinfo = $printerobj->getPrinterByCode($post['printer_id']);
@@ -226,15 +268,7 @@ class PrinterController extends BaseController {
 				$tplArray = $printertplobj->getPrintertplByCondition("printertpl_type='video' and printertpl_num=".$i." and printertpl_printer=".$id);
 				if($post["video".$i] == "file"){
 					if ($_FILES['video'.$i.'_file']['name']) {
-						$upload = new \Think\Upload();
-						$upload->maxSize = 3145728;//3M
-						$upload->exts = array('jpg', 'gif', 'png', 'jpeg');
-						$upload->rootPath = './upload/';
-						$uploadinfo = $upload->uploadOne($_FILES['video'.$i.'_file']);
-						if(!$uploadinfo) {
-							$this->error($upload->getError());
-						}
-						$insertArray['printertpl_content'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+						$insertArray['printertpl_content'] = $upload_file['video'.$i.'_file'];
 					}
 				}elseif($post["video".$i] == "text"){
 					$insertArray['printertpl_content'] = $post["video".$i."_text"];
@@ -260,15 +294,7 @@ class PrinterController extends BaseController {
 				$tplArray = $printertplobj->getPrintertplByCondition("printertpl_type='image' and printertpl_num=".$i." and printertpl_printer=".$id);
 				if($post["image".$i] == "file"){
 					if ($_FILES['image'.$i.'_file']['name']) {
-						$upload = new \Think\Upload();
-						$upload->maxSize = 3145728;//3M
-						$upload->exts = array('jpg', 'gif', 'png', 'jpeg');
-						$upload->rootPath = './upload/';
-						$uploadinfo = $upload->uploadOne($_FILES['image'.$i.'_file']);
-						if(!$uploadinfo) {
-							$this->error($upload->getError());
-						}
-						$insertArray['printertpl_content'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+						$insertArray['printertpl_content'] = $upload_file['video'.$i.'_file'];
 					}
 				}elseif($post["image".$i] == "text"){
 					$insertArray['printertpl_content'] = $post["image".$i."_text"];
