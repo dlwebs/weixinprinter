@@ -171,7 +171,7 @@ class PrinterController extends BaseController {
                 if ($_FILES['video'.$i.'_file']['name']) {
                     $upload = new \Think\Upload();
                     $upload->maxSize = 10485760;//3M
-                    $upload->exts = array('flv', 'avi', 'rmvb', 'mp4');
+                    $upload->exts = array('flv', 'avi', 'rmvb', 'mp4', 'swf');
                     $upload->rootPath = './upload/';
                     $uploadinfo = $upload->uploadOne($_FILES['video'.$i.'_file']);
                     if(!$uploadinfo) {
