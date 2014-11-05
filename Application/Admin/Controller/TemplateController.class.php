@@ -50,6 +50,7 @@ class TemplateController extends BaseController {
     }
 
     public function saveAction() {
+        $tpl_content = $_POST['template_content'];
         $post = filterAllParam('post');
         $template = D('Template');
         $isHaveCode = $template->getTemplateByCode($post['template_code']);
@@ -57,7 +58,7 @@ class TemplateController extends BaseController {
             $this->error('模板代码重复');
         }
         if(!preg_match ("/^[A-Za-z0-9_]+$/", $post['template_code'])){
-            $this->error("模板代码只能是数字、字母和下划线");
+            $this->error("模板文件名称只能是数字、字母和下划线");
         }
         $isdelimage = $post['deltemplate_pic'];
         if ($isdelimage) {
@@ -86,10 +87,16 @@ class TemplateController extends BaseController {
                 $id = '';
             }
         } else {
+            $post['template_content'] = $tpl_content;
+            $post['template_video'] = substr_count($tpl_content, '{$video');
+            $post['template_image'] = substr_count($tpl_content, '{$image');
+            $post['template_word'] = substr_count($tpl_content, '{$word');
             $id = $template->addTemplate($post);
             if ($id) {
                 $tplFile = APP_PATH.'Home/View/Index/'.$post['template_code'].'.html';
-                file_put_contents($tplFile, '请编辑Home/View/Index/'.$post['template_code'].'.html文件');
+                touch($tplFile);
+                chmod($tplFile, 0777);
+                file_put_contents($tplFile, $tpl_content);
             }
         }
         if ($id) {

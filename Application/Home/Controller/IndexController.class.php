@@ -29,18 +29,26 @@ class IndexController extends BaseController {
             foreach ($printer_content as $value) {
                 if ($value['printertpl_type'] == 'video') {
                     $video[] = $value['printertpl_content'];
-                    $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="640" height="450" data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
+                    if (strpos($value['printertpl_content'], 'http://') === false) {
+                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="640" height="450" data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
                                                   <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="video/x-flv"></video>';
+                    } else {
+                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="640" height="450" data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
+                                                  <source src="'.$value['printertpl_content'].'" type="video/x-flv"></video>';
+                    }
                     $this->assign('video'.$value['printertpl_num'], $object_str);
                 } elseif ($value['printertpl_type'] == 'image') {
                     $image[] = $value['printertpl_content'];
-                    $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" width="100%" height="100%">');
+                    if (strpos($value['printertpl_content'], 'http://') === false) {
+                        $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" width="100%" height="100%">');
+                    } else {
+                        $this->assign('image'.$value['printertpl_num'], '<img src="'.$value['printertpl_content'].'" width="100%" height="100%">');
+                    }
                 } else {
                     $word[] = $value['printertpl_content'];
                     $this->assign('word'.$value['printertpl_num'], $value['printertpl_content']);
                 }
             }
-
             $this->assign('printer', $printerInfo);
             $this->assign('imgcode', '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" width="100%" height="100%">');
             $this->assign('code', $code);

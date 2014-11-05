@@ -9,12 +9,12 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="weixin_number" class="col-sm-3 control-label">模板代码</label>
+              <label for="weixin_number" class="col-sm-3 control-label">模板文件名称</label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" id="template_code" name="template_code" value="" required>
               </div>
             </div>
-            <div class="form-group">
+<!--            <div class="form-group">
               <label for="weixin_number" class="col-sm-3 control-label">图片个数</label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" id="template_image" name="template_image" value="">
@@ -30,6 +30,20 @@
               <label for="weixin_number" class="col-sm-3 control-label">广告个数</label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" id="template_word" name="template_word" value="">
+              </div>
+            </div>-->
+            <div class="form-group">
+              <label for="weixin_number" class="col-sm-3 control-label">模板内容</label>
+              <div class="col-sm-9">
+                  <textarea class="form-control" rows="10" id="template_content" name="template_content"></textarea>
+                  <literal>
+                      视频代码{$video1}{$video2}......<br>
+                      图片代码{$image1}{$image2}......<br>
+                      广告代码{$word1}{$word2}......<br>
+                      打印机名称代码{$printer.printer_name}<br>
+                      消费吗代码{$code}<br>
+                      公众号二维码代码{$imgcode}<br>
+                  </literal>
               </div>
             </div>
             <div class="form-group">
@@ -57,12 +71,12 @@ $(function () {
             return false;
         }
         if (!template_code) {
-            alert("请选择模板代码");
+            alert("请填写模板文件名称");
             return false;
         }
         var reg= /^[A-Za-z0-9_]+$/;
         if (!reg.test(template_code)) {
-            alert("模板代码只能是数字、字母和下划线");
+            alert("模板文件名称只能是数字、字母和下划线");
             return false;
         } 
         if (!template_pic) {
