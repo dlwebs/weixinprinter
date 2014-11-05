@@ -66,6 +66,7 @@ $(function () {
         var template_name = $("#template_name").val();
         var template_code = $("#template_code").val();
         var template_pic = $("#template_pic").val();
+        var template_content = $("#template_content").val();
         if (!template_name) {
             alert("请填写模板显示名称");
             return false;
@@ -79,6 +80,10 @@ $(function () {
             alert("模板文件名称只能是数字、字母和下划线");
             return false;
         } 
+        if (!template_content) {
+            alert("请填写模板内容");
+            return false;
+        }
         if (!template_pic) {
             alert("请选择模板缩略图");
             return false;
