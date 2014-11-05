@@ -2,6 +2,26 @@
 namespace Admin\Controller;
 
 class PrinterController extends BaseController {
+    
+    public function codeAction() {
+        $printcode = new \Home\Model\PrintcodeModel();
+        $codelist = $printcode->getList();
+        $code = array();
+        $printerobj = D('printer');
+        $wxobj = D('weixin');
+        foreach ($codelist['data'] as $value) {
+            $pcode = substr($value['p_code_number'], 0, 3);
+            $printer = $printerobj->getPrinterByCode($pcode);
+            $weixin = $wxobj->getWeixinByToken($printer['printer_weixin']);
+            $value['printer_name'] = $printer['printer_name'];
+            $value['printer_type'] = $printer['printer_type'];
+            $value['weixin_name'] = $weixin['weixin_name'];
+            $code[] = $value;
+        }
+        $this->assign('codelist', $code);
+        $this->assign('page', $codelist['page']);
+        $this->display();
+    }
 
     public function listAction(){
         $printerobj = D('printer');

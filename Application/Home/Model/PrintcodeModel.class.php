@@ -2,6 +2,20 @@
 namespace Home\Model;
 
 class PrintcodeModel extends BaseModel {
+    
+    public function getList($show) {
+        $orderby = 'p_status asc, printcode_id desc';
+        if ($show == 'all') {
+            $codelist = $this->order($orderby)->select();
+            $pageinfo = array();
+        } else {
+            $count = $this->count();
+            $page = new \Think\Page($count, 10);
+            $codelist = $this->order($orderby)->limit($page->firstRow.','.$page->listRows)->select();
+            $pageinfo = $page->show();
+        }
+        return array('data' => $codelist, 'page' => $pageinfo);
+    }
 
     public function getCode($code) {
         $where['p_code_number'] = array('like', $code.'%');

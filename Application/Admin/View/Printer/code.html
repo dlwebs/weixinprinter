@@ -1,0 +1,38 @@
+<h2 class="sub-header">预售码列表</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>预售码</th>
+            <th>预售码状态</th>
+            <th>打印机</th>
+            <th>公众号</th>
+            <th>打印机类型</th>
+          </tr>
+        </thead>
+        <tbody>
+        <foreach name="codelist" item="code">
+          <tr>
+            <td class="col-sm-2">{$code.p_code_number}</td>
+            <td class="col-sm-2"><if condition="$code.p_status eq 0">未使用<else />已使用</if></td>
+            <td class="col-sm-2">{$code.printer_name}</td>
+            <td class="col-sm-2">{$code.weixin_name}</td>
+            <td class="col-sm-2">
+                <if condition="$code.printer_type eq 1">横屏<else />竖屏</if>
+            </td>
+          </tr>
+        </foreach>
+        </tbody>
+      </table>
+      {$page}
+    </div>
+<script type="text/javascript">
+$(function () {
+    $("a[id^='delprinter_']").click(function () {
+        if (confirm("删除此设备将导致该设备显示的视频与图片一起被删除，确认要删除此设备吗？")) {
+            var id = this.id.split("_");
+            location.href = "__MODULE__/delprinter/"+id[1];
+        }
+    });
+});
+</script>
