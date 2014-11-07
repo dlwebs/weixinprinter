@@ -134,13 +134,14 @@ CREATE TABLE `wxp_weixin` (
   `weixin_id` smallint(6) NOT NULL auto_increment,
   `weixin_number` varchar(50) NOT NULL COMMENT '公众号原始id',
   `weixin_name` varchar(50) NOT NULL COMMENT '公众号名称',
-  `weixin_callbackurl` varchar(200) NOT NULL COMMENT '回调地址',
+  `weixin_callbackurl` varchar(200) NOT NULL COMMENT 'api调用地址',
   `weixin_token` varchar(50) NOT NULL COMMENT 'token',
   `weixin_imgcode` varchar(50) NOT NULL COMMENT '公众号帐号二维码',
   `weixin_appid` varchar(50) NOT NULL COMMENT 'appid',
   `weixin_appsecret` varchar(50) NOT NULL COMMENT 'appsecret',
   `weixin_userid` varchar(50) NOT NULL COMMENT '用户ID，关联wxp_user表user_id字段',
   `weixin_regdate` datetime NOT NULL COMMENT '公众号添加时间',
+  `weixin_dispatchurl` varchar(200) NOT NULL DEFAULT '' COMMENT '第三方转发地址',
   PRIMARY KEY (`weixin_id`),
   UNIQUE KEY weixin_token (weixin_token)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='公众号表';
