@@ -109,6 +109,10 @@ class ResourceModel extends BaseModel {
     public function updateResourceContent($rid, $rescontent) {
         return $this->where('resource_id="'.$rid.'"')->setField('resource_content', $rescontent);
     }
+    
+    public function updateResourcePrintStatus($rid, $printstatus) {
+        return $this->where('resource_id="'.$rid.'"')->setField('resource_print', $printstatus);
+    }
 
     public function deleteResourceByWx($resource_weixin = '') {
         return $this->where('resource_weixin = "'.$resource_weixin.'"')->delete();
@@ -116,5 +120,12 @@ class ResourceModel extends BaseModel {
 
     public function countResourceByUserid($userid) {
         return $this->where('resource_user = "'.$userid.'"')->count();
+    }
+    
+    public function getResourceByPrinter($code) {
+        $where['resource_printer'] = array('like', $code.'%');
+        $where['resource_status'] = '2';
+        $where['resource_print'] = '1';
+        return $this->where($where)->order('resource_date desc')->limit(1)->find();
     }
 }
