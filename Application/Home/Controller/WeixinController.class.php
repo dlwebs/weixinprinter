@@ -93,6 +93,9 @@ class WeixinController extends BaseController {
 
     public function receiveImage($data){
         $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'picUrl'=>(string)$data['PicUrl'], 'mediaId'=>(string)$data['MediaId']);
+        if (!_checkfree($post)) {
+            return '您的免费打印次数已用完';
+        }
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post);
         if ($resourceid) {
@@ -104,6 +107,9 @@ class WeixinController extends BaseController {
 
     public function receiveVideo($data){
         $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'mediaId'=>(string)$data['MediaId'], 'thumbMediaId'=>(string)$data['ThumbMediaId']);
+        if (!_checkfree($post)) {
+            return '您的免费打印次数已用完';
+        }
         $resource = new \Admin\Model\ResourceModel();
         $resourceid = $resource->insertResource($post, 1);
         return '视频已收到';
@@ -111,6 +117,9 @@ class WeixinController extends BaseController {
 
     public function receiveText($data){
         $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'content'=>(string)$data['Content']);
+        if (!_checkfree($post)) {
+            return '您的免费打印次数已用完';
+        }
         $resource = new \Admin\Model\ResourceModel();
         $result = $resource->updateResourceCode($post);
         if ($result == 'a') {
@@ -123,9 +132,9 @@ class WeixinController extends BaseController {
     }
 
     public function receiveEvent($data) {
-        $fromUserName = (string)$data[FromUserName];//用户微信token
+        $fromUserName = (string)$data['FromUserName'];//用户微信token
         $toUserName = $this->_token;//(string)$data[ToUserName]微信公众号
-        $eventType = (string)$data[Event];//subscribe(订阅)、unsubscribe(取消订阅)
+        $eventType = (string)$data['Event'];//subscribe(订阅)、unsubscribe(取消订阅)
         $userobj = new \Admin\Model\UserModel();
         $insert['user_id'] = $fromUserName;
         $insert['user_follow'] = $eventType;
@@ -139,6 +148,18 @@ class WeixinController extends BaseController {
             $userobj->add($insert);
         }
         return '关注成功';
+    }
+
+    private function _checkfree($data) {
+        $weixin = new \Admin\Model\WeixinModel();
+        $resource = new \Admin\Model\ResourceModel();
+        $wxinfo = $weixin->getWeixinByToken($this->_token);
+        $userResourceCount = $resource->countResourceByUserid($data['FromUserName']);
+        if ($userResourceCount >= $wxinfo['resource_printer']) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function getcodeAction() {
