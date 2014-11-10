@@ -56,13 +56,13 @@ class SystemController extends BaseController {
 			$this->error('您没有此操作权限');
 		}
 		$edu_id = I('post.edu_id');
-		$condition = " id != 1 ";
+		$condition = " id != 1  and gid > 0";
         if($edu_id){
             $condition = $condition." and user_id like '%".$edu_id."%'";
             $this->assign('edu_id', $edu_id);
         }
-
-		$userdata = $userobj->getUserList($condition);
+        $userdata = $userobj->getUserGroupList($condition);
+		//$userdata = $userobj->getUserList($condition);
         $this->assign('userlist', $userdata['data']);
 
 		$this->display();
