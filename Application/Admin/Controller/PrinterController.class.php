@@ -190,8 +190,8 @@ class PrinterController extends BaseController {
             if($post["video".$i] == "file"){
                 if ($_FILES['video'.$i.'_file']['name']) {
                     $upload = new \Think\Upload();
-                    $upload->maxSize = 10485760;//3M
-                    $upload->exts = array('flv', 'avi', 'rmvb', 'mp4', 'mp3', 'swf');
+                    $upload->maxSize = 104857600000;//3M
+                    $upload->exts = array('flv', 'avi', 'rmvb', 'mp4', 'swf');
                     $upload->rootPath = './upload/';
                     $uploadinfo = $upload->uploadOne($_FILES['video'.$i.'_file']);
                     if(!$uploadinfo) {
@@ -201,7 +201,7 @@ class PrinterController extends BaseController {
                     $fileName = $array[0];
                     $suffix = $array[1];
                     if($suffix != "flv"){
-                        exec("F:/f_kuaipan/wxprint/weixinprinter/Public/ffmpeg/bin/ffmpeg -i ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$uploadinfo['savename']." -ab 56 -ar 11025 -b 200 -r 15 -f flv ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$fileName.".flv");
+                        exec("F:/f_kuaipan/wxprint/weixinprinter/Public/ffmpeg/bin/ffmpeg -i ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$uploadinfo['savename']." -ab 128 -ar 22050 -b:v 1700k -r 15 -s 640x480 -f flv ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$fileName.".flv");
                     }
                     $upload_file['video'.$i.'_file'] = $uploadinfo['savepath'].$fileName.".flv";
                 }
