@@ -6,6 +6,7 @@ $common_config = include APP_PATH.'Common/Conf/config.php';
 $private_config = array(
                         'LAYOUT_ON' => true,
                         'URL_ROUTER_ON' => true,
+                        'FFMPEG_DIR' => 'F:/f_kuaipan/wxprint/weixinprinter/Public/ffmpeg/bin/',
                         'URL_CASE_INSENSITIVE' =>true,
                         'URL_ROUTE_RULES' => array(
                                                   'moduser/:userid' => 'User/moduser',

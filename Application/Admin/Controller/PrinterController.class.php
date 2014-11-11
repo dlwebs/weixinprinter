@@ -200,8 +200,8 @@ class PrinterController extends BaseController {
                     $array = explode(".", $uploadinfo['savename']);
                     $fileName = $array[0];
                     $suffix = $array[1];
-                    if($suffix != "flv"){
-                        exec("F:/f_kuaipan/wxprint/weixinprinter/Public/ffmpeg/bin/ffmpeg -i ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$uploadinfo['savename']." -ab 128 -ar 22050 -b:v 1700k -r 15 -s 640x480 -f flv ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$fileName.".flv");
+                    if($suffix != "flv" || $suffix != "swf"){
+                        exec(C('FFMPEG_DIR')."ffmpeg -i ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$uploadinfo['savename']." -ab 128 -ar 22050 -b:v 1700k -r 15 -s 640x480 -f flv ".$_SERVER['DOCUMENT_ROOT']."/upload/".$uploadinfo['savepath'].$fileName.".flv");
                     }
                     $upload_file['video'.$i.'_file'] = $uploadinfo['savepath'].$fileName.".flv";
                 }
