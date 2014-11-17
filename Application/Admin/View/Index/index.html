@@ -1,1 +1,137 @@
 <h2 class="sub-header">欢迎来到后台管理页面</h2>
+<div class=" row">
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="6 new members.">
+            <i class="glyphicon glyphicon-user blue"></i>
+
+            <div>已开通商户</div>
+            <div>120</div>
+            <span class="notification">6</span>
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="4 new pro members.">
+            <i class="glyphicon glyphicon-star green"></i>
+
+            <div>已打印纸张</div>
+            <div>228</div>
+            <span class="notification green">4</span>
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="$34 new sales.">
+            <i class="glyphicon glyphicon-facetime-video yellow"></i>
+
+            <div>已上传资源</div>
+            <div>13320</div>
+            <span class="notification yellow">$34</span>
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-3 col-xs-6">
+        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="12 new messages.">
+            <i class="glyphicon glyphicon-envelope red"></i>
+
+            <div>消息提示</div>
+            <div>25</div>
+            <span class="notification red">12</span>
+        </a>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well">
+                <h2><i class="glyphicon glyphicon-list-alt"></i> 一周打印机使用统计</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="flotchart" class="center" style="height:300px"></div>
+            </div>
+        </div>
+    </div>
+    <div class="box col-md-4">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-list-alt"></i> 商户开通打印机数量</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="piechart" style="height:300px"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="box col-md-4">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-list-alt"></i> 实时打印趋势</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="realtimechart" style="height:190px;"></div>
+                <p>你可以在此监控服务器压力情况</p>
+
+                <p>更新周期: <input id="updateInterval" type="text" value=""
+                                                style="text-align: right; width:5em"> 秒</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="box col-md-4">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-list-alt"></i> 使用情况</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="donutchart" style="height: 300px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--/row-->
+
+<script src="/bower_components/flot/excanvas.min.js"></script>
+<script src="/bower_components/flot/jquery.flot.js"></script>
+<script src="/bower_components/flot/jquery.flot.pie.js"></script>
+<script src="/bower_components/flot/jquery.flot.stack.js"></script>
+<script src="/bower_components/flot/jquery.flot.resize.js"></script>
+<!-- chart libraries end -->
+<script src="/js/init-chart.js"></script>

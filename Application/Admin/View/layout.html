@@ -1,88 +1,214 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>聚优客微信打印机平台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>微信打印机</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/dashboard.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+
+    <!-- The styles -->
+    <link id="bs-css" href="/css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="/css/charisma-app.css" rel="stylesheet">
+    <link href='/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='/css/jquery.noty.css' rel='stylesheet'>
+    <link href='/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='/css/elfinder.min.css' rel='stylesheet'>
+    <link href='/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='/css/uploadify.css' rel='stylesheet'>
+    <link href='/css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="/bower_components/jquery/jquery.min.js"></script>
+
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="/js/html5shiv.js"></script>
-      <script src="/js/respond.min.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/docs.min.js"></script>
-  </head>
-  <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="__MODULE__/Index">欢迎来到后台管理页面</a>
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+</head>
+
+<body>
+<!-- topbar starts -->
+<div class="navbar navbar-default" role="navigation">
+
+    <div class="navbar-inner">
+        <button type="button" class="navbar-toggle pull-left animated flip">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html"> <img alt="Charisma Logo" src="/img/logo20.png" class="hidden-xs"/>
+            <span>聚优客微信打印机</span></a>
+
+        <!-- user dropdown starts -->
+        <div class="btn-group pull-right">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> admin</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+
+                <li><a href="__MODULE__/Index/logout">Logout</a></li>
+            </ul>
         </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="__MODULE__/Index/logout">注销</a></li>
-          </ul>
+        <!-- user dropdown ends -->
+
+        <!-- theme selector starts -->
+
+        <!-- theme selector ends -->
+
+
+    </div>
+</div>
+<!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked">
+
+                    </div>
+                    <ul class="nav nav-pills nav-stacked main-menu">
+                        <li class="nav-header">系统设置</li>
+                        <li <if condition="$current_c eq 'System' and $current_a eq 'setting'">class="active"</if>><a   href="__MODULE__/System/setting"><i class="glyphicon glyphicon-eye-open"></i><span>系统设置</span></a></li>
+
+                        <li class="nav-header  ">权限设置</li>
+                        <li <if condition="$current_c eq 'Group' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Group/list"><i class="glyphicon glyphicon-tasks"></i><span>组列表</span></a></li>
+                        <li <if condition="$current_c eq 'Group' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Group/add"><i class="glyphicon glyphicon-plus"></i><span>添加组</span></a></li>
+                        <li <if condition="$current_c eq 'Auth' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Auth/list"><i class="glyphicon glyphicon-eye-close"></i><span>权限列表</span></a></li>
+                        <li <if condition="$current_c eq 'User' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/User/list"><i class="glyphicon glyphicon-user"></i><span>用户列表</span></a></li>
+                        <li <if condition="$current_c eq 'User' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/User/add"><i class="glyphicon glyphicon-plus"></i><span>添加用户</span></a></li>
+                        <li <if condition="$current_c eq 'Weixin' and $current_a eq 'blacklist'">class="active"</if>><a href="__MODULE__/Weixin/blacklist"><i class="glyphicon glyphicon-eye-open"></i><span>黑名单列表</span></a></li>
+                        <li <if condition="$current_c eq 'Printer' and $current_a eq 'code'">class="active"</if>><a href="__MODULE__/Printer/code"><i class="glyphicon glyphicon-hd-video"></i><span>预售码生成</span></a></li>
+
+                        <li class="nav-header ">公众号设置</li>
+                        <li <if condition="$current_c eq 'Weixin' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Weixin/list"><i class="glyphicon glyphicon-tasks"></i><span>公众号列表</span></a></li>
+                        <li <if condition="$current_c eq 'Weixin' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Weixin/add"><i class="glyphicon glyphicon-plus"></i><span>添加公众号</span></a></li>
+                        <li <if condition="$current_c eq 'Weixin' and $current_a eq 'fans'">class="active"</if>><a href="__MODULE__/Weixin/fans"><i class="glyphicon glyphicon-heart"></i><span>粉丝列表</span></a></li>
+
+                        <li class="nav-header ">设备管理</li>
+                        <li <if condition="$current_c eq 'Printer' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Printer/list"><i class="glyphicon glyphicon-tasks"></i><span>设备列表</span></a></li>
+                        <li <if condition="$current_c eq 'Printer' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Printer/add"><i class="glyphicon glyphicon-plus"></i><span>添加设备</span></a></li>
+                        <li <if condition="$current_c eq 'Resource' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Resource/list"><i class="glyphicon glyphicon-print"></i><span>已打印列表</span></a></li>
+                        <if condition="$Think.session.userinfo.group_id eq 1">
+                            <li <if condition="$current_c eq 'Resource' and $current_a eq 'manage'">class="active"</if>><a href="__MODULE__/Resource/manage"><i class="glyphicon glyphicon-facetime-video"></i><span>资源管理</span></a></li>
+                        </if>
+
+                        <li class="nav-header ">模板管理</li>
+                        <if condition="$Think.session.userinfo.group_id eq 1">
+
+                                <li <if condition="$current_c eq 'Template' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Template/list"><i class="glyphicon glyphicon-qrcode"></i><span>广告机列表</span></a></li>
+                                <li <if condition="$current_c eq 'Template' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Template/add"><i class="glyphicon glyphicon-plus"></i><span>添加广告模板</span></a></li>
+
+                        </if>
+                    </ul>
+                    <label id="for-is-ajax" > </label>
+                </div>
+            </div>
         </div>
-      </div>
+        <!--/span-->
+        <!-- left menu ends -->
+
+        <noscript>
+            <div class="alert alert-block col-md-12">
+                <h4 class="alert-heading">Warning!</h4>
+
+                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
+                    enabled to use this site.</p>
+            </div>
+        </noscript>
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            {__CONTENT__}
+        </div>
+        <!--/#content.col-md-0-->
+    </div>
+    <!--/fluid-row-->
+
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Settings</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Here settings can be configured...</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a href="#" class="btn btn-primary" data-dismiss="modal">Save changes</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-		  <if condition="$Think.session.userinfo.group_id eq 1">
-		  <ul class="nav nav-sidebar">
-             <li <if condition="$current_c eq 'System' and $current_a eq 'setting'">class="active"</if>><a href="__MODULE__/System/list">系统设置</a></li>
-          </ul>
-		  <else />
-          <ul class="nav nav-sidebar">
-             <li <if condition="$current_c eq 'System' and $current_a eq 'setting'">class="active"</if>><a href="__MODULE__/System/setting">系统设置</a></li>
-          </ul>
-          </if>
-          <if condition="$Think.session.userinfo.group_id eq 1">
-          <ul class="nav nav-sidebar">
-             <li <if condition="$current_c eq 'Group' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Group/list">组列表</a></li>
-             <li <if condition="$current_c eq 'Group' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Group/add">添加组</a></li>
-             <li <if condition="$current_c eq 'Auth' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Auth/list">权限列表</a></li>
-             <li <if condition="$current_c eq 'User' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/User/list">用户列表</a></li>
-             <li <if condition="$current_c eq 'User' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/User/add">添加用户</a></li>
-             <li <if condition="$current_c eq 'Weixin' and $current_a eq 'blacklist'">class="active"</if>><a href="__MODULE__/Weixin/blacklist">黑名单列表</a></li>
-             <li <if condition="$current_c eq 'Printer' and $current_a eq 'code'">class="active"</if>><a href="__MODULE__/Printer/code">预售码生成</a></li>
-          </ul>
-          </if>
+    <footer class="row">
+        <p class="col-md-9 col-sm-9 col-xs-12 copyright">&copy; <a href="http://www.dlwebs.com" target="_blank">聚优客微信打印机平台</a> 2012 - 2014</p>
 
-          <ul class="nav nav-sidebar">
-              <li <if condition="$current_c eq 'Weixin' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Weixin/list">公众号列表</a></li>
-             <li <if condition="$current_c eq 'Weixin' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Weixin/add">添加公众号</a></li>
-              <li <if condition="$current_c eq 'Weixin' and $current_a eq 'fans'">class="active"</if>><a href="__MODULE__/Weixin/fans">粉丝列表</a></li>
-          </ul>
+        <p class="col-md-3 col-sm-3 col-xs-12 powered-by">Powered by: <a
+                href="http://www.dlwebs.com">大连智万</a></p>
+    </footer>
 
-          <ul class="nav nav-sidebar">
-             <li <if condition="$current_c eq 'Printer' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Printer/list">设备列表</a></li>
-             <li <if condition="$current_c eq 'Printer' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Printer/add">添加设备</a></li>
-             <li <if condition="$current_c eq 'Resource' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Resource/list">已打印列表</a></li>
-			 <if condition="$Think.session.userinfo.group_id eq 1">
-				 <li <if condition="$current_c eq 'Resource' and $current_a eq 'manage'">class="active"</if>><a href="__MODULE__/Resource/manage">资源管理</a></li>
-			  </if>
-          </ul>
-            
-            <if condition="$Think.session.userinfo.group_id eq 1">
-          <ul class="nav nav-sidebar">
-             <li <if condition="$current_c eq 'Template' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Template/list">广告机列表</a></li>
-             <li <if condition="$current_c eq 'Template' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Template/add">添加广告模板</a></li>
-          </ul>
-          </if>
+</div>
+<!--/.fluid-container-->
 
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          {__CONTENT__}
-        </div>
-      </div>
-    </div>
-  </body>
+<!-- external javascript -->
+
+<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- library for cookie management -->
+<script src="/js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='/bower_components/moment/min/moment.min.js'></script>
+<script src='/bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='/js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="/bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="/bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="/js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="/bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="/js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="/js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="/js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="/js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="/js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<!--<script src="/js/charisma.js"></script>-->
+
+
+</body>
 </html>
