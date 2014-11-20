@@ -86,8 +86,14 @@
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                         <li class="nav-header">系统设置</li>
+                        <if condition="$Think.session.userinfo.group_id eq 1">
+                        <li <if condition="$current_c eq 'Index' and $current_a eq 'index'">class="active"</if>><a   href="__MODULE__/"><i class="glyphicon glyphicon-eye-open"></i><span>系统概述</span></a></li>
+                        <li <if condition="$current_c eq 'System' and $current_a eq 'list'">class="active"</if>><a   href="__MODULE__/System/list"><i class="glyphicon glyphicon-eye-open"></i><span>系统设置</span></a></li>
+                        <else />
                         <li <if condition="$current_c eq 'System' and $current_a eq 'setting'">class="active"</if>><a   href="__MODULE__/System/setting"><i class="glyphicon glyphicon-eye-open"></i><span>系统设置</span></a></li>
+                        </if>
 
+                        <if condition="$Think.session.userinfo.group_id eq 1">
                         <li class="nav-header  ">权限设置</li>
                         <li <if condition="$current_c eq 'Group' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Group/list"><i class="glyphicon glyphicon-tasks"></i><span>组列表</span></a></li>
                         <li <if condition="$current_c eq 'Group' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Group/add"><i class="glyphicon glyphicon-plus"></i><span>添加组</span></a></li>
@@ -96,7 +102,8 @@
                         <li <if condition="$current_c eq 'User' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/User/add"><i class="glyphicon glyphicon-plus"></i><span>添加用户</span></a></li>
                         <li <if condition="$current_c eq 'Weixin' and $current_a eq 'blacklist'">class="active"</if>><a href="__MODULE__/Weixin/blacklist"><i class="glyphicon glyphicon-eye-open"></i><span>黑名单列表</span></a></li>
                         <li <if condition="$current_c eq 'Printer' and $current_a eq 'code'">class="active"</if>><a href="__MODULE__/Printer/code"><i class="glyphicon glyphicon-hd-video"></i><span>预售码生成</span></a></li>
-
+                        </if>
+                        
                         <li class="nav-header ">公众号设置</li>
                         <li <if condition="$current_c eq 'Weixin' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Weixin/list"><i class="glyphicon glyphicon-tasks"></i><span>公众号列表</span></a></li>
                         <li <if condition="$current_c eq 'Weixin' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Weixin/add"><i class="glyphicon glyphicon-plus"></i><span>添加公众号</span></a></li>
@@ -110,12 +117,10 @@
                             <li <if condition="$current_c eq 'Resource' and $current_a eq 'manage'">class="active"</if>><a href="__MODULE__/Resource/manage"><i class="glyphicon glyphicon-facetime-video"></i><span>资源管理</span></a></li>
                         </if>
 
-                        <li class="nav-header ">模板管理</li>
                         <if condition="$Think.session.userinfo.group_id eq 1">
-
-                                <li <if condition="$current_c eq 'Template' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Template/list"><i class="glyphicon glyphicon-qrcode"></i><span>广告机列表</span></a></li>
-                                <li <if condition="$current_c eq 'Template' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Template/add"><i class="glyphicon glyphicon-plus"></i><span>添加广告模板</span></a></li>
-
+                        <li class="nav-header ">模板管理</li>
+                        <li <if condition="$current_c eq 'Template' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Template/list"><i class="glyphicon glyphicon-qrcode"></i><span>广告机列表</span></a></li>
+                        <li <if condition="$current_c eq 'Template' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Template/add"><i class="glyphicon glyphicon-plus"></i><span>添加广告模板</span></a></li>
                         </if>
                     </ul>
                     <label id="for-is-ajax" > </label>

@@ -92,4 +92,14 @@ class UserModel extends BaseModel {
         $insert['user_status'] = $data['user_status'];
         return $this->where('id="'.$data['id'].'"')->save($insert);
     }
+    
+    public function getShopUser($getcount = 1) {
+        $where = 'user_pw != "" and user_weixin = "" and id != 1';
+        if ($getcount) {
+            return $this->where($where)->count();
+        } else {
+            $userlist = $this->where($where)->field('user_pw', true)->order('user_regdate')->select();
+            return $userlist;
+        }
+    }
 }

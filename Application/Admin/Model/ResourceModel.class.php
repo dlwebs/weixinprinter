@@ -128,4 +128,20 @@ class ResourceModel extends BaseModel {
         $where['resource_print'] = '1';
         return $this->where($where)->order('resource_date desc')->limit(1)->find();
     }
+    
+    public function countResourcePrinted($weixin = array()) {
+        if (count($weixin)) {
+            $where['resource_weixin'] = array('in', $weixin);
+        }
+        $where['resource_print'] = '2';
+        return $this->where($where)->count();
+    }
+    
+    public function countTotalResource($weixin = array()) {
+        $where = array();
+        if (count($weixin)) {
+            $where['resource_weixin'] = array('in', $weixin);
+        }
+        return $this->where($where)->count();
+    }
 }

@@ -1,21 +1,23 @@
 <h2 class="sub-header">欢迎来到后台管理页面</h2>
 <div class=" row">
+    <if condition="$Think.session.userinfo.group_id eq 1">
     <div class="col-md-3 col-sm-3 col-xs-6">
         <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="6 new members.">
             <i class="glyphicon glyphicon-user blue"></i>
 
             <div>已开通商户</div>
-            <div>120</div>
+            <div>{$user_number}</div>
             <span class="notification">6</span>
         </a>
     </div>
+    </if>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
         <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="4 new pro members.">
             <i class="glyphicon glyphicon-star green"></i>
 
             <div>已打印纸张</div>
-            <div>228</div>
+            <div>{$printed_number}</div>
             <span class="notification green">4</span>
         </a>
     </div>
@@ -25,7 +27,7 @@
             <i class="glyphicon glyphicon-facetime-video yellow"></i>
 
             <div>已上传资源</div>
-            <div>13320</div>
+            <div>{$res_number}</div>
             <span class="notification yellow">$34</span>
         </a>
     </div>
@@ -128,10 +130,88 @@
     </div>
 </div><!--/row-->
 
-<script src="/bower_components/flot/excanvas.min.js"></script>
+ <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+ <script type="text/javascript">
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        require(
+            ['echarts', 'echarts/chart/line'],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('flotchart')); 
+                
+                var option = {
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            boundaryGap : false,
+                            data : ['周一','周二','周三','周四','周五','周六','周日']
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'邮件营销',
+                            type:'line',
+                            stack: '总量',
+                            data:[120, 132, 101, 134, 90, 230, 210]
+                        },
+                        {
+                            name:'联盟广告',
+                            type:'line',
+                            stack: '总量',
+                            data:[220, 182, 191, 234, 290, 330, 310]
+                        },
+                        {
+                            name:'视频广告',
+                            type:'line',
+                            stack: '总量',
+                            data:[150, 232, 201, 154, 190, 330, 410]
+                        },
+                        {
+                            name:'直接访问',
+                            type:'line',
+                            stack: '总量',
+                            data:[320, 332, 301, 334, 390, 330, 320]
+                        },
+                        {
+                            name:'搜索引擎',
+                            type:'line',
+                            stack: '总量',
+                            data:[820, 932, 901, 934, 1290, 1330, 1320]
+                        }
+                    ]
+                };
+        
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+    </script>
+<!--<script src="/bower_components/flot/excanvas.min.js"></script>
 <script src="/bower_components/flot/jquery.flot.js"></script>
 <script src="/bower_components/flot/jquery.flot.pie.js"></script>
 <script src="/bower_components/flot/jquery.flot.stack.js"></script>
 <script src="/bower_components/flot/jquery.flot.resize.js"></script>
-<!-- chart libraries end -->
-<script src="/js/init-chart.js"></script>
+ chart libraries end 
+<script src="/js/init-chart.js"></script>-->
