@@ -68,7 +68,7 @@
                 <select class="form-control" name="weixin_userid" id="weixin_userid">
                   <option value="">请选择用户</option>
                 <foreach name="userlist" item="user">
-                    <option value="{$user.user_id}"<eq name="$user['user_id']" value="$wxinfo['weixin_userid']"> selected</eq>>{$user.user_name}</option>
+                    <option value="{$user.user_id}"<if condition="$user['user_id'] eq $wxinfo['weixin_userid']"> selected</if>>{$user.user_name}</option>
                 </foreach>
                 </select>
               </div>
