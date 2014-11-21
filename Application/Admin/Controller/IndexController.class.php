@@ -68,6 +68,7 @@ class IndexController extends BaseController {
             $own_weixin = array();
             $ownWx = $wxobj->getOwnWeixinById('', $user_id);
             $weixin_name = array();
+            $totalfans_num = 0;
             foreach ($ownWx as $value) {
                 $own_weixin[] = $value['weixin_token'];
                 
@@ -76,11 +77,13 @@ class IndexController extends BaseController {
                 $shopuserPrinterNum[] = '{value:'.$printer_num.', name:"'.$value['weixin_name'].'"}';
                 $fans_num = $userobj->countFans($value['weixin_token']);
                 $shopuserFansNum[] = '{value:'.$fans_num.', name:"'.$value['weixin_name'].'"}';
+                $totalfans_num = $totalfans_num + $fans_num;
             }
             $printedNumber = $resourceobj->countResourcePrinted($own_weixin);
             $this->assign('printed_number', $printedNumber);
             $resourceNumber = $resourceobj->countTotalResource($own_weixin);
             $this->assign('res_number', $resourceNumber);
+            $this->assign('totalfans_number', $totalfans_num);
             
             
             $this->assign('flotchart_title', '一周打印机使用统计');
