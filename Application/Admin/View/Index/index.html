@@ -59,7 +59,7 @@
     <div class="box col-md-4">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-list-alt"></i> 商户开通打印机数量</h2>
+                <h2><i class="glyphicon glyphicon-list-alt"></i> {$piechart_title}</h2>
 
                 <div class="box-icon">
                     <a href="#" class="btn btn-setting btn-round btn-default"><i
@@ -165,8 +165,48 @@
                         {$flotchart_data}
                     ]
                 };
-        
-                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+
+        require(
+            ['echarts', 'echarts/chart/pie'],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('piechart')); 
+                
+                var option = {
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x : 'left',
+                        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:'访问来源',
+                            type:'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data:[
+                                {value:335, name:'直接访问'},
+                                {value:310, name:'邮件营销'},
+                                {value:234, name:'联盟广告'},
+                                {value:135, name:'视频广告'},
+                                {value:1548, name:'搜索引擎'}
+                            ]
+                        }
+                    ]
+                };
                 myChart.setOption(option); 
             }
         );

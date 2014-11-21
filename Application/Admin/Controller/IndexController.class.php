@@ -24,6 +24,7 @@ class IndexController extends BaseController {
             $resourceNumber = $resourceobj->countTotalResource();
             $this->assign('res_number', $resourceNumber);
             
+            
             $this->assign('flotchart_title', '一周商户打印统计');
             $shopuserName = array();
             $shopuserPrint = array();
@@ -45,6 +46,9 @@ class IndexController extends BaseController {
             }
             $this->assign('flotchart_name', implode('","', $shopuserName));
             $this->assign('flotchart_data', implode(',', $shopuserPrint));
+            
+            
+            $this->assign('piechart_title', '商户开通打印机数量');
         } else {
             $own_weixin = array();
             $ownWx = $wxobj->getOwnWeixinById('', $user_id);
@@ -55,6 +59,7 @@ class IndexController extends BaseController {
             $this->assign('printed_number', $printedNumber);
             $resourceNumber = $resourceobj->countTotalResource($own_weixin);
             $this->assign('res_number', $resourceNumber);
+            
             
             $this->assign('flotchart_title', '一周打印机使用统计');
             $printerdata = $printerobj->getPrinterList('all', array('printer_weixin'=>array('in', $own_weixin)));
@@ -73,6 +78,9 @@ class IndexController extends BaseController {
             }
             $this->assign('flotchart_name', implode('","', $shopuserName));
             $this->assign('flotchart_data', implode(',', $shopuserPrint));
+            
+            
+            $this->assign('piechart_title', '公众号绑定打印机数量');
         }
         $this->display();
     }
