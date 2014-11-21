@@ -75,6 +75,11 @@ class PrinterModel extends BaseModel {
         } else {
             $where['printer_weixin'] = $weixin;
         }
-        return $this->where($where)->count();
+        $number = $this->where($where)->count();
+        if ($number) {
+            return $number;
+        } else {
+            return 0;
+        }
     }
 }

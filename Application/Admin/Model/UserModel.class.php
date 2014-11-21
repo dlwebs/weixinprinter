@@ -50,7 +50,12 @@ class UserModel extends BaseModel {
             $where['user_weixin'] = $user_token;
         }
         $where['user_follow'] = 'subscribe';
-        return $this->where($where)->count();
+        $number = $this->where($where)->count();
+        if ($number) {
+            return $number;
+        } else {
+            return 0;
+        }
     }
 
     public function deleteUserById($userid = '') {

@@ -146,7 +146,12 @@ class ResourceModel extends BaseModel {
             $where['resource_date']  = array('between', $daterange);
         }
         $where['resource_print'] = '2';
-        return $this->where($where)->count();
+        $number = $this->where($where)->count();
+        if ($number) {
+            return $number;
+        } else {
+            return 0;
+        }
     }
     
     public function countTotalResource($weixin = array()) {
@@ -154,6 +159,11 @@ class ResourceModel extends BaseModel {
         if (count($weixin)) {
             $where['resource_weixin'] = array('in', $weixin);
         }
-        return $this->where($where)->count();
+        $number = $this->where($where)->count();
+        if ($number) {
+            return $number;
+        } else {
+            return 0;
+        }
     }
 }
