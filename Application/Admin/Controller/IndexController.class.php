@@ -38,7 +38,7 @@ class IndexController extends BaseController {
                 }
                 $dateprintedNumber = array();
                 foreach ($daterange as $value2) {
-                    $searchrange = array($value2.' 00:00:00', $value2.'23:59:59');
+                    $searchrange = array($value2.' 00:00:00', $value2.' 23:59:59');
                     $dateprintedNumber[] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
                 }
                 $shopuserPrint[] = '{name:"'.$value['user_name'].'", type:"line", stack:"总量", data:['.  implode(',', $dateprintedNumber).']}';
@@ -66,7 +66,7 @@ class IndexController extends BaseController {
                 
                 $dateprintedNumber = array();
                 foreach ($daterange as $value2) {
-                    $searchrange = array($value2.' 00:00:00', $value2.'23:59:59');
+                    $searchrange = array($value2.' 00:00:00', $value2.' 23:59:59');
                     $dateprintedNumber[] = $resourceobj->countResourceByPrinter($value['printer_code'], $searchrange);
                 }
                 $shopuserPrint[] = '{name:"'.$value['printer_name'].'", type:"line", stack:"总量", data:['.  implode(',', $dateprintedNumber).']}';
