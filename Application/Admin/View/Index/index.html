@@ -43,12 +43,8 @@
                 <h2><i class="glyphicon glyphicon-list-alt"></i> {$flotchart_title}</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i
-                            class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                            class="glyphicon glyphicon-chevron-up"></i></a>
-                    <a href="#" class="btn btn-close btn-round btn-default"><i
-                            class="glyphicon glyphicon-remove"></i></a>
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
@@ -62,12 +58,8 @@
                 <h2><i class="glyphicon glyphicon-list-alt"></i> {$piechart_title}</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i
-                            class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                            class="glyphicon glyphicon-chevron-up"></i></a>
-                    <a href="#" class="btn btn-close btn-round btn-default"><i
-                            class="glyphicon glyphicon-remove"></i></a>
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
@@ -82,20 +74,15 @@
                 <h2><i class="glyphicon glyphicon-list-alt"></i> 实时打印趋势</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i
-                            class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                            class="glyphicon glyphicon-chevron-up"></i></a>
-                    <a href="#" class="btn btn-close btn-round btn-default"><i
-                            class="glyphicon glyphicon-remove"></i></a>
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
                 <div id="realtimechart" style="height:190px;"></div>
                 <p>你可以在此监控服务器压力情况</p>
 
-                <p>更新周期: <input id="updateInterval" type="text" value=""
-                                                style="text-align: right; width:5em"> 秒</p>
+                <p>更新周期: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> 秒</p>
             </div>
         </div>
     </div>
@@ -103,15 +90,11 @@
     <div class="box col-md-4">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-list-alt"></i> 使用情况</h2>
+                <h2><i class="glyphicon glyphicon-list-alt"></i> {$donutchart_title}</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i
-                            class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                            class="glyphicon glyphicon-chevron-up"></i></a>
-                    <a href="#" class="btn btn-close btn-round btn-default"><i
-                            class="glyphicon glyphicon-remove"></i></a>
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
@@ -199,6 +182,63 @@
                             center: ['50%', '60%'],
                             data:[
                                 {$piechart_data}
+                            ]
+                        }
+                    ]
+                };
+                myChart.setOption(option); 
+            }
+        );
+
+        require(
+            ['echarts', 'echarts/chart/pie'],
+            function (ec) {
+                var myChart = ec.init(document.getElementById('donutchart')); 
+                
+                var option = {
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x : 'left',
+                        data:["{$donutchart_name}"]
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:'访问来源',
+                            type:'pie',
+                            radius : ['50%', '70%'],
+                            itemStyle : {
+                                normal : {
+                                    label : {
+                                        show : false
+                                    },
+                                    labelLine : {
+                                        show : false
+                                    }
+                                },
+                                emphasis : {
+                                    label : {
+                                        show : true,
+                                        position : 'center',
+                                        textStyle : {
+                                            fontSize : '30',
+                                            fontWeight : 'bold'
+                                        }
+                                    }
+                                }
+                            },
+                            data:[
+                                {$donutchart_data}
                             ]
                         }
                     ]

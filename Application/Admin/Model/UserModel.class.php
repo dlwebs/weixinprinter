@@ -41,6 +41,16 @@ class UserModel extends BaseModel {
         $pageinfo = $page->show();
         return array('data' => $userlist, 'page' => $fanslist);
     }
+    
+    public function countFans($user_token) {
+        $where = array();
+        if (is_array($user_token) && count($user_token)) {
+            $where['user_weixin'] = array('in', $user_token);
+        } else {
+            $where['user_weixin'] = $user_token;
+        }
+        return $this->where($where)->count();
+    }
 
     public function deleteUserById($userid = '') {
         return $this->where('user_id = "'.$userid.'"')->delete();

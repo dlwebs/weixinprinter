@@ -29,6 +29,7 @@ class IndexController extends BaseController {
             $shopuserName = array();
             $shopuserPrint = array();
             $shopuserPrinterNum = array();
+            $shopuserFansNum = array();
             $shopusers = $userobj->getShopUser(0);
             foreach ($shopusers as $value) {
                 $shopuserName[] = $value['user_name'];
@@ -44,8 +45,10 @@ class IndexController extends BaseController {
                     $dateprintedNumber[] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
                 }
                 $printer_num = $printerobj->countPrinterNumber($own_weixin);
+                $fans_num = $userobj->countFans($own_weixin);
                 $shopuserPrint[] = '{name:"'.$value['user_name'].'", type:"line", stack:"总量", data:['.  implode(',', $dateprintedNumber).']}';
                 $shopuserPrinterNum[] = '{value:'.$printer_num.', name:"'.$value['user_name'].'"}';
+                $shopuserFansNum[] = '{value:'.$fans_num.', name:"'.$value['user_name'].'"}';
             }
             $this->assign('flotchart_name', implode('","', $shopuserName));
             $this->assign('flotchart_data', implode(',', $shopuserPrint));
@@ -53,7 +56,15 @@ class IndexController extends BaseController {
             $this->assign('piechart_name', implode('","', $shopuserName));
             $this->assign('piechart_data', implode(',', $shopuserPrinterNum));
             $this->assign('piechart_title', '商户开通打印机数量');
+            
+            $this->assign('donutchart_name', implode('","', $shopuserName));
+            $this->assign('donutchart_data', implode(',', $shopuserFansNum));
+            $this->assign('donutchart_title', '商户拥有粉丝总数量');
         } else {
+            $shopuserName = array();
+            $shopuserPrint = array();
+            $shopuserPrinterNum = array();
+            $shopuserFansNum = array();
             $own_weixin = array();
             $ownWx = $wxobj->getOwnWeixinById('', $user_id);
             $weixin_name = array();
@@ -63,6 +74,8 @@ class IndexController extends BaseController {
                 $weixin_name[] = $value['weixin_name'];
                 $printer_num = $printerobj->countPrinterNumber($value['weixin_token']);
                 $shopuserPrinterNum[] = '{value:'.$printer_num.', name:"'.$value['weixin_name'].'"}';
+                $fans_num = $userobj->countFans($value['weixin_token']);
+                $shopuserFansNum[] = '{value:'.$fans_num.', name:"'.$value['weixin_name'].'"}';
             }
             $printedNumber = $resourceobj->countResourcePrinted($own_weixin);
             $this->assign('printed_number', $printedNumber);
@@ -73,8 +86,6 @@ class IndexController extends BaseController {
             $this->assign('flotchart_title', '一周打印机使用统计');
             $printerdata = $printerobj->getPrinterList('all', array('printer_weixin'=>array('in', $own_weixin)));
             $printerdata = $printerdata['data'];
-            $shopuserName = array();
-            $shopuserPrint = array();
             foreach ($printerdata as $value) {
                 $shopuserName[] = $value['printer_name'];
                 
@@ -91,6 +102,10 @@ class IndexController extends BaseController {
             $this->assign('piechart_name', implode('","', $weixin_name));
             $this->assign('piechart_data', implode(',', $shopuserPrinterNum));
             $this->assign('piechart_title', '公众号绑定打印机数量');
+            
+            $this->assign('donutchart_name', implode('","', $weixin_name));
+            $this->assign('donutchart_data', implode(',', $shopuserFansNum));
+            $this->assign('donutchart_title', '公众号拥有粉丝数量');
         }
         $this->display();
     }
