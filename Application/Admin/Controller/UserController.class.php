@@ -82,11 +82,8 @@ class UserController extends BaseController {
         $userobj = D('user');
         $usergroup = M('usergroup');
         if (isset($post['id']) && $post['id']) {
-			if (!$post['user_id']) {
-                $this->error("用户名不能为空");
-            }
-            if (!$post['user_pw']) {
-                $this->error("密码不能为空");
+            if (!$post['user_id']) {
+                $this->error("用户ID不能为空");
             }
             $userinfo = $userobj->getUserById($post['user_id']);
             if (count($userinfo) && $userinfo["id"] != $post['id']) {
