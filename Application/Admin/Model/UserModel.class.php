@@ -49,6 +49,7 @@ class UserModel extends BaseModel {
         } else {
             $where['user_weixin'] = $user_token;
         }
+        $where['user_follow'] = 'subscribe';
         return $this->where($where)->count();
     }
 

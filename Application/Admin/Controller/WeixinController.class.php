@@ -28,7 +28,7 @@ class WeixinController extends BaseController {
             $ownWeixin = $weixin->getOwnWeixinById('', $user_id);
             $weixin_number = array();
             foreach ($ownWeixin as $wx) {
-                $weixin_number[] = $wx['weixin_number'];
+                $weixin_number[] = $wx['weixin_token'];
             }
             $user_weixin = implode('","', $weixin_number);
             $fansList = $userobj->getUserList('user_weixin in ("'.$user_weixin.'")');
