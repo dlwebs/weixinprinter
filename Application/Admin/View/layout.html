@@ -61,7 +61,7 @@
             </button>
             <ul class="dropdown-menu">
 
-                <li><a href="__MODULE__/Index/logout">Logout</a></li>
+                <li><a href="__MODULE__/Index/logout">注销</a></li>
             </ul>
         </div>
         <!-- user dropdown ends -->
@@ -86,8 +86,8 @@
                     </div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                         <li class="nav-header">系统设置</li>
-                        <if condition="$Think.session.userinfo.group_id eq 1">
                         <li <if condition="$current_c eq 'Index' and $current_a eq 'index'">class="active"</if>><a   href="__MODULE__/"><i class="glyphicon glyphicon-eye-open"></i><span>系统概述</span></a></li>
+                        <if condition="$Think.session.userinfo.group_id eq 1">
                         <li <if condition="$current_c eq 'System' and $current_a eq 'list'">class="active"</if>><a   href="__MODULE__/System/list"><i class="glyphicon glyphicon-eye-open"></i><span>系统设置</span></a></li>
                         <else />
                         <li <if condition="$current_c eq 'System' and $current_a eq 'setting'">class="active"</if>><a   href="__MODULE__/System/setting"><i class="glyphicon glyphicon-eye-open"></i><span>系统设置</span></a></li>

@@ -28,6 +28,7 @@ class IndexController extends BaseController {
             $this->assign('flotchart_title', '一周商户打印统计');
             $shopuserName = array();
             $shopuserPrint = array();
+            $shopuserPrinterNum = array();
             $shopusers = $userobj->getShopUser(0);
             foreach ($shopusers as $value) {
                 $shopuserName[] = $value['user_name'];
@@ -42,18 +43,26 @@ class IndexController extends BaseController {
                     $searchrange = array($value2.' 00:00:00', $value2.' 23:59:59');
                     $dateprintedNumber[] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
                 }
+                $printer_num = $printerobj->countPrinterNumber($own_weixin);
                 $shopuserPrint[] = '{name:"'.$value['user_name'].'", type:"line", stack:"总量", data:['.  implode(',', $dateprintedNumber).']}';
+                $shopuserPrinterNum[] = '{value:'.$printer_num.', name:"'.$value['user_name'].'"}';
             }
             $this->assign('flotchart_name', implode('","', $shopuserName));
             $this->assign('flotchart_data', implode(',', $shopuserPrint));
             
-            
+            $this->assign('piechart_name', implode('","', $shopuserName));
+            $this->assign('piechart_data', implode(',', $shopuserPrinterNum));
             $this->assign('piechart_title', '商户开通打印机数量');
         } else {
             $own_weixin = array();
             $ownWx = $wxobj->getOwnWeixinById('', $user_id);
+            $weixin_name = array();
             foreach ($ownWx as $value) {
                 $own_weixin[] = $value['weixin_token'];
+                
+                $weixin_name[] = $value['weixin_name'];
+                $printer_num = $printerobj->countPrinterNumber($value['weixin_token']);
+                $shopuserPrinterNum[] = '{value:'.$printer_num.', name:"'.$value['weixin_name'].'"}';
             }
             $printedNumber = $resourceobj->countResourcePrinted($own_weixin);
             $this->assign('printed_number', $printedNumber);
@@ -79,7 +88,8 @@ class IndexController extends BaseController {
             $this->assign('flotchart_name', implode('","', $shopuserName));
             $this->assign('flotchart_data', implode(',', $shopuserPrint));
             
-            
+            $this->assign('piechart_name', implode('","', $weixin_name));
+            $this->assign('piechart_data', implode(',', $shopuserPrinterNum));
             $this->assign('piechart_title', '公众号绑定打印机数量');
         }
         $this->display();

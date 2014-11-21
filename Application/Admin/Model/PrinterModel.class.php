@@ -68,4 +68,13 @@ class PrinterModel extends BaseModel {
     public function deletePrinterByWx($printer_weixin = '') {
         return $this->where('printer_weixin = "'.$printer_weixin.'"')->delete();
     }
+    
+    public function countPrinterNumber($weixin = array()) {
+        if (is_array($weixin) && count($weixin)) {
+            $where['printer_weixin'] = array('in', $weixin);
+        } else {
+            $where['printer_weixin'] = $weixin;
+        }
+        return $this->where($where)->count();
+    }
 }

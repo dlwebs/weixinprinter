@@ -2,7 +2,7 @@
 <div class=" row">
     <if condition="$Think.session.userinfo.group_id eq 1">
     <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="6 new members.">
+        <a data-toggle="tooltip" title="" class="well top-block" href="javascript:;" data-original-title="6 new members.">
             <i class="glyphicon glyphicon-user blue"></i>
             <div>已开通商户</div>
             <span class="notification">{$user_number}</span>
@@ -11,7 +11,7 @@
     </if>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="4 new pro members.">
+        <a data-toggle="tooltip" title="" class="well top-block" href="__MODULE__/Resource/list" data-original-title="4 new pro members.">
             <i class="glyphicon glyphicon-star green"></i>
             <div>已打印纸张</div>
             <span class="notification green">{$printed_number}</span>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="$34 new sales.">
+        <a data-toggle="tooltip" title="" class="well top-block" href="javascript:;" data-original-title="$34 new sales.">
             <i class="glyphicon glyphicon-facetime-video yellow"></i>
             <div>已上传资源</div>
             <span class="notification yellow">{$res_number}</span>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
-        <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="12 new messages.">
+        <a data-toggle="tooltip" title="" class="well top-block" href="javascript:;" data-original-title="12 new messages.">
             <i class="glyphicon glyphicon-envelope red"></i>
             <div>消息提示</div>
             <span class="notification red">12</span>
@@ -182,7 +182,7 @@
                     legend: {
                         orient : 'vertical',
                         x : 'left',
-                        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                        data:["{$piechart_name}"]
                     },
                     toolbox: {
                         show : true,
@@ -198,11 +198,7 @@
                             radius : '55%',
                             center: ['50%', '60%'],
                             data:[
-                                {value:335, name:'直接访问'},
-                                {value:310, name:'邮件营销'},
-                                {value:234, name:'联盟广告'},
-                                {value:135, name:'视频广告'},
-                                {value:1548, name:'搜索引擎'}
+                                {$piechart_data}
                             ]
                         }
                     ]
