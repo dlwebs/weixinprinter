@@ -39,13 +39,19 @@ class IndexController extends BaseController {
                 foreach ($ownWx as $value1) {
                     $own_weixin[] = $value1['weixin_token'];
                 }
-                $dateprintedNumber = array();
-                foreach ($daterange as $value2) {
-                    $searchrange = array($value2.' 00:00:00', $value2.' 23:59:59');
-                    $dateprintedNumber[] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
+                
+                if (count($own_weixin)) {
+                    foreach ($daterange as $value2) {
+                        $searchrange = array($value2.' 00:00:00', $value2.' 23:59:59');
+                        $dateprintedNumber[] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
+                    }
+                    $printer_num = $printerobj->countPrinterNumber($own_weixin);
+                    $fans_num = $userobj->countFans($own_weixin);
+                } else {
+                    $dateprintedNumber = array(0,0,0,0,0,0,0);
+                    $printer_num = 0;
+                    $fans_num = 0;
                 }
-                $printer_num = $printerobj->countPrinterNumber($own_weixin);
-                $fans_num = $userobj->countFans($own_weixin);
                 $shopuserPrint[] = '{name:"'.$value['user_name'].'", type:"line", stack:"总量", data:['.  implode(',', $dateprintedNumber).']}';
                 $shopuserPrinterNum[] = '{value:'.$printer_num.', name:"'.$value['user_name'].'"}';
                 $shopuserFansNum[] = '{value:'.$fans_num.', name:"'.$value['user_name'].'"}';
@@ -79,16 +85,25 @@ class IndexController extends BaseController {
                 $shopuserFansNum[] = '{value:'.$fans_num.', name:"'.$value['weixin_name'].'"}';
                 $totalfans_num = $totalfans_num + $fans_num;
             }
-            $printedNumber = $resourceobj->countResourcePrinted($own_weixin);
+            if (count($own_weixin)) {
+                $printedNumber = $resourceobj->countResourcePrinted($own_weixin);
+                $resourceNumber = $resourceobj->countTotalResource($own_weixin);
+            } else {
+                $printedNumber = 0;
+                $resourceNumber = 0;
+            }
             $this->assign('printed_number', $printedNumber);
-            $resourceNumber = $resourceobj->countTotalResource($own_weixin);
             $this->assign('res_number', $resourceNumber);
             $this->assign('totalfans_number', $totalfans_num);
             
             
             $this->assign('flotchart_title', '一周打印机使用统计');
-            $printerdata = $printerobj->getPrinterList('all', array('printer_weixin'=>array('in', $own_weixin)));
-            $printerdata = $printerdata['data'];
+            if (count($own_weixin)) {
+                $printerdata = $printerobj->getPrinterList('all', array('printer_weixin'=>array('in', $own_weixin)));
+                $printerdata = $printerdata['data'];
+            } else {
+                $printerdata = array();
+            }
             foreach ($printerdata as $value) {
                 $shopuserName[] = $value['printer_name'];
                 
