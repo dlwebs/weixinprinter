@@ -129,9 +129,21 @@ class ResourceModel extends BaseModel {
         return $this->where($where)->order('resource_date desc')->limit(1)->find();
     }
     
-    public function countResourcePrinted($weixin = array()) {
+    public function countResourceByPrinter($code, $daterange = array()) {
+        $where['resource_printer'] = array('like', $code.'%');
+        if (count($daterange)) {
+            $where['resource_date']  = array('between', $daterange);
+        }
+        $where['resource_print'] = '2';
+        return $this->where($where)->count();
+    }
+    
+    public function countResourcePrinted($weixin = array(), $daterange = array()) {
         if (count($weixin)) {
             $where['resource_weixin'] = array('in', $weixin);
+        }
+        if (count($daterange)) {
+            $where['resource_date']  = array('between', $daterange);
         }
         $where['resource_print'] = '2';
         return $this->where($where)->count();

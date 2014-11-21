@@ -4,10 +4,8 @@
     <div class="col-md-3 col-sm-3 col-xs-6">
         <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="6 new members.">
             <i class="glyphicon glyphicon-user blue"></i>
-
             <div>已开通商户</div>
-            <div>{$user_number}</div>
-            <span class="notification">6</span>
+            <span class="notification">{$user_number}</span>
         </a>
     </div>
     </if>
@@ -15,29 +13,23 @@
     <div class="col-md-3 col-sm-3 col-xs-6">
         <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="4 new pro members.">
             <i class="glyphicon glyphicon-star green"></i>
-
             <div>已打印纸张</div>
-            <div>{$printed_number}</div>
-            <span class="notification green">4</span>
+            <span class="notification green">{$printed_number}</span>
         </a>
     </div>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
         <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="$34 new sales.">
             <i class="glyphicon glyphicon-facetime-video yellow"></i>
-
             <div>已上传资源</div>
-            <div>{$res_number}</div>
-            <span class="notification yellow">$34</span>
+            <span class="notification yellow">{$res_number}</span>
         </a>
     </div>
 
     <div class="col-md-3 col-sm-3 col-xs-6">
         <a data-toggle="tooltip" title="" class="well top-block" href="#" data-original-title="12 new messages.">
             <i class="glyphicon glyphicon-envelope red"></i>
-
             <div>消息提示</div>
-            <div>25</div>
             <span class="notification red">12</span>
         </a>
     </div>
@@ -48,7 +40,7 @@
     <div class="box col-md-12">
         <div class="box-inner">
             <div class="box-header well">
-                <h2><i class="glyphicon glyphicon-list-alt"></i> 一周打印机使用统计</h2>
+                <h2><i class="glyphicon glyphicon-list-alt"></i> {$flotchart_title}</h2>
 
                 <div class="box-icon">
                     <a href="#" class="btn btn-setting btn-round btn-default"><i
@@ -130,11 +122,11 @@
     </div>
 </div><!--/row-->
 
- <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+ <script src="/js/echarts/echarts.js"></script>
  <script type="text/javascript">
         require.config({
             paths: {
-                echarts: 'http://echarts.baidu.com/build/dist'
+                echarts: '/js/echarts'
             }
         });
         
@@ -148,7 +140,7 @@
                         trigger: 'axis'
                     },
                     legend: {
-                        data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                        data:["{$flotchart_name}"]
                     },
                     toolbox: {
                         show : true,
@@ -161,7 +153,7 @@
                         {
                             type : 'category',
                             boundaryGap : false,
-                            data : ['周一','周二','周三','周四','周五','周六','周日']
+                            data : ["{$daterange}"]
                         }
                     ],
                     yAxis : [
@@ -170,36 +162,7 @@
                         }
                     ],
                     series : [
-                        {
-                            name:'邮件营销',
-                            type:'line',
-                            stack: '总量',
-                            data:[120, 132, 101, 134, 90, 230, 210]
-                        },
-                        {
-                            name:'联盟广告',
-                            type:'line',
-                            stack: '总量',
-                            data:[220, 182, 191, 234, 290, 330, 310]
-                        },
-                        {
-                            name:'视频广告',
-                            type:'line',
-                            stack: '总量',
-                            data:[150, 232, 201, 154, 190, 330, 410]
-                        },
-                        {
-                            name:'直接访问',
-                            type:'line',
-                            stack: '总量',
-                            data:[320, 332, 301, 334, 390, 330, 320]
-                        },
-                        {
-                            name:'搜索引擎',
-                            type:'line',
-                            stack: '总量',
-                            data:[820, 932, 901, 934, 1290, 1330, 1320]
-                        }
+                        {$flotchart_data}
                     ]
                 };
         
@@ -208,10 +171,9 @@
             }
         );
     </script>
-<!--<script src="/bower_components/flot/excanvas.min.js"></script>
+<script src="/bower_components/flot/excanvas.min.js"></script>
 <script src="/bower_components/flot/jquery.flot.js"></script>
 <script src="/bower_components/flot/jquery.flot.pie.js"></script>
 <script src="/bower_components/flot/jquery.flot.stack.js"></script>
 <script src="/bower_components/flot/jquery.flot.resize.js"></script>
- chart libraries end 
-<script src="/js/init-chart.js"></script>-->
+<script src="/js/init-chart.js"></script>

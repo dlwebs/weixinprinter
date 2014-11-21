@@ -10,6 +10,12 @@ class IndexController extends BaseController {
         $resourceobj = D("resource");
         $wxobj = D("weixin");
         $printerobj = D("printer");
+        $daterange = array();
+        for ($i=7;$i>0;$i--){
+            $tempdate = strtotime("-$i day");
+            $daterange[] = date('Y-m-d', $tempdate);
+        }
+        $this->assign('daterange', implode('","', $daterange));
         if ($group_id == 1) {
             $userNumber = $userobj->getShopUser();
             $this->assign('user_number', $userNumber);
@@ -18,7 +24,27 @@ class IndexController extends BaseController {
             $resourceNumber = $resourceobj->countTotalResource();
             $this->assign('res_number', $resourceNumber);
             
-            $printerdata = $printerobj->getPrinterList('all');
+            $this->assign('flotchart_title', '一周商户打印统计');
+            $shopuserName = array();
+            $shopuserPrint = array();
+            $shopusers = $userobj->getShopUser(0);
+            foreach ($shopusers as $value) {
+                $shopuserName[] = $value['user_name'];
+                
+                $own_weixin = array();
+                $ownWx = $wxobj->getOwnWeixinById('', $value['user_id']);
+                foreach ($ownWx as $value1) {
+                    $own_weixin[] = $value1['weixin_token'];
+                }
+                $dateprintedNumber = array();
+                foreach ($daterange as $value2) {
+                    $searchrange = array($value2.' 00:00:00', $value2.'23:59:59');
+                    $dateprintedNumber[] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
+                }
+                $shopuserPrint[] = '{name:"'.$value['user_name'].'", type:"line", stack:"总量", data:['.  implode(',', $dateprintedNumber).']}';
+            }
+            $this->assign('flotchart_name', implode('","', $shopuserName));
+            $this->assign('flotchart_data', implode(',', $shopuserPrint));
         } else {
             $own_weixin = array();
             $ownWx = $wxobj->getOwnWeixinById('', $user_id);
@@ -30,10 +56,24 @@ class IndexController extends BaseController {
             $resourceNumber = $resourceobj->countTotalResource($own_weixin);
             $this->assign('res_number', $resourceNumber);
             
+            $this->assign('flotchart_title', '一周打印机使用统计');
             $printerdata = $printerobj->getPrinterList('all', array('printer_weixin'=>array('in', $own_weixin)));
+            $printerdata = $printerdata['data'];
+            $shopuserName = array();
+            $shopuserPrint = array();
+            foreach ($printerdata as $value) {
+                $shopuserName[] = $value['printer_name'];
+                
+                $dateprintedNumber = array();
+                foreach ($daterange as $value2) {
+                    $searchrange = array($value2.' 00:00:00', $value2.'23:59:59');
+                    $dateprintedNumber[] = $resourceobj->countResourceByPrinter($value['printer_code'], $searchrange);
+                }
+                $shopuserPrint[] = '{name:"'.$value['printer_name'].'", type:"line", stack:"总量", data:['.  implode(',', $dateprintedNumber).']}';
+            }
+            $this->assign('flotchart_name', implode('","', $shopuserName));
+            $this->assign('flotchart_data', implode(',', $shopuserPrint));
         }
-        $printerdata = $printerdata['data'];
-        
         $this->display();
     }
 
