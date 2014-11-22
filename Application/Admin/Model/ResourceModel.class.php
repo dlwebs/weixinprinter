@@ -155,9 +155,10 @@ class ResourceModel extends BaseModel {
     }
     
     public function countTotalResource($weixin = array()) {
-        $where = array();
-        if (count($weixin)) {
+        if (is_array($weixin) && count($weixin)) {
             $where['resource_weixin'] = array('in', $weixin);
+        } else {
+            $where['resource_weixin'] = $weixin;
         }
         $number = $this->where($where)->count();
         if ($number) {

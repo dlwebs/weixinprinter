@@ -36,13 +36,11 @@
 
     <!-- The fav icon -->
     <link rel="shortcut icon" href="/img/favicon.ico">
-
 </head>
 
 <body>
 <!-- topbar starts -->
 <div class="navbar navbar-default" role="navigation">
-
     <div class="navbar-inner">
         <button type="button" class="navbar-toggle pull-left animated flip">
             <span class="sr-only">Toggle navigation</span>
@@ -50,8 +48,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/"> <img alt="Charisma Logo" src="/img/logo20.png" class="hidden-xs"/>
-            <span>聚优客微信打印机</span></a>
+        <a class="navbar-brand" href="/"> <img alt="Charisma Logo" src="/img/logo20.png" class="hidden-xs"/><span>聚优客微信打印机</span></a>
 
         <!-- user dropdown starts -->
         <div class="btn-group pull-right">
@@ -60,30 +57,22 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-
                 <li><a href="__MODULE__/Index/logout">注销</a></li>
             </ul>
         </div>
         <!-- user dropdown ends -->
-
         <!-- theme selector starts -->
-
         <!-- theme selector ends -->
-
-
     </div>
 </div>
 <!-- topbar ends -->
 <div class="ch-container">
     <div class="row">
-
         <!-- left menu starts -->
         <div class="col-sm-2 col-lg-2">
             <div class="sidebar-nav">
                 <div class="nav-canvas">
-                    <div class="nav-sm nav nav-stacked">
-
-                    </div>
+                    <div class="nav-sm nav nav-stacked"></div>
                     <ul class="nav nav-pills nav-stacked main-menu">
                         <li class="nav-header">系统设置</li>
                         <li <if condition="$current_c eq 'Index' and $current_a eq 'index'">class="active"</if>><a   href="__MODULE__/"><i class="glyphicon glyphicon-eye-open"></i><span>系统概述</span></a></li>
@@ -94,7 +83,7 @@
                         </if>
 
                         <if condition="$Think.session.userinfo.group_id eq 1">
-                        <li class="nav-header  ">权限设置</li>
+                        <li class="nav-header  ">用户权限设置</li>
                         <li <if condition="$current_c eq 'Group' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Group/list"><i class="glyphicon glyphicon-tasks"></i><span>组列表</span></a></li>
                         <li <if condition="$current_c eq 'Group' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Group/add"><i class="glyphicon glyphicon-plus"></i><span>添加组</span></a></li>
                         <li <if condition="$current_c eq 'Auth' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Auth/list"><i class="glyphicon glyphicon-eye-close"></i><span>权限列表</span></a></li>
@@ -109,17 +98,17 @@
                         <li <if condition="$current_c eq 'Weixin' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Weixin/add"><i class="glyphicon glyphicon-plus"></i><span>添加公众号</span></a></li>
                         <li <if condition="$current_c eq 'Weixin' and $current_a eq 'fans'">class="active"</if>><a href="__MODULE__/Weixin/fans"><i class="glyphicon glyphicon-heart"></i><span>粉丝列表</span></a></li>
 
-                        <li class="nav-header ">设备管理</li>
+                        <li class="nav-header ">设备资源管理</li>
                         <li <if condition="$current_c eq 'Printer' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Printer/list"><i class="glyphicon glyphicon-tasks"></i><span>设备列表</span></a></li>
                         <li <if condition="$current_c eq 'Printer' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Printer/add"><i class="glyphicon glyphicon-plus"></i><span>添加设备</span></a></li>
                         <li <if condition="$current_c eq 'Resource' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Resource/list"><i class="glyphicon glyphicon-print"></i><span>已打印列表</span></a></li>
                         <if condition="$Think.session.userinfo.group_id eq 1">
-                            <li <if condition="$current_c eq 'Resource' and $current_a eq 'manage'">class="active"</if>><a href="__MODULE__/Resource/manage"><i class="glyphicon glyphicon-facetime-video"></i><span>资源管理</span></a></li>
+                        <li <if condition="$current_c eq 'Resource' and $current_a eq 'manage'">class="active"</if>><a href="__MODULE__/Resource/manage"><i class="glyphicon glyphicon-facetime-video"></i><span>资源管理</span></a></li>
                         </if>
 
                         <if condition="$Think.session.userinfo.group_id eq 1">
                         <li class="nav-header ">模板管理</li>
-                        <li <if condition="$current_c eq 'Template' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Template/list"><i class="glyphicon glyphicon-qrcode"></i><span>广告机列表</span></a></li>
+                        <li <if condition="$current_c eq 'Template' and $current_a eq 'list'">class="active"</if>><a href="__MODULE__/Template/list"><i class="glyphicon glyphicon-qrcode"></i><span>模板列表</span></a></li>
                         <li <if condition="$current_c eq 'Template' and $current_a eq 'add'">class="active"</if>><a href="__MODULE__/Template/add"><i class="glyphicon glyphicon-plus"></i><span>添加广告模板</span></a></li>
                         </if>
                     </ul>
@@ -133,9 +122,7 @@
         <noscript>
             <div class="alert alert-block col-md-12">
                 <h4 class="alert-heading">Warning!</h4>
-
-                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
-                    enabled to use this site.</p>
+                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
             </div>
         </noscript>
 
@@ -145,13 +132,9 @@
         <!--/#content.col-md-0-->
     </div>
     <!--/fluid-row-->
-
-
     <hr>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -171,11 +154,8 @@
 
     <footer class="row">
         <p class="col-md-9 col-sm-9 col-xs-12 copyright">&copy; <a href="http://www.dlwebs.com" target="_blank">聚优客微信打印机平台</a> 2012 - 2014</p>
-
-        <p class="col-md-3 col-sm-3 col-xs-12 powered-by">Powered by: <a
-                href="http://www.dlwebs.com">大连智万</a></p>
+        <p class="col-md-3 col-sm-3 col-xs-12 powered-by">Powered by: <a href="http://www.dlwebs.com" target="_blank">大连智万</a></p>
     </footer>
-
 </div>
 <!--/.fluid-container-->
 

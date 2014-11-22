@@ -37,7 +37,7 @@
     </if>
 </div>
 
-
+<form name="exportform" id="exportform" method="post" action=""></form>
 <div class="row">
     <div class="box col-md-12">
         <div class="box-inner">
@@ -45,8 +45,8 @@
                 <h2><i class="glyphicon glyphicon-list-alt"></i> {$flotchart_title}</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="javascript:;" class="btn btn-setting btn-round btn-default" id="exportflot"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="javascript:;" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
@@ -60,8 +60,8 @@
                 <h2><i class="glyphicon glyphicon-list-alt"></i> {$piechart_title}</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="javascript:;" class="btn btn-setting btn-round btn-default" id="exportpie"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="javascript:;" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
@@ -73,18 +73,15 @@
     <div class="box col-md-4">
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
-                <h2><i class="glyphicon glyphicon-list-alt"></i> 实时打印趋势</h2>
+                <h2><i class="glyphicon glyphicon-list-alt"></i> {$realchart_title}</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="javascript:;" class="btn btn-setting btn-round btn-default" id="exportreal"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="javascript:;" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
-                <div id="realtimechart" style="height:190px;"></div>
-                <p>你可以在此监控服务器压力情况</p>
-
-                <p>更新周期: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> 秒</p>
+                <div id="realtimechart" style="height:300px;"></div>
             </div>
         </div>
     </div>
@@ -95,8 +92,8 @@
                 <h2><i class="glyphicon glyphicon-list-alt"></i> {$donutchart_title}</h2>
 
                 <div class="box-icon">
-                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
-                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="javascript:;" class="btn btn-setting btn-round btn-default" id="exportdonut"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="javascript:;" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
                 </div>
             </div>
             <div class="box-content">
@@ -107,151 +104,201 @@
     </div>
 </div><!--/row-->
 
- <script src="/js/echarts/echarts.js"></script>
- <script type="text/javascript">
-        require.config({
-            paths: {
-                echarts: '/js/echarts'
+<script src="/js/echarts/echarts.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#exportflot,#exportpie,#exportreal,#exportdonut").click(function () {
+            var exportform = $("#exportform");
+            if (this.id == "exportflot") {
+                exportform.attr("action","__MODULE__/Index/exportflot");
+            } else if (this.id == "exportpie") {
+                exportform.attr("action","__MODULE__/Index/exportpie");
+            } else if (this.id == "exportreal") {
+                exportform.attr("action","__MODULE__/Index/exportreal");
+            } else if (this.id == "exportdonut") {
+                exportform.attr("action","__MODULE__/Index/exportdonut");
+            }
+            var formaction = exportform.attr("action");
+            if (formaction) {
+                exportform.submit();
             }
         });
-        
-        require(
-            ['echarts', 'echarts/chart/line'],
-            function (ec) {
-                var myChart = ec.init(document.getElementById('flotchart')); 
-                
-                var option = {
-                    tooltip : {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data:["{$flotchart_name}"]
-                    },
-                    toolbox: {
-                        show : true,
-                        feature : {
-                            saveAsImage : {show: true}
-                        }
-                    },
-                    calculable : true,
-                    xAxis : [
-                        {
-                            type : 'category',
-                            boundaryGap : false,
-                            data : ["{$daterange}"]
-                        }
-                    ],
-                    yAxis : [
-                        {
-                            type : 'value'
-                        }
-                    ],
-                    series : [
-                        {$flotchart_data}
-                    ]
-                };
-                myChart.setOption(option); 
-            }
-        );
+    });
+    require.config({
+        paths: {
+            echarts: '/js/echarts'
+        }
+    });
+    
+    require(
+        ['echarts', 'echarts/chart/line'],
+        function (ec) {
+            var myChart = ec.init(document.getElementById('flotchart')); 
+            
+            var option = {
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:["{$flotchart_name}"]
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ["{$daterange}"]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {$flotchart_data}
+                ]
+            };
+            myChart.setOption(option); 
+        }
+    );
 
-        require(
-            ['echarts', 'echarts/chart/pie'],
-            function (ec) {
-                var myChart = ec.init(document.getElementById('piechart')); 
-                
-                var option = {
-                    tooltip : {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    legend: {
-                        orient : 'vertical',
-                        x : 'left',
-                        data:["{$piechart_name}"]
-                    },
-                    toolbox: {
-                        show : true,
-                        feature : {
-                            saveAsImage : {show: true}
-                        }
-                    },
-                    calculable : true,
-                    series : [
-                        {
-                            name:'访问来源',
-                            type:'pie',
-                            radius : '55%',
-                            center: ['50%', '60%'],
-                            data:[
-                                {$piechart_data}
-                            ]
-                        }
-                    ]
-                };
-                myChart.setOption(option); 
-            }
-        );
+    require(
+        ['echarts', 'echarts/chart/pie'],
+        function (ec) {
+            var myChart = ec.init(document.getElementById('piechart')); 
+            
+            var option = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : 'left',
+                    data:["{$piechart_name}"]
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:[
+                            {$piechart_data}
+                        ]
+                    }
+                ]
+            };
+            myChart.setOption(option); 
+        }
+    );
 
-        require(
-            ['echarts', 'echarts/chart/pie'],
-            function (ec) {
-                var myChart = ec.init(document.getElementById('donutchart')); 
-                
-                var option = {
-                    tooltip : {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    legend: {
-                        orient : 'vertical',
-                        x : 'left',
-                        data:["{$donutchart_name}"]
-                    },
-                    toolbox: {
-                        show : true,
-                        feature : {
-                            saveAsImage : {show: true}
-                        }
-                    },
-                    calculable : true,
-                    series : [
-                        {
-                            name:'访问来源',
-                            type:'pie',
-                            radius : ['50%', '70%'],
-                            itemStyle : {
-                                normal : {
-                                    label : {
-                                        show : false
-                                    },
-                                    labelLine : {
-                                        show : false
-                                    }
+    require(
+        ['echarts', 'echarts/chart/pie'],
+        function (ec) {
+            var myChart = ec.init(document.getElementById('donutchart')); 
+            
+            var option = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : 'left',
+                    data:["{$donutchart_name}"]
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius : ['50%', '70%'],
+                        itemStyle : {
+                            normal : {
+                                label : {
+                                    show : false
                                 },
-                                emphasis : {
-                                    label : {
-                                        show : true,
-                                        position : 'center',
-                                        textStyle : {
-                                            fontSize : '30',
-                                            fontWeight : 'bold'
-                                        }
-                                    }
+                                labelLine : {
+                                    show : false
                                 }
                             },
-                            data:[
-                                {$donutchart_data}
-                            ]
-                        }
-                    ]
-                };
-                myChart.setOption(option); 
-            }
-        );
-    </script>
-<script src="/bower_components/flot/excanvas.min.js"></script>
-<script src="/bower_components/flot/jquery.flot.js"></script>
-<script src="/bower_components/flot/jquery.flot.pie.js"></script>
-<script src="/bower_components/flot/jquery.flot.stack.js"></script>
-<script src="/bower_components/flot/jquery.flot.resize.js"></script>
-<script src="/js/init-chart.js"></script>
+                            emphasis : {
+                                label : {
+                                    show : true,
+                                    position : 'center',
+                                    textStyle : {
+                                        fontSize : '30',
+                                        fontWeight : 'bold'
+                                    }
+                                }
+                            }
+                        },
+                        data:[
+                            {$donutchart_data}
+                        ]
+                    }
+                ]
+            };
+            myChart.setOption(option); 
+        }
+    );
+
+    require(
+        ['echarts', 'echarts/chart/pie'],
+        function (ec) {
+            var myChart = ec.init(document.getElementById('realtimechart')); 
+            
+            var option = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : 'left',
+                    data:["{$realchart_name}"]
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'访问来源',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:[
+                            {$realchart_data}
+                        ]
+                    }
+                ]
+            };
+            myChart.setOption(option); 
+        }
+    );
+</script>
