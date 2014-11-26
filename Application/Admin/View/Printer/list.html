@@ -41,6 +41,8 @@
           <tr>
             <th>设备名称</th>
             <th>设备ID</th>
+            <th>激活码</th>
+            <th>状态</th>
             <th>终端类型</th>
             <th>Action</th>
           </tr>
@@ -50,6 +52,8 @@
           <tr>
             <td class="col-sm-2">{$printer.printer_name}</td>
             <td class="col-sm-2">{$printer.printer_code}</td>
+            <td class="col-sm-2">{$printer.printer_activecode}</td>
+            <td class="col-sm-2"><if condition="$printer.printer_status eq 0">未激活<else />已激活 </if></td>
             <td class="col-sm-2"><if condition="$printer.printer_type eq 1">横屏<else />竖屏</if></td>
             <td class="col-sm-2">
                 <a href="__MODULE__/modprinter/{$printer.printer_id}">编辑</a>

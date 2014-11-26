@@ -49,6 +49,10 @@ class UserController extends BaseController {
         $userobj = D("user");
         $userinfo = $userobj->getUserById($user_id);
         $this->assign('userinfo', $userinfo);
+        
+        $systemobj = D("system");
+        $sysinfo = $systemobj->getSystemInfoByUser($user_id);
+        $this->assign('sysinfo', $sysinfo);
 
         $usergroup = M('usergroup');
         $groupid = $usergroup->where('uid = "'.$user_id.'"')->find();
@@ -109,6 +113,9 @@ class UserController extends BaseController {
             $usergroup->add(array('uid'=>$post['user_id'], 'gid'=>$post['group_id']));
         }
         if ($id) {
+            $system = D('system');
+            $systemdata = array('system_user'=>$post['user_id'], 'system_wxnum'=>$post['system_wxnum'], 'system_printernum'=>$post['system_printernum']);
+            $system->updateSystem($systemdata);
             $this->success('保存成功', 'list');
         } else {
             $this->error('保存失败');

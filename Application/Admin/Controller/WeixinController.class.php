@@ -163,6 +163,15 @@ class WeixinController extends BaseController {
             $post['weixin_userid'] = $this->userInfo['user_id'];
         }
         $weixin = D('weixin');
+        if (!isset($post['id']) || !$post['id']) {
+            $systemobj = D("system");
+            $sysinfo = $systemobj->getSystemInfoByUser($post['weixin_userid']);
+            $ownWxNum = $weixin->countOwnWeixinById($post['weixin_userid']);
+            if ($sysinfo['system_wxnum'] <= $ownWxNum) {
+                $this->error('最多只允许添加'.$sysinfo['system_wxnum'].'个微信公众号');
+            }
+        }
+
         $isdelimage = $post['delweixin_imgcode'];
         if ($isdelimage) {
             $post['weixin_imgcode'] = '';

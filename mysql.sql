@@ -7,6 +7,8 @@ CREATE TABLE `wxp_system` (
   `system_subscribe` varchar(200) NOT NULL COMMENT '关注公众号后发送的欢迎消息',
   `system_sendimg` varchar(200) NOT NULL COMMENT '发送资源后的回复消息',
   `system_printimg` varchar(200) NOT NULL COMMENT '打印图片后的回复消息',
+  `system_wxnum` tinyint(4) NOT NULL DEFAULT 1 COMMENT '每个商户可添加的微信公众号最大数量',
+  `system_printernum` tinyint(4) NOT NULL DEFAULT 5 COMMENT '每个商户的每个公众号可绑定的打印机最大数量',
   `system_user` varchar(50) NOT NULL COMMENT '系统设置的用户，关联user表user_id字段',
   PRIMARY KEY (`system_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='系统信息表';
@@ -98,6 +100,8 @@ CREATE TABLE `wxp_printer` (
   `printer_name` varchar(50) NOT NULL COMMENT '打印机名称',
   `printer_code` varchar(20) NOT NULL COMMENT '打印机消费码前缀',
   `printer_type` enum('1','2') NOT NULL COMMENT '打印机终端类型，1是横屏，2是竖屏',
+  `printer_activecode` varchar(10) NOT NULL COMMENT '打印机激活码',
+  `printer_status` enum('0','1') NOT NULL COMMENT '打印机状态，0是未激活，1是已激活',
   `printer_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_token字段',
   `printer_template` tinyint (4) unsigned NOT NULL COMMENT '打印机模板，关联template表template_id字段',
   PRIMARY KEY (`printer_id`),

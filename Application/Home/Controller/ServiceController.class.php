@@ -6,11 +6,7 @@ use Think\Controller\RestController;
 class ServiceController extends RestController {
 
     public function regprinter_post(){
-        $insert['printer_name'] = I('post.name');
-        $insert['printer_code'] = I('post.code');
-        $insert['printer_type'] = I('post.type');
-        $insert['printer_weixin'] = I('post.weixin');
-        $insert['printer_template'] = I('post.template');
+        $activecode = I('post.activecode');
         $printobj = new \Admin\Model\PrinterModel();
         $id = $printobj->addPrinter($insert);
         if ($id) {

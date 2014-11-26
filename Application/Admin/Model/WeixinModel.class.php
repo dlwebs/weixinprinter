@@ -39,6 +39,10 @@ class WeixinModel extends BaseModel {
             return $this->where('weixin_userid = "'.$userid.'"')->select();
         }
     }
+    
+    public function countOwnWeixinById($userid) {
+        return $this->where('weixin_userid = "'.$userid.'"')->count();
+    }
 
     public function addWeixin($data = array()) {
         $data['weixin_regdate'] = date('Y-m-d H:i:s');
