@@ -82,4 +82,22 @@ class PrinterModel extends BaseModel {
             return 0;
         }
     }
+    
+    public function activePrinter($activecode) {
+        $printer = $this->where('printer_activecode = "'.$activecode.'"')->find();
+        if (!$printer) {
+            return '没有找到激活码';
+        } else {
+            if ($printer['printer_status']) {
+                return '激活码已被使用';
+            } else {
+                $isok = $this->where('printer_activecode = "'.$activecode.'"')->setField('printer_status', '1');
+                if ($isok) {
+                    return 1;
+                } else {
+                    return '设备激活失败';
+                }
+            }
+        }
+    }
 }

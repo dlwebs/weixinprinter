@@ -8,11 +8,11 @@ class ServiceController extends RestController {
     public function regprinter_post(){
         $activecode = I('post.activecode');
         $printobj = new \Admin\Model\PrinterModel();
-        $id = $printobj->addPrinter($insert);
-        if ($id) {
-            $this->response(array('message'=>'打印机注册成功'), 'json');
+        $result = $printobj->activePrinter($activecode);
+        if ($result == 1) {
+            $this->response(array('message'=>'打印机激活成功'), 'json');
         } else {
-            $this->response(array('message'=>'打印机注册失败'), 'json');
+            $this->response(array('message'=>$result), 'json');
         }
     }
 
