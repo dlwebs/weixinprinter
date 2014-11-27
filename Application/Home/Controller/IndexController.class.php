@@ -62,6 +62,7 @@ class IndexController extends BaseController {
             
             $current_image = file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?activecode='.$printer_atcode);
             echo '<pre>';
+            echo 'http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?activecode='.$printer_atcode;
             print_r($current_image);
             $current_image = json_decode($current_image);
             print_r($current_image);exit;
