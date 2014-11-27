@@ -22,25 +22,25 @@ class WeixinController extends BaseController {
         $data = $this->_wechat->request();
         $RX_TYPE = trim($data['MsgType']);
 
-        $receiveType = array('text', 'image');
-        $receiveEvent = array('subscribe', 'unsubscribe');
-        if (!in_array($RX_TYPE, $receiveType)) {
-            $RX_EVENT = trim($data['Event']);
-            if (!in_array($RX_EVENT, $receiveEvent)) {
-                $ch = curl_init($wxinfo['weixin_dispatchurl']);
-                curl_setopt($ch, CURLOPT_MUTE, 1);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                $output = curl_exec($ch);
-                curl_close($ch);
-                echo $output ;
-                exit;
-            }
-        }
+//        $receiveType = array('text', 'image');
+//        $receiveEvent = array('subscribe', 'unsubscribe');
+//        if (!in_array($RX_TYPE, $receiveType)) {
+//            $RX_EVENT = trim($data['Event']);
+//            if (!in_array($RX_EVENT, $receiveEvent)) {
+//                $ch = curl_init($wxinfo['weixin_dispatchurl']);
+//                curl_setopt($ch, CURLOPT_MUTE, 1);
+//                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+//                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+//                curl_setopt($ch, CURLOPT_POST, 1);
+//                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+//                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+//                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//                $output = curl_exec($ch);
+//                curl_close($ch);
+//                echo $output ;
+//                exit;
+//            }
+//        }
         
         switch($RX_TYPE){
             case Wechat::MSG_TYPE_TEXT:
