@@ -205,7 +205,7 @@ class WeixinController extends BaseController {
 
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $imgobj = new \Think\Image();
-        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 370)->save($fileSavePath.$src);
+        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 670, 970)->save($fileSavePath.$src);
 
         $resource = new \Admin\Model\ResourceModel();
         $resinfo = $resource->getUserNoPrintResource($uid);
