@@ -21,11 +21,11 @@ class WeixinController extends BaseController {
         $this->_wechat = new Wechat($this->_token);
         $data = $this->_wechat->request();
         $RX_TYPE = trim($data['MsgType']);
-        $RX_EVENT = trim($data['Event']);
-        
+
         $receiveType = array('text', 'image');
         $receiveEvent = array('subscribe', 'unsubscribe');
         if (!in_array($RX_TYPE, $receiveType)) {
+            $RX_EVENT = trim($data['Event']);
             if (!in_array($RX_EVENT, $receiveEvent)) {
                 $ch = curl_init($wxinfo['weixin_dispatchurl']);
                 curl_setopt($ch, CURLOPT_MUTE, 1);
