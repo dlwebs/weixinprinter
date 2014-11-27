@@ -62,7 +62,11 @@ class IndexController extends BaseController {
             
             $resourceobj = new \Admin\Model\ResourceModel();
             $current_image = $resourceobj->getResourceByPrinter($printerInfo['printer_code']);
-            $this->assign('current_image', $current_image);
+            if ($current_image) {
+                $this->assign('current_image', '<img width="100%" height="100%" src="'.$current_image['resource_content'].'">');
+            } else {
+                $this->assign('current_image', '当前无图片');
+            }
             $this->display($showpage);
         } else {
             echo '未知设备';exit;
