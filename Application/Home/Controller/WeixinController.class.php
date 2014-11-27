@@ -205,10 +205,10 @@ class WeixinController extends BaseController {
 
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $imgobj = new \Think\Image();
-        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 270)->save($fileSavePath.$src);
+        $imgobj = $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 270)->save($fileSavePath.$src);
 
 
-        $copyright = $fileSavePath.$uid.'_copyright.jpg'
+        $copyright = $fileSavePath.$uid.'_copyright.jpg';
         $copyright_img = imagecreatetruecolor(262, 100);
         // white background and blue text
         $bg = imagecolorallocate($copyright_img, 200, 200, 200);
