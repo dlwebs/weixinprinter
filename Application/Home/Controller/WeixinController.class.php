@@ -209,9 +209,9 @@ class WeixinController extends BaseController {
 
 
         $copyright = $fileSavePath.$uid.'_copyright.jpg';
-        $copyright_img = imagecreatetruecolor(262, 100);
+        $copyright_img = imagecreate(262, 100);
         // white background and black text
-        $bg = imagecolorallocate($copyright_img, 255, 255, 255);
+        $copyright_bg = imagecolorallocate($copyright_img, 255, 255, 255);
         $textcolor = imagecolorallocate($copyright_img, 0, 0, 0);
         imagestring($copyright_img, 5, 10, 10, "Hello world!", $textcolor);
 //        imagettftext($copyright_img, 20, 0, 10, 20, $bg, '/usr/share/fonts/arial.ttf', '聚优客微信打印机平台');
