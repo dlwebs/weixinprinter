@@ -50,4 +50,12 @@
     </div>
 </div>
 </body>
+<script>
+    window.setInterval(function () {
+        $.get('/index.php/getcode/{$printer.printer_activecode}', function (data) {
+            alert(data);
+            $("#printercode").html(data);
+        });
+    }, 1000);
+</script>
 </html>

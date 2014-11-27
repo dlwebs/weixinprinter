@@ -131,7 +131,7 @@ class ResourceModel extends BaseModel {
         $where['resource_printer'] = array('like', $code.'%');
         $where['resource_status'] = '2';
         $where['resource_print'] = '1';
-        return $this->where($where)->order('resource_date desc')->limit(1)->find();
+        return $this->where($where)->order('resource_date asc')->limit(1)->find();
     }
     
     public function countResourceByPrinter($code, $daterange = array()) {
