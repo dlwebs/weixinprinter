@@ -29,14 +29,19 @@ class ServiceController extends RestController {
         }
     }
 
-    public function upresAction_put() {
-        $resource_id = I('put.rid');
-        $resourceobj = new \Admin\Model\ResourceModel();
-        $isok = $resourceobj->updateResourcePrintStatus($resource_id, '2');
-        if ($isok) {
-            $this->response(array('message'=>'更新成功'), 'json');
+    public function upresAction_get() {
+        $print_result = I('get.result');
+        if ($print_result) {
+            $resource_id = I('get.rid');
+            $resourceobj = new \Admin\Model\ResourceModel();
+            $isok = $resourceobj->updateResourcePrintStatus($resource_id, '2');
+            if ($isok) {
+                $this->response(array('message'=>'更新成功'), 'json');
+            } else {
+                $this->response(array('message'=>'更新失败'), 'json');
+            }
         } else {
-            $this->response(array('message'=>'更新失败'), 'json');
+            $this->response(array('message'=>'打印失败'), 'json');
         }
     }
 }
