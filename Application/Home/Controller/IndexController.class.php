@@ -33,20 +33,30 @@ class IndexController extends BaseController {
             foreach ($printer_content as $value) {
                 if ($value['printertpl_type'] == 'video') {
                     $video[] = $value['printertpl_content'];
+
+                    $source_type = 'video/x-flv';
+                    $video_ext = array_pop(explode('.', $value['printertpl_content']));
+                    if ($video_ext == 'mp4') {
+                        $source_type = 'video/mp4';
+                    } elseif ($video_ext == 'ogg') {
+                        $source_type = 'video/ogg';
+                    } elseif ($video_ext == 'webm') {
+                        $source_type = 'video/webm';
+                    }
                     if (strpos($value['printertpl_content'], 'http://') === false) {
                         $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="640" height="450" data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
-                                                  <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="video/x-flv"></video>';
+                                       <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';
                     } else {
                         $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="640" height="450" data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
-                                                  <source src="'.$value['printertpl_content'].'" type="video/x-flv"></video>';
+                                       <source src="'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';
                     }
                     $this->assign('video'.$value['printertpl_num'], $object_str);
                 } elseif ($value['printertpl_type'] == 'image') {
                     $image[] = $value['printertpl_content'];
                     if (strpos($value['printertpl_content'], 'http://') === false) {
-                        $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'"  >');
+                        $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'">');
                     } else {
-                        $this->assign('image'.$value['printertpl_num'], '<img src="'.$value['printertpl_content'].'"  >');
+                        $this->assign('image'.$value['printertpl_num'], '<img src="'.$value['printertpl_content'].'">');
                     }
                 } else {
                     $word[] = $value['printertpl_content'];
