@@ -37,6 +37,10 @@ class PrinterModel extends BaseModel {
         return $this->where('printer_id = "'.$printerid.'"')->find();
     }
     
+    public function getPrinterByActiveCode($atcode = '') {
+        return $this->where('printer_activecode = "'.$atcode.'"')->find();
+    }
+    
     public function getPrinterByTpl($tplid = '') {
         return $this->where('printer_template = "'.$tplid.'"')->select();
     }

@@ -4,13 +4,14 @@ namespace Home\Controller;
 class IndexController extends BaseController {
 
     public function indexAction(){
-        $printer_id = I('get.pid');
+        $printer_atcode = I('get.atcode');
         $printobj = new \Admin\Model\PrinterModel();
-        $printerInfo = $printobj->getPrinterInfo($printer_id);
+        $printerInfo = $printobj->getPrinterByActiveCode($printer_atcode);
         if ($printerInfo) {
             if (!$printerInfo['printer_status']) {
                 echo '设备未激活';exit;
             }
+            $printer_id = $printerInfo['printer_id'];
             if ($printerInfo['printer_template']) {
                 $template = new \Admin\Model\TemplateModel();
                 $tpl = $template->getTemplateById($printerInfo['printer_template']);
@@ -60,8 +61,7 @@ class IndexController extends BaseController {
             $this->assign('word', $word);
             
             $current_image = file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?pid='.$printer_id);
-            echo '<pre>';
-            print_r($current_image);exit;
+            $this->assign('current_image', $current_image);
             $this->display($showpage);
         } else {
             echo '未知设备';exit;

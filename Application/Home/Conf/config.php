@@ -12,7 +12,7 @@ $private_config = array(
                                                   'zoom/:uid' => 'Weixin/zoom',
                                                   'getcode/:printerid' => 'Weixin/getcode',
                                                   'createcode/:printerid' => 'Weixin/createcode',
-                                                  'printer/:pid' => 'Index/index',
+                                                  'printer/:atcode' => 'Index/index',
                                                   )
                         );
 
