@@ -10,9 +10,9 @@ class ServiceController extends RestController {
         $printobj = new \Admin\Model\PrinterModel();
         $result = $printobj->activePrinter($activecode);
         if ($result == 1) {
-            $this->response(array('message'=>'打印机激活成功'), 'json');
+            $this->response(array('message'=>'打印机激活成功', 'msgcode'=>1), 'json');
         } else {
-            $this->response(array('message'=>$result), 'json');
+            $this->response(array('message'=>$result, 'msgcode'=>0), 'json');
         }
     }
 

@@ -8,6 +8,9 @@ class IndexController extends BaseController {
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($printer_id);
         if ($printerInfo) {
+            if (!$printerInfo['printer_status']) {
+                echo '设备未激活';exit;
+            }
             if ($printerInfo['printer_template']) {
                 $template = new \Admin\Model\TemplateModel();
                 $tpl = $template->getTemplateById($printerInfo['printer_template']);
