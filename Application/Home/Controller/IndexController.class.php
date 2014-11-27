@@ -60,12 +60,8 @@ class IndexController extends BaseController {
             $this->assign('image', $image);
             $this->assign('word', $word);
             
-            $current_image = file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?activecode='.$printer_atcode);
-            echo '<pre>';
-            echo 'http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?activecode='.$printer_atcode;
-            print_r($current_image);
-            $current_image = json_decode($current_image);
-            print_r($current_image);exit;
+            $resourceobj = new \Admin\Model\ResourceModel();
+            $current_image = $resourceobj->getResourceByPrinter($printerInfo['printer_code']);
             $this->assign('current_image', $current_image);
             $this->display($showpage);
         } else {
