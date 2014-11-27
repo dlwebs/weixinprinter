@@ -44,9 +44,9 @@ class IndexController extends BaseController {
                 } elseif ($value['printertpl_type'] == 'image') {
                     $image[] = $value['printertpl_content'];
                     if (strpos($value['printertpl_content'], 'http://') === false) {
-                        $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" width="100%" height="100%">');
+                        $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'"  >');
                     } else {
-                        $this->assign('image'.$value['printertpl_num'], '<img src="'.$value['printertpl_content'].'" width="100%" height="100%">');
+                        $this->assign('image'.$value['printertpl_num'], '<img src="'.$value['printertpl_content'].'"  >');
                     }
                 } else {
                     $word[] = $value['printertpl_content'];
