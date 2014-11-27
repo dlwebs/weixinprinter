@@ -93,7 +93,8 @@ class WeixinController extends BaseController {
 
     public function receiveImage($data){
         $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'picUrl'=>(string)$data['PicUrl'], 'mediaId'=>(string)$data['MediaId']);
-        if (!_checkfree($post)) {
+        $check_print = $this->_checkfree($post);
+        if (!$check_print) {
             return '您的免费打印次数已用完';
         }
         $resource = new \Admin\Model\ResourceModel();
@@ -107,7 +108,8 @@ class WeixinController extends BaseController {
 
     public function receiveVideo($data){
         $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'mediaId'=>(string)$data['MediaId'], 'thumbMediaId'=>(string)$data['ThumbMediaId']);
-        if (!_checkfree($post)) {
+        $check_print = $this->_checkfree($post);
+        if (!$check_print) {
             return '您的免费打印次数已用完';
         }
         $resource = new \Admin\Model\ResourceModel();
@@ -117,7 +119,8 @@ class WeixinController extends BaseController {
 
     public function receiveText($data){
         $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'content'=>(string)$data['Content']);
-        if (!_checkfree($post)) {
+        $check_print = $this->_checkfree($post);
+        if (!$check_print) {
             return '您的免费打印次数已用完';
         }
         $resource = new \Admin\Model\ResourceModel();
