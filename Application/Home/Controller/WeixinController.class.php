@@ -210,18 +210,19 @@ class WeixinController extends BaseController {
 
         $copyright = $fileSavePath.$uid.'_copyright.jpg';
         $copyright_img = imagecreatetruecolor(262, 100);
-        // white background and blue text
-        $bg = imagecolorallocate($copyright_img, 200, 200, 200);
-        $textcolor = imagecolorallocate($copyright_img, 0, 0, 255);
-        imagestring($copyright_img, 5, 10, 10, '聚优客微信打印机平台', $textcolor);
+        // white background and black text
+        $bg = imagecolorallocate($copyright_img, 255, 255, 255);
+        $textcolor = imagecolorallocate($copyright_img, 0, 0, 0);
+        imagestring($copyright_img, 5, 10, 10, "Hello world!", $textcolor);
+//        imagettftext($copyright_img, 20, 0, 10, 20, $bg, '/usr/share/fonts/arial.ttf', '聚优客微信打印机平台');
         imagejpeg($copyright_img, $copyright);
         $user_img = imagecreatefromjpeg($fileSavePath.$src);
         $background = imagecreatetruecolor(262,370);
-        $color   = imagecolorallocate($background, 202, 201, 201);
+        $color = imagecolorallocate($background, 202, 201, 201);
         imagefill($background, 0, 0, $color);  
         imageColorTransparent($background, $color); 
-        imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 370, 262, 270);
-        imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 370, 262, 100);
+        imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
+        imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
         imagejpeg($background, $fileSavePath.$src);
         imagedestroy($copyright_img);
         imagedestroy($user_img);
