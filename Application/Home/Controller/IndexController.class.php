@@ -61,7 +61,7 @@ class IndexController extends BaseController {
             $this->assign('word', $word);
             
             $current_image = file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?activecode='.$printer_atcode);
-            $this->assign('current_image', $current_image);
+            $this->assign('current_image', json_decode($current_image));
             $this->display($showpage);
         } else {
             echo '未知设备';exit;
