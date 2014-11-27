@@ -60,7 +60,7 @@ class IndexController extends BaseController {
             $this->assign('image', $image);
             $this->assign('word', $word);
             
-            $current_image = file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?pid='.$printer_id);
+            $current_image = file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?activecode='.$printer_atcode);
             $this->assign('current_image', $current_image);
             $this->display($showpage);
         } else {

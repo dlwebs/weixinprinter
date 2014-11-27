@@ -17,9 +17,9 @@ class ServiceController extends RestController {
     }
 
     public function getimageAction_get(){
-        $printer_id = I('get.pid');
+        $activecode = I('get.activecode');
         $printobj = new \Admin\Model\PrinterModel();
-        $printerInfo = $printobj->getPrinterInfo($printer_id);
+        $printerInfo = $printobj->getPrinterByActiveCode($activecode);
         if ($printerInfo) {
             $resourceobj = new \Admin\Model\ResourceModel();
             $resourceinfo = $resourceobj->getResourceByPrinter($printerInfo['printer_code']);
