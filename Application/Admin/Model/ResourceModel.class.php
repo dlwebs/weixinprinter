@@ -70,7 +70,7 @@ class ResourceModel extends BaseModel {
         }
         $data['resource_mediaid'] = $post['mediaId'];
         $data['resource_type'] = $type;
-        $data['resource_status'] = 1;
+        $data['resource_status'] = 2;
         $data['resource_print'] = 1;
         $data['resource_date'] = date('Y-m-d H:i:s');
         $data['resource_checker'] = '';
