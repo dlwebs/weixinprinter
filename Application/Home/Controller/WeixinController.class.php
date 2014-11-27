@@ -165,37 +165,6 @@ class WeixinController extends BaseController {
         }
     }
 
-    public function getcodeAction() {
-        $atcode = I('get.atcode');
-        $printobj = new \Admin\Model\PrinterModel();
-        $printerInfo = $printobj->getPrinterByActiveCode($atcode);
-        if ($printerInfo) {
-            $printcode = D('printcode');
-            $code = $printcode->getCode($printerInfo['printer_code']);
-            if ($code) {
-                echo $code;
-            } else {
-                $code = $printcode->createCode($printerInfo['printer_code']);
-                echo $code;
-            }
-        } else {
-            echo 'No printer';
-        }
-    }
-
-    public function createcodeAction() {
-        $atcode = I('get.atcode');
-        $printobj = new \Admin\Model\PrinterModel();
-        $printerInfo = $printobj->getPrinterByActiveCode($atcode);
-        if ($printerInfo) {
-            $printcode = D('printcode');
-            $code = $printcode->createCode($printerInfo['printer_code']);
-            return $code;
-        } else {
-            return 'No printer';
-        }
-    }
-
     public function zoomAction() {
         $uid = I('get.uid');
         $picurl = $_GET["picurl"];

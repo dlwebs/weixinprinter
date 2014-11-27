@@ -44,4 +44,35 @@ class ServiceController extends RestController {
             $this->response(array('message'=>'打印失败'), 'json');
         }
     }
+    
+    public function getcodeAction_get() {
+        $atcode = I('get.atcode');
+        $printobj = new \Admin\Model\PrinterModel();
+        $printerInfo = $printobj->getPrinterByActiveCode($atcode);
+        if ($printerInfo) {
+            $printcode = D('printcode');
+            $code = $printcode->getCode($printerInfo['printer_code']);
+            if ($code) {
+                $this->response(array('code'=>$code), 'json');
+            } else {
+                $code = $printcode->createCode($printerInfo['printer_code']);
+                $this->response(array('code'=>$code), 'json');
+            }
+        } else {
+            $this->response(array('message'=>'未知打印机'), 'json');
+        }
+    }
+
+    public function createcodeAction_get() {
+        $atcode = I('get.atcode');
+        $printobj = new \Admin\Model\PrinterModel();
+        $printerInfo = $printobj->getPrinterByActiveCode($atcode);
+        if ($printerInfo) {
+            $printcode = D('printcode');
+            $code = $printcode->createCode($printerInfo['printer_code']);
+            $this->response(array('code'=>$code), 'json');
+        } else {
+            $this->response(array('message'=>'未知打印机'), 'json');
+        }
+    }
 }
