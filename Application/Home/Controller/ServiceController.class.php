@@ -5,7 +5,7 @@ use Think\Controller\RestController;
 
 class ServiceController extends RestController {
 
-    public function regprinter_get(){
+    public function regprinterAction_get(){
         $activecode = I('get.activecode');
         $printobj = new \Admin\Model\PrinterModel();
         $result = $printobj->activePrinter($activecode);
@@ -16,7 +16,7 @@ class ServiceController extends RestController {
         }
     }
 
-    public function getimage_get(){
+    public function getimageAction_get(){
         $printer_id = I('get.pid');
         $printobj = new \Admin\Model\PrinterModel();
         $printerInfo = $printobj->getPrinterInfo($printer_id);
@@ -29,7 +29,7 @@ class ServiceController extends RestController {
         }
     }
 
-    public function upres_put() {
+    public function upresAction_put() {
         $resource_id = I('put.rid');
         $resourceobj = new \Admin\Model\ResourceModel();
         $isok = $resourceobj->updateResourcePrintStatus($resource_id, '2');
