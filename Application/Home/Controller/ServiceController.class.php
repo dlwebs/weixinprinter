@@ -5,8 +5,8 @@ use Think\Controller\RestController;
 
 class ServiceController extends RestController {
 
-    public function regprinterAction_get(){
-        $activecode = I('get.activecode');
+    public function regprinterAction_post(){
+        $activecode = I('post.activecode');
         $printobj = new \Admin\Model\PrinterModel();
         $result = $printobj->activePrinter($activecode);
         if ($result == 1) {
