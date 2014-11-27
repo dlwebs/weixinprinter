@@ -205,7 +205,28 @@ class WeixinController extends BaseController {
 
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $imgobj = new \Think\Image();
-        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 370)->save($fileSavePath.$src);
+        $imgobj= $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 270)->save($fileSavePath.$src);
+
+
+        $copyright = $fileSavePath.$uid.'_copyright.jpg'
+        $copyright_img = imagecreatetruecolor(262, 100);
+        // white background and blue text
+        $bg = imagecolorallocate($copyright_img, 200, 200, 200);
+        $textcolor = imagecolorallocate($copyright_img, 0, 0, 255);
+        imagestring($copyright_img, 5, 10, 10, '聚优客微信打印机平台', $textcolor);
+        imagejpeg($copyright_img, $copyright);
+        $user_img = imagecreatefromjpeg($fileSavePath.$src);
+        $background = imagecreatetruecolor(262,370);
+        $color   = imagecolorallocate($background, 202, 201, 201);
+        imagefill($background, 0, 0, $color);  
+        imageColorTransparent($background, $color); 
+        imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 370, 262, 270);
+        imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 370, 262, 100);
+        imagejpeg($background, $fileSavePath.$src);
+        imagedestroy($copyright_img);
+        imagedestroy($user_img);
+        imagedestroy($background);
+
 
         $resource = new \Admin\Model\ResourceModel();
         $resinfo = $resource->getUserNoPrintResource($uid);
