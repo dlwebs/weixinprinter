@@ -155,7 +155,7 @@ class WeixinController extends BaseController {
         $resource = new \Admin\Model\ResourceModel();
         $wxinfo = $weixin->getWeixinByToken($this->_token);
         $userResourceCount = $resource->countResourceByUserid($data['FromUserName']);
-        if ($userResourceCount >= $wxinfo['resource_printer']) {
+        if ($userResourceCount >= $wxinfo['weixin_freeprint']) {
             return false;
         } else {
             return true;

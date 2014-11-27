@@ -119,7 +119,12 @@ class ResourceModel extends BaseModel {
     }
 
     public function countResourceByUserid($userid) {
-        return $this->where('resource_user = "'.$userid.'"')->count();
+        $number = $this->where('resource_user = "'.$userid.'"')->count();
+        if ($number) {
+            return $number;
+        } else {
+            return 0;
+        }
     }
     
     public function getResourceByPrinter($code) {
