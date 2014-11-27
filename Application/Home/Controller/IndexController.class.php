@@ -58,6 +58,10 @@ class IndexController extends BaseController {
             $this->assign('video', $video);
             $this->assign('image', $image);
             $this->assign('word', $word);
+            
+            $current_image = file_get_contents('http://'.$_SERVER['SERVER_NAME'].'/index.php/service/getimage?pid='.$printer_id);
+            echo '<pre>';
+            print_r($current_image);exit;
             $this->display($showpage);
         } else {
             echo '未知设备';exit;
