@@ -214,7 +214,7 @@ class WeixinController extends BaseController {
         $copyright_bg = imagecolorallocate($copyright_img, 255, 255, 255);
         $textcolor = imagecolorallocate($copyright_img, 0, 0, 0);
 //        imagestring($copyright_img, 5, 10, 10, "Hello world!", $textcolor);
-        imagettftext($copyright_img, 20, 0, 10, 20, $copyright_bg, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', '聚优客微信打印机平台');
+        imagettftext($copyright_img, 20, 0, 10, 20, $textcolor, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', '聚优客微信打印机平台');
         imagejpeg($copyright_img, $copyright);
         $user_img = imagecreatefromjpeg($fileSavePath.$src);
         $background = imagecreatetruecolor(262,370);
