@@ -64,7 +64,7 @@ class IndexController extends BaseController {
                 }
             }
             $this->assign('printer', $printerInfo);
-            $this->assign('imgcode', '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" width="100%" height="100%">');
+            $this->assign('imgcode', '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" width="100%">');
             $this->assign('code', '<span id="printercode">'.$code.'</span>');
             $this->assign('video', $video);
             $this->assign('image', $image);
