@@ -207,31 +207,37 @@ class WeixinController extends BaseController {
         $imgobj = new \Think\Image();
         $imgobj = $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 270)->save($fileSavePath.$src);
 
-
-        $copyright = $fileSavePath.$uid.'_copyright.jpg';
-        $copyright_img = imagecreate(262, 100);
-        // white background and black text
-        $copyright_bg = imagecolorallocate($copyright_img, 255, 255, 255);
-        $textcolor = imagecolorallocate($copyright_img, 0, 0, 0);
-//        imagestring($copyright_img, 5, 10, 10, "Hello world!", $textcolor);
-        imagettftext($copyright_img, 5, 0, 10, 20, $textcolor, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc',"聚优客微信打印机平台\n版权所有");
-        imagejpeg($copyright_img, $copyright);
-        $user_img = imagecreatefromjpeg($fileSavePath.$src);
-        $background = imagecreatetruecolor(262,370);
-        $color = imagecolorallocate($background, 202, 201, 201);
-        imagefill($background, 0, 0, $color);  
-        imageColorTransparent($background, $color); 
-        imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
-        imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
-        imagejpeg($background, $fileSavePath.$src);
-        imagedestroy($copyright_img);
-        imagedestroy($user_img);
-        imagedestroy($background);
-
-
         $resource = new \Admin\Model\ResourceModel();
+        $weixin = new \Admin\Model\WeixinModel();
         $resinfo = $resource->getUserNoPrintResource($uid);
         if ($resinfo) {
+//            $copyright = $fileSavePath.$uid.'_copyright.jpg';
+//            $copyright_img = imagecreate(262, 100);
+//            // white background and black text
+//            $copyright_bg = imagecolorallocate($copyright_img, 255, 255, 255);
+//            $textcolor = imagecolorallocate($copyright_img, 0, 0, 0);
+//    //        imagestring($copyright_img, 5, 10, 10, "Hello world!", $textcolor);
+//            imagettftext($copyright_img, 10, 0, 10, 20, $textcolor, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc',"聚优客微信打印机平台\n版权所有");
+//            imagejpeg($copyright_img, $copyright);
+            $token = $resinfo['resource_weixin'];
+            $weixinobj = $weixin->getWeixinByToken($token);
+            if (!$weixinobj['weixin_copyright']) {
+                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');
+            } else {
+                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
+            }
+            $user_img = imagecreatefromjpeg($fileSavePath.$src);
+            $background = imagecreatetruecolor(262,370);
+            $color = imagecolorallocate($background, 202, 201, 201);
+            imagefill($background, 0, 0, $color);
+            imageColorTransparent($background, $color); 
+            imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
+            imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
+            imagejpeg($background, $fileSavePath.$src);
+            imagedestroy($copyright_img);
+            imagedestroy($user_img);
+            imagedestroy($background);
+        
             $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$src);
             if ($isok) {
                 echo $src;

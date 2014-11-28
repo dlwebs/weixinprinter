@@ -171,6 +171,23 @@ class WeixinController extends BaseController {
                 $this->error('最多只允许添加'.$sysinfo['system_wxnum'].'个微信公众号');
             }
         }
+        
+        $isdelcopyrightimage = $post['delweixin_copyright'];
+        if ($isdelcopyrightimage) {
+            $post['weixin_copyright'] = '';
+            unlink('./upload/copyright/'.$isdelcopyrightimage);
+        }
+        if ($_FILES['weixin_copyright']['name']) {
+            $upload = new \Think\Upload();
+            $upload->maxSize = 3145728;//3M
+            $upload->exts = array('jpg', 'gif', 'png', 'jpeg');
+            $upload->rootPath = './upload/copyright/';
+            $uploadinfo = $upload->uploadOne($_FILES['weixin_copyright']);
+            if(!$uploadinfo) {
+                $this->error($upload->getError());
+            }
+            $post['weixin_copyright'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+        }
 
         $isdelimage = $post['delweixin_imgcode'];
         if ($isdelimage) {

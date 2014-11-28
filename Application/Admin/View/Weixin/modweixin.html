@@ -61,6 +61,16 @@
                  </if>
               </div>
             </div>
+            <div class="form-group">
+              <label for="weixin_copyright" class="col-sm-3 control-label">版权图片</label>
+              <div class="col-sm-9">
+                <input type="file" id="weixin_copyright" name="weixin_copyright">
+                <if condition="$wxinfo.weixin_copyright neq ''">
+                      <img src="/upload/copyright/{$wxinfo.weixin_copyright}" width="262" height="100">
+                      <input type="checkbox" name="delweixin_copyright" value='{$wxinfo.weixin_copyright}'>删除版权图片
+                 </if>
+              </div>
+            </div>
             <if condition="$Think.session.userinfo.group_id eq 1">
             <div class="form-group">
               <label for="weixin_imgcode" class="col-sm-3 control-label">用户列表</label>
