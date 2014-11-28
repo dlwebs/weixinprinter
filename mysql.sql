@@ -23,10 +23,10 @@ CREATE TABLE `wxp_user` (
   `user_pw` varchar(50) NOT NULL COMMENT '用户密码',
   `user_regdate` datetime NOT NULL COMMENT '用户注册日期',
   `user_status` enum('1','0') NOT NULL COMMENT '用户状态，1是启用，0是停用',
-  `user_weixin` varchar(50) NOT NULL COMMENT '普通微信用户Token，用来识别普通微信用户',
+  `user_weixin` varchar(50) NOT NULL COMMENT '公众号Token，用来识别微信用户属于哪个微信公众账号',
   `user_follow` enum('unsubscribe','subscribe') NOT NULL COMMENT '用户关注公众号状态，unsubscribe是未关注，subscribe是已关注',
   PRIMARY KEY (`id`),
-  UNIQUE KEY user_id (user_id)
+  UNIQUE KEY user_id_weixin (user_id, user_weixin)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 INSERT INTO `wxp_user` VALUES (1, 'admin', '管理员',  '21232f297a57a5a743894a0e4a801fc3', now(), '1', '', 'unsubscribe');

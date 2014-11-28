@@ -141,13 +141,13 @@ class WeixinController extends BaseController {
         $userobj = new \Admin\Model\UserModel();
         $insert['user_id'] = $fromUserName;
         $insert['user_follow'] = $eventType;
-        $userInfo = $userobj->getUserById($insert['user_id']);
+        $userInfo = $userobj->getUserByIdWeixin($insert['user_id'], $toUserName);
         if ($userInfo) {
-            $userobj->where('user_id = "'.$insert['user_id'].'"')->setField('user_follow', $insert['user_follow']);
+            $userobj->where('user_id = "'.$insert['user_id'].'" and user_weixin = "'.$toUserName.'"')->setField('user_follow', $insert['user_follow']);
         } else {
             $insert['user_regdate'] = date('Y-m-d H:i:s');
             $insert['user_weixin'] = $toUserName;
-            $insert['user_name'] = '微信用户';
+            $insert['user_name'] = '普通微信用户';
             $userobj->add($insert);
         }
         return '关注成功';
@@ -157,7 +157,7 @@ class WeixinController extends BaseController {
         $weixin = new \Admin\Model\WeixinModel();
         $resource = new \Admin\Model\ResourceModel();
         $wxinfo = $weixin->getWeixinByToken($this->_token);
-        $userResourceCount = $resource->countResourceByUserid($data['fromUserName']);
+        $userResourceCount = $resource->countResourceByUserid($data['fromUserName'], $this->_token);
         if ($userResourceCount >= $wxinfo['weixin_freeprint']) {
             return false;
         } else {
@@ -211,18 +211,9 @@ class WeixinController extends BaseController {
         $weixin = new \Admin\Model\WeixinModel();
         $resinfo = $resource->getUserNoPrintResource($uid);
         if ($resinfo) {
-//            $copyright = $fileSavePath.$uid.'_copyright.jpg';
-//            $copyright_img = imagecreate(262, 100);
-//            // white background and black text
-//            $copyright_bg = imagecolorallocate($copyright_img, 255, 255, 255);
-//            $textcolor = imagecolorallocate($copyright_img, 0, 0, 0);
-//    //        imagestring($copyright_img, 5, 10, 10, "Hello world!", $textcolor);
-//            imagettftext($copyright_img, 10, 0, 10, 20, $textcolor, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc',"聚优客微信打印机平台\n版权所有");
-//            imagejpeg($copyright_img, $copyright);
-            $token = $resinfo['resource_weixin'];
-            $weixinobj = $weixin->getWeixinByToken($token);
+            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
             if (!$weixinobj['weixin_copyright']) {
-                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');
+                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
             } else {
                 $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
             }

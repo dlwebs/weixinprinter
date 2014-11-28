@@ -118,8 +118,8 @@ class ResourceModel extends BaseModel {
         return $this->where('resource_weixin = "'.$resource_weixin.'"')->delete();
     }
 
-    public function countResourceByUserid($userid) {
-        $number = $this->where('resource_user = "'.$userid.'"')->count();
+    public function countResourceByUserid($userid, $token = '') {
+        $number = $this->where('resource_user = "'.$userid.'" and resource_weixin = "'.$token.'"')->count();
         if ($number) {
             return $number;
         } else {

@@ -34,6 +34,10 @@ class UserModel extends BaseModel {
         return $this->where('user_id = "'.$userid.'"')->find();
     }
     
+    public function getUserByIdWeixin($userid = '', $token = '') {
+        return $this->where('user_id = "'.$userid.'" and user_weixin = "'.$token.'"')->find();
+    }
+    
     public function getFans($user_token = '') {
         $count = $this->where('user_weixin = "'.$user_token.'"')->count();
         $page = new \Think\Page($count, 10);

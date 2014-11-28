@@ -40,9 +40,9 @@ class IndexController extends BaseController {
                 }
 
                 if (count($own_weixin)) {
-                    foreach ($daterange as $value2) {
+                    foreach ($daterange as $key => $value2) {
                         $searchrange = array($value2.' 00:00:00', $value2.' 23:59:59');
-                        $dateprintedNumber[] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
+                        $dateprintedNumber[$key] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
                     }
                     $printer_num = $printerobj->countPrinterNumber($own_weixin);
                     $fans_num = $userobj->countFans($own_weixin);
