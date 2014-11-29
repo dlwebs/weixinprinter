@@ -45,8 +45,22 @@ class ResourceModel extends BaseModel {
         return $resourceInfo;
     }
     public function getResourceList($where='1') {
-        $page = new \Think\Page($count, 10);
+        //print_r($where);
+        foreach($where as $key=>$val) {
+            if($key == "weixin_name" || $key == "resource_printer"){
+                if($key == "weixin_name"){
+                    $value = $val[1];
+                    $value = str_replace("%", "", $value);
+                    $parameter[$key] = $value;
+                }else{
+                    $parameter[$key] = $val[1];
+                }
+            }
+        }
+        $count = $this->where($where)->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_token')->count();
+        $page = new \Think\Page($count, 10, $parameter);
         $grouplist = $this->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_token')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
+        
         $pageinfo = $page->show();
         return array('data' => $grouplist, 'page' => $pageinfo);
     }

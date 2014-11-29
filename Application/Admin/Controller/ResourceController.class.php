@@ -6,17 +6,30 @@ class ResourceController extends BaseController {
     public function listAction(){
         $resourceobj = D('resource');
         $searchArray = I('post.');
-		$condition = " resource_status='2' AND resource_print='2' ";
+        $searchGetArray = I('get.');
+        $condition["resource_status"] = '2';
+        $condition["resource_print"] = "2";
+		//$condition = " resource_status='2' AND resource_print='2' ";
 		$group_id = $this->userInfo['group_id'];
         $user_id = $this->userInfo['user_id'];
         if(count($searchArray)){
 			if($searchArray["search_weixin"]){
-				$condition = $condition." AND resource_weixin = '".$searchArray["search_weixin"]."'";
+                $condition['weixin_name'] = array('like',"%".$searchArray['search_weixin']."%");
 				$this->assign('search_weixin', $searchArray["search_weixin"]);
 			}
 			if($searchArray["search_printer"]){
-				$condition = $condition." AND resource_printer = '".$searchArray["search_printer"]."'";
+                $condition['resource_printer'] = $searchArray['search_printer'];
 				$this->assign('search_printer', $searchArray['search_printer']);
+			}
+        }
+        if(count($searchGetArray)){
+			if($searchGetArray["weixin_name"]){
+                $condition['weixin_name'] = array('like',"%".urldecode($searchGetArray['weixin_name'])."%");
+				$this->assign('search_weixin', urldecode($searchGetArray["weixin_name"]));
+			}
+			if($searchGetArray["search_printer"]){
+                $condition['resource_printer'] = $searchGetArray['search_printer'];
+				$this->assign('search_printer', $searchGetArray['search_printer']);
 			}
         }
 		if ($group_id != 1) {
@@ -27,7 +40,7 @@ class ResourceController extends BaseController {
 				$tokenArray[] = $array[$i]["weixin_token"];
 			}
 			if(count($tokenArray)){
-				$condition = $condition." AND resource_weixin in ('".implode("','", $tokenArray)."')";
+                $condition['resource_weixin'] = array('in',"('".implode("','", $tokenArray)."')");
 				$resourcedata = $resourceobj->getResourceList($condition);
 			}else{
 				$resourcedata = "";
@@ -35,6 +48,7 @@ class ResourceController extends BaseController {
 		}else{
 			$resourcedata = $resourceobj->getResourceList($condition);
 		}
+        //print_r($condition);
 		//print_r($resourcedata);
         $this->assign('resourcelist', $resourcedata['data']);
         $this->assign('page', $resourcedata['page']);
