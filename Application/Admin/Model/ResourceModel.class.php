@@ -57,9 +57,10 @@ class ResourceModel extends BaseModel {
                 }
             }
         }
-        $count = $this->where($where)->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_token')->count();
+        $count = $this->where($where)->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_user u on resource_user=u.user_id left join wxp_weixin w on resource_weixin=w.weixin_token')->count();
         $page = new \Think\Page($count, 10, $parameter);
-        $grouplist = $this->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_weixin w on resource_weixin=w.weixin_token')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
+        //print_r($page);
+        $grouplist = $this->join(' left join wxp_printer p on left(resource_printer, 3)=p.printer_code left join wxp_user u on resource_user=u.user_id left join wxp_weixin w on resource_weixin=w.weixin_token')->order("resource_date desc")->limit($page->firstRow.','.$page->listRows)->where($where)->select();
         
         $pageinfo = $page->show();
         return array('data' => $grouplist, 'page' => $pageinfo);

@@ -32,15 +32,17 @@ class ResourceController extends BaseController {
 				$this->assign('search_printer', $searchGetArray['search_printer']);
 			}
         }
+        //echo $user_id;
 		if ($group_id != 1) {
 			$wxobj = D('weixin');
-			$wxdata = $wxobj->getWeixinList('', 'weixin_userid = "'.$user_id.'"');
+			$wxdata = $wxobj->getWeixinList('all', "weixin_userid = '".$user_id."'");
+            //print_r($wxdata);
 			$array = $wxdata["data"];
 			for($i = 0; $i < count($array); $i ++){
 				$tokenArray[] = $array[$i]["weixin_token"];
 			}
 			if(count($tokenArray)){
-                $condition['resource_weixin'] = array('in',"('".implode("','", $tokenArray)."')");
+                $condition['resource_weixin'] = array('in',implode("','", $tokenArray));
 				$resourcedata = $resourceobj->getResourceList($condition);
 			}else{
 				$resourcedata = "";
