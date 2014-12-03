@@ -102,11 +102,20 @@ CREATE TABLE `wxp_printer` (
   `printer_type` enum('1','2') NOT NULL COMMENT '打印机终端类型，1是横屏，2是竖屏',
   `printer_activecode` varchar(10) NOT NULL COMMENT '打印机激活码',
   `printer_status` enum('0','1') NOT NULL COMMENT '打印机状态，0是未激活，1是已激活',
-  `printer_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_token字段',
   `printer_template` tinyint (4) unsigned NOT NULL COMMENT '打印机模板，关联template表template_id字段',
   PRIMARY KEY (`printer_id`),
   UNIQUE KEY printer_code (printer_code)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='设备表';
+
+
+
+DROP TABLE IF EXISTS `wxp_printerwx`;
+CREATE TABLE `wxp_printerwx` (
+  `printerwx_id` int(11) NOT NULL auto_increment,
+  `printerwx_printer` varchar(50) NOT NULL COMMENT '设备ID，关联printer表printer_id字段',
+  `printerwx_weixin` varchar(50) NOT NULL COMMENT '公众号帐号，关联weixin表weixin_token字段',
+  PRIMARY KEY (`printerwx_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='设备与微信关联表';
 
 
 
