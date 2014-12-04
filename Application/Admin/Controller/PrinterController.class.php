@@ -26,6 +26,9 @@ class PrinterController extends BaseController {
 
     public function listAction() {
         $printerobj = D('printer');
+        $printerwxobj = D('printerwx');
+        $wxobj = D('weixin');
+
         $searchArray = I('post.');
         $group_id = $this->userInfo['group_id'];
         $user_id = $this->userInfo['user_id'];
@@ -36,7 +39,20 @@ class PrinterController extends BaseController {
                 $this->assign('search_name', $searchArray["search_name"]);
             }
             if ($searchArray["search_weixin"]) {
-                $condition = $condition . " AND printer_weixin = '" . $searchArray["search_weixin"] . "'";
+                $wxArray = $wxobj->getWeixinList('all', " weixin_name like '%".$searchArray['search_weixin']."%' or weixin_token like '%".$searchArray['search_weixin']."%'");
+                for($i = 0; $i < count($wxArray['data']); $i++){
+                    $tokenArray[] = $wxArray['data'][$i]['weixin_token'];
+                }
+                $searchResultArray = $printerwxobj->getPrinterByWx($tokenArray);
+                for($i = 0; $i < count($searchResultArray); $i ++){
+                    $printerArray[] = $searchResultArray[$i]["printerwx_printer"];
+                }
+                if(count($printerArray)){
+                    $condition = $condition . " AND printer_id in (".implode(",", $printerArray).") ";
+                } else {
+                    $nonData = 1;
+                }
+                //$condition = $condition . " AND printer_weixin = '" . $searchArray["search_weixin"] . "'";
                 $this->assign('search_weixin', $searchArray['search_weixin']);
             }
             if ($searchArray["search_type"]) {
@@ -51,14 +67,30 @@ class PrinterController extends BaseController {
             for ($i = 0; $i < count($array); $i ++) {
                 $tokenArray[] = $array[$i]["weixin_token"];
             }
-            if (count($tokenArray)) {
-                $condition = $condition . " AND printer_weixin in ('" . implode("','", $tokenArray) . "')";
-                $printerdata = $printerobj->getPrinterList('', $condition);
+            if ($nonData){
+                $printerdata = "";
+            }elseif (count($tokenArray)) {
+                $searchResultArray = $printerwxobj->getPrinterByWx($tokenArray);
+                for($i = 0; $i < count($searchResultArray); $i ++){
+                    $printerArray[] = $searchResultArray[$i]["printerwx_printer"];
+                }
+                if(count($printerArray)){
+                    $condition = $condition . " AND printer_id in (".implode(",", $printerArray).") ";
+                    $printerdata = $printerobj->getPrinterList('', $condition);
+                } else {
+                    $printerdata = $printerobj->getPrinterList('', $condition);
+                }
+                //$condition = $condition . " AND printer_weixin in ('" . implode("','", $tokenArray) . "')";
+                //$printerdata = $printerobj->getPrinterList('', $condition);
             } else {
                 $printerdata = "";
             }
         } else {
-            $printerdata = $printerobj->getPrinterList('', $condition);
+            if ($nonData){
+                $printerdata = "";
+            }else{
+                $printerdata = $printerobj->getPrinterList('', $condition);
+            }
         }
         $this->assign('printerlist', $printerdata['data']);
         $this->assign('page', $printerdata['page']);
@@ -261,6 +293,8 @@ class PrinterController extends BaseController {
             if (!$post['printer_weixin']) {
                 $this->error("公共帐号不能为空");
             }
+            $delArray["printerwx_printer"] = $post["printer_id"];
+            $printerwxobj->delPrinterWx($delArray);
             $updatePrintArray["printer_id"] = $post["printer_id"];
             $updatePrintArray["printer_name"] = $post["printer_name"];
             $updatePrintArray["printer_code"] = $post["printer_code"];

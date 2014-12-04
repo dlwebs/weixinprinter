@@ -34,6 +34,10 @@ class PrinterwxModel extends BaseModel {
         }
         return $this->distinct(true)->field('printerwx_weixin')->where($where)->select();
     }
+    public function getPrinterWxInfoByCondition($where) {
+        $printerwxInfo = $this->where($where)->select();
+        return $printerwxInfo;
+    }
     public function getPrinterWxInfoByWeixin($data) {
         if($data["printerwx_printer"]){
             $where["printerwx_printer"] = $data["printerwx_printer"];
@@ -48,6 +52,9 @@ class PrinterwxModel extends BaseModel {
         $data['printerwx_id'] = $printerwx_id;
         $printerwxInfo = $this->where($data)->find();
         return $printerwxInfo;
+    }
+    public function delPrinterWx($data = array()){
+        return $this->where($data)->delete();
     }
     public function addPrinterWx($data = array()) {
         foreach ($data as $key => $value) {
