@@ -129,8 +129,6 @@ class WeixinController extends BaseController {
         }
 
         if ($isok) {
-            $printer = D('printer');
-            $isprinterdel = $printer->deletePrinterByWx($wxinfo['weixin_token']);
             $resource = D('resource');
             $isresourcedel = $resource->deleteResourceByWx($wxinfo['weixin_token']);
             $this->success('删除公众号成功');

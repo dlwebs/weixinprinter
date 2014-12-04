@@ -10,6 +10,7 @@ class IndexController extends BaseController {
         $resourceobj = D("resource");
         $wxobj = D("weixin");
         $printerobj = D("printer");
+        $printerwxobj = D("printerwx");
         $daterange = array();
         for ($i=7;$i>0;$i--){
             $tempdate = strtotime("-$i day");
@@ -44,7 +45,7 @@ class IndexController extends BaseController {
                         $searchrange = array($value2.' 00:00:00', $value2.' 23:59:59');
                         $dateprintedNumber[$key] = $resourceobj->countResourcePrinted($own_weixin, $searchrange);
                     }
-                    $printer_num = $printerobj->countPrinterNumber($own_weixin);
+                    $printer_num = $printerwxobj->countPrinterNumber($own_weixin);
                     $fans_num = $userobj->countFans($own_weixin);
                     $resource_num = $resourceobj->countTotalResource($own_weixin);
                 } else {
@@ -87,7 +88,7 @@ class IndexController extends BaseController {
                 $own_weixin[] = $value['weixin_token'];
 
                 $weixin_name[] = $value['weixin_name'];
-                $printer_num = $printerobj->countPrinterNumber($value['weixin_token']);
+                $printer_num = $printerwxobj->countPrinterNumber($value['weixin_token']);
                 $shopuserPrinterNum[] = '{value:'.$printer_num.', name:"'.$value['weixin_name'].'"}';
                 $fans_num = $userobj->countFans($value['weixin_token']);
                 $shopuserFansNum[] = '{value:'.$fans_num.', name:"'.$value['weixin_name'].'"}';
@@ -107,7 +108,8 @@ class IndexController extends BaseController {
             $this->assign('totalfans_number', $totalfans_num);
 
             if (count($own_weixin)) {
-                $printerdata = $printerobj->getPrinterList('all', array('printer_weixin'=>array('in', $own_weixin)));
+                $printerids = $printerwxobj->getPrinterByWx($own_weixin);
+                $printerdata = $printerobj->getPrinterList('all', array('printer_id'=>array('in', $printerids)));
                 $printerdata = $printerdata['data'];
             } else {
                 $printerdata = array();
@@ -226,7 +228,8 @@ class IndexController extends BaseController {
                 $own_weixin[] = $value['weixin_token'];
             }
             if (count($own_weixin)) {
-                $printerdata = $printerobj->getPrinterList('all', array('printer_weixin'=>array('in', $own_weixin)));
+                $printerids = $printerwxobj->getPrinterByWx($own_weixin);
+                $printerdata = $printerobj->getPrinterList('all', array('printer_id'=>array('in', $printerids)));
                 $printerdata = $printerdata['data'];
             } else {
                 $printerdata = array();

@@ -29,9 +29,6 @@ class PrinterModel extends BaseModel {
     public function getPrinterByCode($printercode = '') {
         return $this->where('printer_code = "'.$printercode.'"')->find();
     }
-    public function getPrinterByWeixin($printerweixin = '') {
-        return $this->where('printer_weixin = "'.$printerweixin.'"')->find();
-    }
 
     public function getPrinterById($printerid = '') {
         return $this->where('printer_id = "'.$printerid.'"')->find();
@@ -67,24 +64,6 @@ class PrinterModel extends BaseModel {
 
     public function deletePrinterById($printerid = '') {
         return $this->where('printer_id = "'.$printerid.'"')->delete();
-    }
-
-    public function deletePrinterByWx($printer_weixin = '') {
-        return $this->where('printer_weixin = "'.$printer_weixin.'"')->delete();
-    }
-    
-    public function countPrinterNumber($weixin = array()) {
-        if (is_array($weixin) && count($weixin)) {
-            $where['printer_weixin'] = array('in', $weixin);
-        } else {
-            $where['printer_weixin'] = $weixin;
-        }
-        $number = $this->where($where)->count();
-        if ($number) {
-            return $number;
-        } else {
-            return 0;
-        }
     }
     
     public function activePrinter($activecode) {
