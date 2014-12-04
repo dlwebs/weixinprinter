@@ -62,6 +62,7 @@ class IndexController extends BaseController {
                 }
             }
             $this->assign('printer_name', $printerInfo['printer_name']);
+            $this->assign('atcode', $printer_atcode);
             $this->assign('code', '<span id="printercode">'.$code.'</span>');
             
             $resourceobj = new \Admin\Model\ResourceModel();

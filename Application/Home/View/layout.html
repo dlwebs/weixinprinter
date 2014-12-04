@@ -23,11 +23,15 @@
             window.setInterval(function () {
                 $.get("http://{$Think.server.SERVER_NAME}/index.php/service/getcode?atcode={$atcode}", function (data) {
                     var jsondata = $.parseJSON(data);
-                    alert(jsondata);
+                    var printercode = $("#printercode");
+//                    printercode.html(jsondata.code);
+                    alert(jsondata);alert(jsondata.code);
                 });
                 $.get("http://{$Think.server.SERVER_NAME}/index.php/service/getimage?activecode={$atcode}", function (data) {
                     var jsondata = $.parseJSON(data);
-                    alert(jsondata);
+                    var current_image = $("#current_image");
+//                    current_image.attr("src", jsondata.resource_content);
+                    alert(jsondata);alert(jsondata.resource_content);
                 });
             }, 2000);
         });
