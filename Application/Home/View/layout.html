@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>微信打印机</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/video-js.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/js/ie10-viewport-bug-workaround.js"></script>
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.js"></script>
+      <script src="/js/respond.min.js"></script>
+    <![endif]-->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/video.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            window.setInterval(function () {
+                $.get("http://{$Think.server.SERVER_NAME}/index.php/service/getcode?atcode={$atcode}", function (data) {
+                    var jsondata = $.parseJSON(data);
+                    alert(jsondata);
+                });
+                $.get("http://{$Think.server.SERVER_NAME}/index.php/service/getimage?activecode={$atcode}", function (data) {
+                    var jsondata = $.parseJSON(data);
+                    alert(jsondata);
+                });
+            }, 2000);
+        });
+    </script>
+  </head>
+
+<body>
 {__CONTENT__}
+</body>
+</html>

@@ -4,7 +4,7 @@ $common_config = include APP_PATH.'Common/Conf/config.php';
 
 //私有配置
 $private_config = array(
-                        'LAYOUT_ON' => false,
+                        'LAYOUT_ON' => true,
                         'URL_ROUTER_ON' => true,
                         'URL_CASE_INSENSITIVE' =>true,
                         'URL_ROUTE_RULES' => array(

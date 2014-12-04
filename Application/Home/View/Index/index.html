@@ -1,37 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>微信打印机</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/dashboard.css" rel="stylesheet">
-    <link href="/css/video-js.min.css" rel="stylesheet">
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="/js/ie10-viewport-bug-workaround.js"></script>
-    <!--[if lt IE 9]>
-      <script src="/js/html5shiv.js"></script>
-      <script src="/js/respond.min.js"></script>
-    <![endif]-->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/docs.min.js"></script>
-    <script src="/js/video.js"></script>
-  </head>
-
-<body>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">{$video1}</div>
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-3">{$image2}</div>
-                <div class="col-md-3"><h3>{$printer.printer_name}</h3><br>{$word1}</div>
+                <div class="col-md-3"><h3>{$printer_name}</h3><br>{$word1}</div>
             </div>
             <div class="row">
                 <div class="col-md-3">{$image3}</div>
-                <div class="col-md-3">{$imgcode}</div>
+                <div class="col-md-3">{$qrcode1}</div>
             </div>
         </div>
     </div>
@@ -49,5 +26,3 @@
         </div>
     </div>
 </div>
-</body>
-</html>

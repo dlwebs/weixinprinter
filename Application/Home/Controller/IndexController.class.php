@@ -19,21 +19,21 @@ class IndexController extends BaseController {
             } else {
                 $showpage = 'index';
             }
+            $printerwxobj = new \Admin\Model\PrinterwxModel();
+            $printerwx = $printerwxobj->getWeixinByPrinter($printer_id);
             $weixin = new \Admin\Model\WeixinModel();
-            $wxinfo = $weixin->getWeixinByToken($printerInfo['printer_weixin']);
-
+            foreach ($printerwx as $key => $pwx) {
+                $qrcodenum = $key + 1;
+                $wxinfo = $weixin->getWeixinByToken($pwx['printerwx_weixin']);
+                $this->assign('qrcode'.$qrcodenum, '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" alt="'.$wxinfo['weixin_name'].'">');
+            }
             $printcode = D('printcode');
             $code = $printcode->getCode($printerInfo['printer_code']);
 
             $printertpl = new \Admin\Model\PrintertplModel();
             $printer_content = $printertpl->getPrintertplById($printer_id);
-            $video = array();
-            $image = array();
-            $word = array();
             foreach ($printer_content as $value) {
                 if ($value['printertpl_type'] == 'video') {
-                    $video[] = $value['printertpl_content'];
-
                     $source_type = 'video/x-flv';
                     $video_ext = array_pop(explode('.', $value['printertpl_content']));
                     if ($video_ext == 'mp4') {
@@ -52,28 +52,22 @@ class IndexController extends BaseController {
                     }
                     $this->assign('video'.$value['printertpl_num'], $object_str);
                 } elseif ($value['printertpl_type'] == 'image') {
-                    $image[] = $value['printertpl_content'];
                     if (strpos($value['printertpl_content'], 'http://') === false) {
                         $this->assign('image'.$value['printertpl_num'], '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'">');
                     } else {
                         $this->assign('image'.$value['printertpl_num'], '<img src="'.$value['printertpl_content'].'">');
                     }
                 } else {
-                    $word[] = $value['printertpl_content'];
                     $this->assign('word'.$value['printertpl_num'], $value['printertpl_content']);
                 }
             }
-            $this->assign('printer', $printerInfo);
-            $this->assign('imgcode', '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" width="100%">');
+            $this->assign('printer_name', $printerInfo['printer_name']);
             $this->assign('code', '<span id="printercode">'.$code.'</span>');
-            $this->assign('video', $video);
-            $this->assign('image', $image);
-            $this->assign('word', $word);
             
             $resourceobj = new \Admin\Model\ResourceModel();
             $current_image = $resourceobj->getResourceByPrinter($printerInfo['printer_code']);
             if ($current_image) {
-                $this->assign('current_image', '<img width="100%" height="100%" src="'.$current_image['resource_content'].'">');
+                $this->assign('current_image', '<img id="current_image" src="'.$current_image['resource_content'].'">');
             } else {
                 $this->assign('current_image', '当前无图片');
             }

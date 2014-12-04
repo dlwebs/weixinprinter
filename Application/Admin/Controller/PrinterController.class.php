@@ -174,6 +174,7 @@ class PrinterController extends BaseController {
         $post = I('post.');
         $printerobj = D('printer');
         $printertplobj = D('printertpl');
+        $printerwxobj = D('printerwx');
         $updatePrintArray = array();
         
         if (!isset($post['id']) || !$post['id']) {
@@ -181,7 +182,7 @@ class PrinterController extends BaseController {
             $sysobj = D('system');
             $weixininfo = $weixinobj->getWeixinByToken($post["printer_weixin"]);
             $sysinfo = $sysobj->getSystemInfoByUser($weixininfo['weixin_userid']);
-            $printerNumber = $printerobj->countPrinterNumber($post["printer_weixin"]);
+            $printerNumber = $printerwxobj->countPrinterNumber($post["printer_weixin"]);
             if ($sysinfo['system_printernum'] <= $printerNumber) {
                 $this->error('最多只允许添加'.$sysinfo['system_printernum'].'个打印机');
             }
