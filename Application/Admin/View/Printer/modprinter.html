@@ -81,10 +81,10 @@
             <div class="form-group">
               <label for="userid" class="col-sm-3 control-label">公众帐号</label>
               <div class="col-sm-8">
-				<select class="form-control" name="printer_weixin" id="printer_weixin">
-					<option value="">请选择公众帐号</option>
+				<select class="form-control" name="printer_weixin[]" multiple="multiple" id="printer_weixin">
+					<option value="" disabled>请选择公众帐号</option>
 					<foreach name="weixinlist" item="weixin">
-					  <option value="{$weixin.weixin_token}"<if condition="$weixin.weixin_token eq $printerinfo['printer_weixin']"> selected</if>>{$weixin.weixin_name}</option>
+					  <option value="{$weixin.weixin_token}" <in name="weixin.weixin_token" value="$wxArray">selected</in>>{$weixin.weixin_name}</option>
 					</foreach>
                 </select>
               </div>

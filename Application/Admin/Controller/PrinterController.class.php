@@ -113,12 +113,21 @@ class PrinterController extends BaseController {
     public function modprinterAction() {
         $printer_id = I('get.printerid');
         $printerobj = D("printer");
+        $printerwxobj = D('printerwx');
+
         $printerinfo = $printerobj->getPrinterById($printer_id);
         $this->assign('printerinfo', $printerinfo);
-
+    
         $template = D('Template');
         $tpldata = $template->getTemplateList();
         $this->assign('tpllist', $tpldata['data']);
+
+        $printerwxArray["printerwx_printer"] = $printer_id;
+        $printerwxInfo = $printerwxobj->getPrinterWxInfoByWeixin($printerwxArray);
+        for($i = 0; $i < count($printerwxInfo); $i ++){
+            $wxArray[] = $printerwxInfo[$i]["printerwx_weixin"];
+        }
+        $this->assign('wxArray', implode(",", $wxArray));
 
         $weixin = D('weixin');
         $group_id = $this->userInfo['group_id'];
@@ -256,9 +265,14 @@ class PrinterController extends BaseController {
             $updatePrintArray["printer_name"] = $post["printer_name"];
             $updatePrintArray["printer_code"] = $post["printer_code"];
             $updatePrintArray["printer_type"] = $post["printer_type"];
-            $updatePrintArray["printer_weixin"] = $post["printer_weixin"];
+            //$updatePrintArray["printer_weixin"] = $post["printer_weixin"];
             $updatePrintArray["printer_template"] = $post["printer_template"];
             $printernumber = $printerobj->updatePrinter($updatePrintArray);
+            foreach($post['printer_weixin'] as $key=>$value){
+                $updatePrintWxArray["printerwx_printer"] = $post["printer_id"];
+                $updatePrintWxArray["printerwx_weixin"] = $value;
+                $printerwxobj->updatePrinterWx($updatePrintWxArray);
+            } 
             $id = $post['id'];
         } else {
             if (!trim($post['printer_name'])) {
@@ -280,11 +294,18 @@ class PrinterController extends BaseController {
             $updatePrintArray["printer_name"] = $post["printer_name"];
             $updatePrintArray["printer_code"] = $post["printer_code"];
             $updatePrintArray["printer_type"] = $post["printer_type"];
-            $updatePrintArray["printer_weixin"] = $post["printer_weixin"];
+            //$updatePrintArray["printer_weixin"] = $post["printer_weixin"];
             $updatePrintArray["printer_template"] = $post["printer_template"];
             $updatePrintArray["printer_activecode"] = \Org\Util\String::randString();
             $updatePrintArray["printer_status"] = "0";
             $id = $printerobj->addPrinter($updatePrintArray);
+            foreach($post['printer_weixin'] as $key=>$value){
+                $updatePrintWxArray["printerwx_printer"] = $id;
+                $updatePrintWxArray[" 	printerwx_weixin"] = $value;
+                print_r($updatePrintWxArray);
+                exit;
+                $printerwxobj->updatePrinterWx($updatePrintWxArray);
+            }
             if ($id) {
                 $printcode = new \Home\Model\PrintcodeModel();
                 $code_number = $printcode->createCode($post['printer_code']);
