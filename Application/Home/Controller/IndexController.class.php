@@ -26,7 +26,7 @@ class IndexController extends BaseController {
             foreach ($printerwx as $key => $pwx) {
                 $qrcodenum = $key + 1;
                 $wxinfo = $weixin->getWeixinByToken($pwx['printerwx_weixin']);
-                $weixinlist[] = array('imgcode'=>$wxinfo['weixin_imgcode'], 'name'=>$wxinfo['weixin_name']);
+                $weixinlist[] = array('imgcode'=>'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'], 'name'=>$wxinfo['weixin_name']);
 //                $this->assign('qrcode'.$qrcodenum, '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" alt="'.$wxinfo['weixin_name'].'">');
             }
             if (count($weixinlist)) {
