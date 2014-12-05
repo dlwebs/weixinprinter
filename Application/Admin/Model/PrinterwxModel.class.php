@@ -29,16 +29,18 @@ class PrinterwxModel extends BaseModel {
     
     public function getWeixinByPrinter($pid = array()) {
         if (is_array($pid) && count($pid)) {
-            $where['printerwx_weixin'] = array('in', $pid);
+            $where['printerwx_printer'] = array('in', $pid);
         } else {
-            $where['printerwx_weixin'] = $pid;
+            $where['printerwx_printer'] = $pid;
         }
         return $this->distinct(true)->field('printerwx_weixin')->where($where)->select();
     }
+    
     public function getPrinterWxInfoByCondition($where) {
         $printerwxInfo = $this->where($where)->select();
         return $printerwxInfo;
     }
+    
     public function getPrinterWxInfoByWeixin($data) {
         if($data["printerwx_printer"]){
             $where["printerwx_printer"] = $data["printerwx_printer"];
@@ -49,20 +51,24 @@ class PrinterwxModel extends BaseModel {
         $printerwxInfo = $this->where($where)->select();
         return $printerwxInfo;
     }    
+    
     public function getPrinterWxInfoById($printerwx_id) {
         $data['printerwx_id'] = $printerwx_id;
         $printerwxInfo = $this->where($data)->find();
         return $printerwxInfo;
     }
+    
     public function delPrinterWx($data = array()){
         return $this->where($data)->delete();
     }
+    
     public function addPrinterWx($data = array()) {
         foreach ($data as $key => $value) {
             $insert[$key] = $value;
         }
         return $this->add($insert);
     }
+    
     public function updatePrinterWx($data = array()) {
         foreach ($data as $key => $value) {
             $insert[$key] = $value;
