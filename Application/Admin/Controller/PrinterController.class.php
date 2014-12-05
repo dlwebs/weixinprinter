@@ -9,14 +9,20 @@ class PrinterController extends BaseController {
         $codelist = $printcode->getList();
         $code = array();
         $printerobj = D('printer');
+        $resobj = D('resource');
         $wxobj = D('weixin');
         foreach ($codelist['data'] as $value) {
             $pcode = substr($value['p_code_number'], 0, 3);
             $printer = $printerobj->getPrinterByCode($pcode);
-            $weixin = $wxobj->getWeixinByToken($printer['printer_weixin']);
+            $resource = $resobj->getResourceByPrinterCode($value['p_code_number']);
+            if ($resource) {
+                $weixin = $wxobj->getWeixinByToken($resource['resource_weixin']);
+                $value['weixin_name'] = $weixin['weixin_name'];
+            } else {
+                $value['weixin_name'] = '';
+            }
             $value['printer_name'] = $printer['printer_name'];
             $value['printer_type'] = $printer['printer_type'];
-            $value['weixin_name'] = $weixin['weixin_name'];
             $code[] = $value;
         }
         $this->assign('codelist', $code);
@@ -52,7 +58,6 @@ class PrinterController extends BaseController {
                 } else {
                     $nonData = 1;
                 }
-                //$condition = $condition . " AND printer_weixin = '" . $searchArray["search_weixin"] . "'";
                 $this->assign('search_weixin', $searchArray['search_weixin']);
             }
             if ($searchArray["search_type"]) {
@@ -80,8 +85,6 @@ class PrinterController extends BaseController {
                 } else {
                     $printerdata = $printerobj->getPrinterList('', $condition);
                 }
-                //$condition = $condition . " AND printer_weixin in ('" . implode("','", $tokenArray) . "')";
-                //$printerdata = $printerobj->getPrinterList('', $condition);
             } else {
                 $printerdata = "";
             }
@@ -217,15 +220,17 @@ class PrinterController extends BaseController {
         $printertplobj = D('printertpl');
         $printerwxobj = D('printerwx');
         $updatePrintArray = array();
-        
+
         if (!isset($post['id']) || !$post['id']) {
-            $weixinobj = D('weixin');
             $sysobj = D('system');
-            $weixininfo = $weixinobj->getWeixinByToken($post["printer_weixin"]);
-            $sysinfo = $sysobj->getSystemInfoByUser($weixininfo['weixin_userid']);
-            $printerNumber = $printerwxobj->countPrinterNumber($post["printer_weixin"]);
-            if ($sysinfo['system_printernum'] <= $printerNumber) {
-                $this->error('最多只允许添加'.$sysinfo['system_printernum'].'个打印机');
+            $group_id = $this->userInfo['group_id'];
+            if ($group_id != 1) {
+                $user_id = $this->userInfo['user_id'];
+                $sysinfo = $sysobj->getSystemInfoByUser($user_id);
+                $printerNumber = $printerwxobj->countPrinterNumber($post["printer_weixin"]);
+                if ($sysinfo['system_userprinter'] <= $printerNumber) {
+                    $this->error('最多只允许添加'.$sysinfo['system_printernum'].'个打印机');
+                }
             }
         }
 
@@ -290,7 +295,7 @@ class PrinterController extends BaseController {
             if (count($pcinfo) && $pcinfo["printer_id"] != $post['printer_id']) {
                 $this->error("打印机消费码已存在");
             }
-            if (!$post['printer_weixin']) {
+            if (!count($post['printer_weixin'])) {
                 $this->error("公共帐号不能为空");
             }
             $delArray["printerwx_printer"] = $post["printer_id"];
@@ -299,7 +304,6 @@ class PrinterController extends BaseController {
             $updatePrintArray["printer_name"] = $post["printer_name"];
             $updatePrintArray["printer_code"] = $post["printer_code"];
             $updatePrintArray["printer_type"] = $post["printer_type"];
-            //$updatePrintArray["printer_weixin"] = $post["printer_weixin"];
             $updatePrintArray["printer_template"] = $post["printer_template"];
             $printernumber = $printerobj->updatePrinter($updatePrintArray);
             foreach($post['printer_weixin'] as $key=>$value){
@@ -322,22 +326,19 @@ class PrinterController extends BaseController {
             if ($pcinfo) {
                 $this->error("打印机消费码已存在");
             }
-            if (!$post['printer_weixin']) {
+            if (!count($post['printer_weixin'])) {
                 $this->error("公共帐号不能为空");
             }
             $updatePrintArray["printer_name"] = $post["printer_name"];
             $updatePrintArray["printer_code"] = $post["printer_code"];
             $updatePrintArray["printer_type"] = $post["printer_type"];
-            //$updatePrintArray["printer_weixin"] = $post["printer_weixin"];
             $updatePrintArray["printer_template"] = $post["printer_template"];
             $updatePrintArray["printer_activecode"] = \Org\Util\String::randString();
             $updatePrintArray["printer_status"] = "0";
             $id = $printerobj->addPrinter($updatePrintArray);
             foreach($post['printer_weixin'] as $key=>$value){
                 $updatePrintWxArray["printerwx_printer"] = $id;
-                $updatePrintWxArray[" 	printerwx_weixin"] = $value;
-                print_r($updatePrintWxArray);
-                exit;
+                $updatePrintWxArray["printerwx_weixin"] = $value;
                 $printerwxobj->updatePrinterWx($updatePrintWxArray);
             }
             if ($id) {

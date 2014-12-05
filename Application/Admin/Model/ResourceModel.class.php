@@ -142,6 +142,11 @@ class ResourceModel extends BaseModel {
         }
     }
     
+    public function getResourceByPrinterCode($code) {
+        $where['resource_printer'] = $code;
+        return $this->where($where)->find();
+    }
+    
     public function getResourceByPrinter($code) {
         $where['resource_printer'] = array('like', $code.'%');
         $where['resource_status'] = '2';

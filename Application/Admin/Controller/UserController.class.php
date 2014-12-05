@@ -114,7 +114,7 @@ class UserController extends BaseController {
         }
         if ($id) {
             $system = D('system');
-            $systemdata = array('system_user'=>$post['user_id'], 'system_wxnum'=>$post['system_wxnum'], 'system_printernum'=>$post['system_printernum']);
+            $systemdata = array('system_user'=>$post['user_id'], 'system_userprinter'=>$post['system_userprinter']);
             $system->updateSystem($systemdata);
             $this->success('保存成功', 'list');
         } else {
