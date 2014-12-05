@@ -22,12 +22,13 @@
         var qrcode_list = [];
         <if condition="$qrcode neq ''">
         qrcode_list = {$qrcode};
-
         </if>
         $(function () {
             window.setInterval(function () {
                 $.get("http://{$Think.server.SERVER_NAME}/index.php/service/getcode?atcode={$atcode}", function (jsondata) {
-                    $("#printercode").html(jsondata.code);
+                    if (jsondata) {
+                        $("#printercode").html(jsondata.code);
+                    }
                 });
                 $.get("http://{$Think.server.SERVER_NAME}/index.php/service/getimage?activecode={$atcode}", function (jsondata) {
                     if (jsondata) {
