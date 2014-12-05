@@ -5,13 +5,15 @@ class PrinterwxModel extends BaseModel {
     
     public function countPrinterNumber($weixin = array()) {
         if (is_array($weixin) && count($weixin)) {
-            $where['printerwx_weixin'] = array('in', $weixin);
+            $weixinwhere = implode('","', $weixin);
+            $where = 'printerwx_weixin in ("'.$weixinwhere.'")';
         } else {
-            $where['printerwx_weixin'] = $weixin;
+            $where = 'printerwx_weixin = "'.$weixin.'"';
         }
-        $number = $this->distinct(true)->field('printerwx_printer')->where($where)->count();
+//        $number = $this->distinct(true)->field('printerwx_printer')->where($where)->count();
+        $number = $this->query('select  count( DISTINCT (printerwx_printer) ) as printernum from wxp_printerwx where '.$where);
         if ($number) {
-            return $number;
+            return $number['printernum'];
         } else {
             return 0;
         }
