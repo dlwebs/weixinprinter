@@ -163,7 +163,6 @@ class PrinterController extends BaseController {
             $wxArray[] = $printerwxInfo[$i]["printerwx_weixin"];
         }
         $this->assign('wxArray', implode(",", $wxArray));
-
         $weixin = D('weixin');
         $group_id = $this->userInfo['group_id'];
         $user_id = $this->userInfo['user_id'];
@@ -175,9 +174,18 @@ class PrinterController extends BaseController {
             for ($i = 0; $i < count($array); $i ++) {
                 $tokenArray[] = $array[$i]["weixin_token"];
             }
-            if (!in_array($printerinfo["printer_weixin"], $tokenArray)) {
+            $flag = 0;
+            for($i = 0; $i < count($wxArray); $i ++){
+                if(in_array($wxArray[$i], $tokenArray)){
+                    $flag = 1;
+                }
+            }
+            if(!$flag){
                 $this->error('您没有修改此设备的权限!');
             }
+            //if (!in_array($printerinfo["printer_weixin"], $tokenArray)) {
+            //    $this->error('您没有修改此设备的权限!');
+            //}
         }
         //$weixindata = $weixin->getWeixinList('all');
         $this->assign('weixinlist', $weixindata['data']);
@@ -188,19 +196,36 @@ class PrinterController extends BaseController {
         $printer_id = I('get.printerid');
         $printerobj = D("printer");
         $printerinfo = $printerobj->getPrinterById($printer_id);
+        $printerwxobj = D('printerwx');
 
         $weixin = D('weixin');
         $group_id = $this->userInfo['group_id'];
         $user_id = $this->userInfo['user_id'];
+
+        $printerwxArray["printerwx_printer"] = $printer_id;
+        $printerwxInfo = $printerwxobj->getPrinterWxInfoByWeixin($printerwxArray);
+        for($i = 0; $i < count($printerwxInfo); $i ++){
+            $wxArray[] = $printerwxInfo[$i]["printerwx_weixin"];
+        }
+
         if ($group_id != 1) {
             $weixindata = $weixin->getWeixinList('', 'weixin_userid = "' . $user_id . '"');
             $array = $weixindata["data"];
             for ($i = 0; $i < count($array); $i ++) {
                 $tokenArray[] = $array[$i]["weixin_token"];
             }
-            if (!in_array($printerinfo["printer_weixin"], $tokenArray)) {
-                $this->error('您没有删除此设备的权限!');
+            $flag = 0;
+            for($i = 0; $i < count($wxArray); $i ++){
+                if(in_array($wxArray[$i], $tokenArray)){
+                    $flag = 1;
+                }
             }
+            if(!$flag){
+                $this->error('您没有修改此设备的权限!');
+            }
+            //if (!in_array($printerinfo["printer_weixin"], $tokenArray)) {
+            //    $this->error('您没有删除此设备的权限!');
+            //}
         }
 
         if ($printerinfo) {
