@@ -228,7 +228,6 @@ class PrinterController extends BaseController {
                 $user_id = $this->userInfo['user_id'];
                 $sysinfo = $sysobj->getSystemInfoByUser($user_id);
                 $printerNumber = $printerwxobj->countPrinterNumber($post["printer_weixin"]);
-                echo '<pre>';
                 print_r($printerNumber);exit;
                 if ($sysinfo['system_userprinter'] <= $printerNumber) {
                     $this->error('最多只允许添加'.$sysinfo['system_userprinter'].'个打印机');
