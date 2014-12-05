@@ -10,13 +10,9 @@ class PrinterwxModel extends BaseModel {
         } else {
             $where = 'printerwx_weixin = "'.$weixin.'"';
         }
-//        $number = $this->distinct(true)->field('printerwx_printer')->where($where)->count();
-        echo '<pre>';
-        echo 'select  count( DISTINCT (printerwx_printer) ) as printernum from wxp_printerwx where '.$where;
         $number = $this->query('select  count( DISTINCT (printerwx_printer) ) as printernum from wxp_printerwx where '.$where);
-        print_r($number);
-        if ($number) {
-            return $number['printernum'];
+        if (isset($number[0]['printernum'])) {
+            return $number[0]['printernum'];
         } else {
             return 0;
         }
