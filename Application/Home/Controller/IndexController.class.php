@@ -22,11 +22,19 @@ class IndexController extends BaseController {
             $printerwxobj = new \Admin\Model\PrinterwxModel();
             $printerwx = $printerwxobj->getWeixinByPrinter($printer_id);
             $weixin = new \Admin\Model\WeixinModel();
+            $weixinlist = array();
             foreach ($printerwx as $key => $pwx) {
                 $qrcodenum = $key + 1;
                 $wxinfo = $weixin->getWeixinByToken($pwx['printerwx_weixin']);
-                $this->assign('qrcode'.$qrcodenum, '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" alt="'.$wxinfo['weixin_name'].'">');
+                $weixinlist[] = array('imgcode'=>$wxinfo['weixin_imgcode'], 'name'=>$wxinfo['weixin_name']);
+//                $this->assign('qrcode'.$qrcodenum, '<img src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$wxinfo['weixin_imgcode'].'" alt="'.$wxinfo['weixin_name'].'">');
             }
+            if (count($weixinlist)) {
+                $this->assign('qrcode', json_encode($weixinlist));
+            } else {
+                $this->assign('qrcode', '');
+            }
+
             $printcode = D('printcode');
             $code = $printcode->getCode($printerInfo['printer_code']);
 
@@ -70,7 +78,7 @@ class IndexController extends BaseController {
             if ($current_image) {
                 $this->assign('current_image', '<img id="current_image" src="'.$current_image['resource_content'].'">');
             } else {
-                $this->assign('current_image', '当前无图片');
+                $this->assign('current_image', '<img id="current_image" src="" alt="暂无图片打印">');
             }
             $this->display($showpage);
         } else {
