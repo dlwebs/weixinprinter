@@ -197,6 +197,7 @@ class PrinterController extends BaseController {
         $printerobj = D("printer");
         $printerinfo = $printerobj->getPrinterById($printer_id);
         $printerwxobj = D('printerwx');
+        $printertplobj = D('printertpl');
 
         $weixin = D('weixin');
         $group_id = $this->userInfo['group_id'];
@@ -231,6 +232,7 @@ class PrinterController extends BaseController {
         if ($printerinfo) {
             $isok = $printerobj->deletePrinterById($printer_id);
             if ($isok) {
+                $printertplobj->delPrintertplByPrinterId($printer_id);
                 $printerwxobj->delPrinterWx('printerwx_printer = "'.$printer_id.'"');
                 $this->success('删除成功');
             } else {
@@ -246,6 +248,7 @@ class PrinterController extends BaseController {
         $printertplobj = D('printertpl');
         $printerwxobj = D('printerwx');
         $updatePrintArray = array();
+
 
         if (!isset($post['id']) || !$post['id']) {
             $sysobj = D('system');
@@ -272,6 +275,7 @@ class PrinterController extends BaseController {
             $tempInfo["template_image"] = "5";
             $tempInfo["template_word"] = "1";
         }
+
         for ($i = 1; $i <= $tempInfo["template_video"]; $i ++) {
             if ($post["video" . $i] == "file") {
                 if ($_FILES['video' . $i . '_file']['name']) {
@@ -393,6 +397,15 @@ class PrinterController extends BaseController {
                 if ($post["video" . $i] == "file") {
                     if ($_FILES['video' . $i . '_file']['name']) {
                         $insertArray['printertpl_content'] = $upload_file['video' . $i . '_file'];
+                    }else{
+                        if (count($tplArray)) {
+                            if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
+                                unlink("./upload/" . $tplArray[0]["printertpl_content"]);
+                            }
+                            $insertArray['printertpl_content'] = "";
+                            $insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
+                            $printertplid = $printertplobj->updatePrintertpl($insertArray);
+                        }
                     }
                 } elseif ($post["video" . $i] == "text") {
                     $insertArray['printertpl_content'] = $post["video" . $i . "_text"];
@@ -419,6 +432,15 @@ class PrinterController extends BaseController {
                 if ($post["image" . $i] == "file") {
                     if ($_FILES['image' . $i . '_file']['name']) {
                         $insertArray['printertpl_content'] = $upload_file['video' . $i . '_file'];
+                    }else{
+                        if (count($tplArray)) {
+                            if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
+                                unlink("./upload/" . $tplArray[0]["printertpl_content"]);
+                            }
+                            $insertArray['printertpl_content'] = "";
+                            $insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
+                            $printertplid = $printertplobj->updatePrintertpl($insertArray);
+                        }
                     }
                 } elseif ($post["image" . $i] == "text") {
                     $insertArray['printertpl_content'] = $post["image" . $i . "_text"];
