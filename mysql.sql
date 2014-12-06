@@ -37,7 +37,7 @@ CREATE TABLE `wxp_group` (
   `group_id` tinyint(4) NOT NULL auto_increment,
   `group_name` varchar(50) NOT NULL COMMENT '组名称',
   `group_status` enum('1','0') NOT NULL COMMENT '组状态，1是启用，0是停用',
-  `group_auth` char(80) NOT NULL COMMENT '组拥有的规则id， 多个规则","隔开',
+  `group_auth` varchar(1000) NOT NULL COMMENT '组拥有的规则id， 多个规则","隔开',
   PRIMARY KEY (`group_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户组表';
 

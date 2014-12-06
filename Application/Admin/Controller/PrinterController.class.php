@@ -231,6 +231,7 @@ class PrinterController extends BaseController {
         if ($printerinfo) {
             $isok = $printerobj->deletePrinterById($printer_id);
             if ($isok) {
+                $printerwxobj->delPrinterWx('printerwx_printer = "'.$printer_id.'"');
                 $this->success('删除成功');
             } else {
                 $this->error('删除失败');
