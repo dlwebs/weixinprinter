@@ -4,7 +4,7 @@ namespace Admin\Model;
 class PrintertplModel extends BaseModel {
 
     public function getPrintertplById($printer_id) {
-        return $this->where('printertpl_printer = "'.$printer_id.'"')->select();
+        return $this->where('printertpl_printer = "'.$printer_id.'" and printertpl_content != ""')->select();
     }
     public function getPrintertplByCondition($condition){
         return $this->where($condition)->select();
