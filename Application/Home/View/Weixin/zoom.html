@@ -77,7 +77,7 @@
                     if (d == "error") {
                         alert("剪裁失败");
                     } else {
-                        $("h1").html("裁剪完成，请回到微信输入验证码进行打印！");
+                        $("h2").html("裁剪完成，请回到微信输入验证码进行打印！");
                         $("#cropbox").hide();
                         $("#status").html("<p style='color: red'>裁剪完成，请回到微信输入验证码进行打印</p><img width='300' src='/upload/"+d+"' />");
                     }
