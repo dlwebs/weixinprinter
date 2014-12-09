@@ -41,7 +41,8 @@
     var qcodes=qrcode_list;
     var i =0;
     window.setInterval(function(){
-        $("#code").attr("src",qcodes[i%qcodes.length].imgcode)
+        $("#code").attr("src",qcodes[i%qcodes.length].imgcode)   ;
+        i++;
     },10000)
 
 
