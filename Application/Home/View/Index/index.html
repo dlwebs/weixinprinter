@@ -1,28 +1,48 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">{$video1}</div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-3">{$image2}</div>
-                <div class="col-md-3"><h3>{$printer_name}</h3><br>{$word1}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">{$image3}</div>
-                <div class="col-md-3">{$qrcode1}</div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">{$image1}</div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-3">{$image4}</div>
-                <div class="col-md-3">{$code}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">{$image5}</div>
-                <div class="col-md-3">{$current_image}</div>
-            </div>
-        </div>
-    </div>
+
+<style>
+    body{margin: 0 ;padding: 0;overflow: hidden}
+    img{width: 100%}
+    .left{width: 734px;float: left}
+    .right{width: 400px;float: left;background-color: silver}
+    .code{
+        width: 160px;float: left
+    }
+    .pic{width:380px;height:225px ;padding-left: 10px}
+</style>
+
+
+<div class="left">
+    <div class="top" style="height: 450px">
+        {$video1}                  </div>
+    <div class="top"  style="height: 450px">
+        <img class="bigpic" src=" ">                      </div>
 </div>
+<div class="right">
+    <div class="pic">    {$image1}<!--320*180--></div>
+    <div class="pic">   {$image2}</div>
+    <div class="pic">    {$image3}</div>
+    <div class="pic">     {$image4}</div>
+
+</div>
+<div class="code"><img src="" id="code" >{$code}</div>
+
+
+<script>
+    var i=0;
+    var lunbo=function(){
+        var pics= $(".pic img");
+        var pic=$(pics[(i++)%4]);
+        $(pics).css("border","none");
+        $(pic).css("border","4px solid darkred");
+        var url= $(pic).attr("src");
+        $(".bigpic").attr("src",url);
+    }
+    window.setInterval(lunbo,5000)
+    var qcodes=qrcode_list;
+    var i =0;
+    window.setInterval(function(){
+        $("#code").attr("src",qcodes[i%qcodes.length].imgcode)
+    },10000)
+
+
+</script>
