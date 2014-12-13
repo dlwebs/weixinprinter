@@ -1,13 +1,14 @@
-
 <style>
     body{margin: 0 ;padding: 0;overflow: hidden}
     img{width: 100%}
-    .left{width: 734px;float: left}
-    .right{width: 400px;float: left;background-color: silver}
+    .left{width: 800px;float: left}
+    .right{width: 300px;float: left;background-color: silver}
     .code{
-        width: 160px;float: left
+        width: 300px;float: left
     }
-    .pic{width:380px;height:225px ;padding-left: 10px}
+    .pic{width:300px;height:225px ; }
+	.pic img{height:100%}
+	.currentimg{ width: 300px; height:400px}
 </style>
 
 
@@ -24,7 +25,17 @@
     <div class="pic">     {$image4}</div>
 
 </div>
-<div class="code"><img src="" id="code" >{$code}</div>
+<div class="code">
+<h2 style="text-align:center;color:red">微信扫码加关注！</h2>
+  <img style="width:280px;height:280px;padding-left:10px" src="" id="code" >
+  <div class="shanghuname" style="text-align:center">商户名称</div>
+  <div class="currentimg" style="text-align:center">
+  {$current_image}
+  </div>
+  <div style="color:darkred;font-size:20px;font-weight:bold;text-align:center">消费码：{$code}</div>
+  
+ 
+</div>
 
 
 <script>
@@ -42,8 +53,12 @@
     var i =0;
     window.setInterval(function(){
         $("#code").attr("src",qcodes[i%qcodes.length].imgcode)   ;
+		$(".shanghuname").html(qcodes[i%qcodes.length].name)
         i++;
-    },10000)
-
-
+    },10000);
+	$(function(){
+		window.setTimeout(function(){$("#video1").css("width","100%").css("height","100%") },2000)
+	  
+	})
+	 
 </script>
