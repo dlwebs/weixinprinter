@@ -102,27 +102,12 @@ class WeixinController extends BaseController {
         if ($resourceid) {
           //  return '照片已收到，可以<a href="http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>对图片进行剪裁，也可直接回复消费码开始打印';
                   //   $content = array();
-                  //  $content[] = array("Title"=>"图片上传成功",  "Description"=>"请先裁剪图片，然后即可打印", "PicUrl"=>$post['picUrl'], "Url" =>'http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName'].'/?picurl='.$post['picUrl'] );
+                     $content[] = array("Title"=>"图片上传成功",  "Description"=>"请先裁剪图片，然后即可打印", "PicUrl"=>$post['picUrl'], "Url" =>'http://www.baidu.com'] );
 
-                  //  $result = $this->transmitNews($post, $content);
-                   // return $result;
-
-                 $result =   "<xml>
-                    <ToUserName><![CDATA[".$posttoUserName."]]></ToUserName>
-                    <FromUserName><![CDATA[".$post['fromUserName']."]]></FromUserName>
-                    <CreateTime>".time()."</CreateTime>
-                    <MsgType><![CDATA[news]]></MsgType>
-                    <ArticleCount>1</ArticleCount>
-                    <Articles>
-                    <item>
-                    <Title><![CDATA[图片上传成功]]></Title>
-                    <Description><![CDATA[请先裁剪图片，然后即可打印]]></Description>
-                    <PicUrl><![CDATA[".$post['picUrl']."]]></PicUrl>
-                    <Url><![CDATA[".'http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName'].'/?picurl='.$post['picUrl']."]]></Url>
-                    </item>
-                    </Articles>
-                    </xml>"
+                    $result = $this->transmitNews($data, $content);
                     return $result;
+
+
 
         } else {
             return '照片发送失败，请重新发送';
@@ -215,7 +200,7 @@ class WeixinController extends BaseController {
         if(!is_array($newsArray)){
             return;
         }
-        $itemTpl = "    <item>
+        $itemTpl = " <item>
         <Title><![CDATA[%s]]></Title>
         <Description><![CDATA[%s]]></Description>
         <PicUrl><![CDATA[%s]]></PicUrl>
@@ -226,8 +211,16 @@ class WeixinController extends BaseController {
         foreach ($newsArray as $item){
             $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
         }
-        $xmlTpl = "<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName> <CreateTime>%s</CreateTime><MsgType><![CDATA[news]]></MsgType> <ArticleCount>%s</ArticleCount> <Articles>  $item_str</Articles></xml>";
-        $result = sprintf($xmlTpl, $object['fromUserName'],  $object['toUserName'], time(), count($newsArray));
+        $xmlTpl = "<xml>
+               <ToUserName><![CDATA[%s]]></ToUserName>
+               <FromUserName><![CDATA[%s]]></FromUserName>
+               <CreateTime>%s</CreateTime>
+               <MsgType><![CDATA[news]]></MsgType>
+               <ArticleCount>%s</ArticleCount>
+               <Articles>
+               $item_str</Articles>
+               </xml>";
+        $result = sprintf($xmlTpl, (string)$object['FromUserName'],  (string)$object['ToUserName'], time(), count($newsArray));
         return $result;
     }
     public function cropAction() {
