@@ -104,7 +104,7 @@ class WeixinController extends BaseController {
                    $content = array();
                      $content[] = array("Title"=>"图片上传成功",  "Description"=>"请先裁剪图片，然后即可打印", "PicUrl"=>$post['picUrl'], "Url" =>'http://www.baidu.com' );
 
-                    $result = $this->transmitNews($post, $content);
+                    $result = $this->transmitNews($data, $content);
                     return $result;
 
 
@@ -220,7 +220,7 @@ class WeixinController extends BaseController {
  <Articles>
  $item_str</Articles>
  </xml>";
-         $result = sprintf($xmlTpl, $object['toUserName'], $object['fromUserName'], time(), count($newsArray));
+         $result = sprintf($xmlTpl, (string)$object['ToUserName'], $object['fromUserName'], time(), count($newsArray));
          return $xmlTpl;
      }
     public function cropAction() {
