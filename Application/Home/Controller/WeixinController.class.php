@@ -102,7 +102,7 @@ class WeixinController extends BaseController {
         if ($resourceid) {
           //  return '照片已收到，可以<a href="http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>对图片进行剪裁，也可直接回复消费码开始打印';
 
-            $this->_wechat->replyNews("图片上传成功","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'].',$post['picUrl'] )
+            $this->_wechat->replyNews("图片上传成功","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'] );
 
 
         } else {
