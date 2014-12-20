@@ -192,7 +192,7 @@ class WeixinController extends BaseController {
     }
 
     //回复图文消息
-    private function transmitNews($object, $newsArray)
+    public function transmitNews($object, $newsArray)
     {
         if(!is_array($newsArray)){
             return;
@@ -209,14 +209,13 @@ class WeixinController extends BaseController {
             $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
         }
         $xmlTpl = "<xml>
-<ToUserName><![CDATA[%s]]></ToUserName>
-<FromUserName><![CDATA[%s]]></FromUserName>
-<CreateTime>%s</CreateTime>
-<MsgType><![CDATA[news]]></MsgType>
-<ArticleCount>%s</ArticleCount>
-<Articles>
-$item_str</Articles>
-</xml>";
+        <ToUserName><![CDATA[%s]]></ToUserName>
+        <FromUserName><![CDATA[%s]]></FromUserName>
+        <CreateTime>%s</CreateTime>
+        <MsgType><![CDATA[news]]></MsgType>
+        <ArticleCount>%s</ArticleCount>
+        <Articles>  $item_str</Articles>
+        </xml>";
         $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), count($newsArray));
         return $result;
     }
