@@ -104,7 +104,7 @@ class WeixinController extends BaseController {
                      $content = array();
                     $content[] = array("Title"=>"图片上传成功",  "Description"=>"请先裁剪图片，然后即可打印", "PicUrl"=>$post['picUrl'], "Url" =>'http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName'].'/?picurl='.$post['picUrl'] );
 
-                    $result = $this->transmitNews($data, $content);
+                    $result = $this->transmitNews($post, $content);
                     return $result;
         } else {
             return '照片发送失败，请重新发送';
@@ -209,7 +209,7 @@ class WeixinController extends BaseController {
             $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
         }
         $xmlTpl = "<xml><ToUserName><![CDATA[%s]]></ToUserName> <FromUserName><![CDATA[%s]]></FromUserName> <CreateTime>%s</CreateTime><MsgType><![CDATA[news]]></MsgType> <ArticleCount>%s</ArticleCount> <Articles>  $item_str</Articles></xml>";
-        $result = sprintf($xmlTpl, (string)$object['FromUserName'], (string)$object['ToUserName'], time(), count($newsArray));
+        $result = sprintf($xmlTpl, $post['fromUserName'], $post['toUserName'], time(), count($newsArray));
         return $result;
     }
     public function cropAction() {
