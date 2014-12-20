@@ -194,35 +194,35 @@ class WeixinController extends BaseController {
         $this->display();
     }
 
-    //回复图文消息
-    public function transmitNews($object, $newsArray)
-    {
-        if(!is_array($newsArray)){
-            return;
-        }
-        $itemTpl = " <item>
-        <Title><![CDATA[%s]]></Title>
-        <Description><![CDATA[%s]]></Description>
-        <PicUrl><![CDATA[%s]]></PicUrl>
-        <Url><![CDATA[%s]]></Url>
-    </item>
-";
-        $item_str = "";
-        foreach ($newsArray as $item){
-            $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
-        }
-        $xmlTpl = "<xml>
-               <ToUserName><![CDATA[%s]]></ToUserName>
-               <FromUserName><![CDATA[%s]]></FromUserName>
-               <CreateTime>%s</CreateTime>
-               <MsgType><![CDATA[news]]></MsgType>
-               <ArticleCount>%s</ArticleCount>
-               <Articles>
-               $item_str</Articles>
-               </xml>";
-        $result = sprintf($xmlTpl, (string)$object['FromUserName'],  (string)$object['ToUserName'], time(), count($newsArray));
-        return $result;
-    }
+  //回复图文消息
+     private function transmitNews($object, $newsArray)
+     {
+         if(!is_array($newsArray)){
+             return;
+         }
+         $itemTpl = "    <item>
+         <Title><![CDATA[%s]]></Title>
+         <Description><![CDATA[%s]]></Description>
+         <PicUrl><![CDATA[%s]]></PicUrl>
+         <Url><![CDATA[%s]]></Url>
+     </item>
+ ";
+         $item_str = "";
+         foreach ($newsArray as $item){
+             $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
+         }
+         $xmlTpl = "<xml>
+ <ToUserName><![CDATA[%s]]></ToUserName>
+ <FromUserName><![CDATA[%s]]></FromUserName>
+ <CreateTime>%s</CreateTime>
+ <MsgType><![CDATA[news]]></MsgType>
+ <ArticleCount>%s</ArticleCount>
+ <Articles>
+ $item_str</Articles>
+ </xml>";
+         $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), count($newsArray));
+         return $result;
+     }
     public function cropAction() {
         $uid = $_GET["uid"];
         $src = I('post.src');
