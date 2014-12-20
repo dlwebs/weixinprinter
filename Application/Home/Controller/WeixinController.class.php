@@ -220,7 +220,7 @@ class WeixinController extends BaseController {
  <Articles>
  $item_str</Articles>
  </xml>";
-         $result = sprintf($xmlTpl, (string)$object['FromUserName'], (string)$object['ToUserName'], time(), count($newsArray));
+         $result = sprintf($xmlTpl, (string)$object['ToUserName'], (string)$object['FromUserName'], time(), count($newsArray));
          return $xmlTpl;
      }
     public function cropAction() {
