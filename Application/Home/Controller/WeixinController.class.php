@@ -208,14 +208,7 @@ class WeixinController extends BaseController {
         foreach ($newsArray as $item){
             $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
         }
-        $xmlTpl = "<xml>
-        <ToUserName><![CDATA[%s]]></ToUserName>
-        <FromUserName><![CDATA[%s]]></FromUserName>
-        <CreateTime>%s</CreateTime>
-        <MsgType><![CDATA[news]]></MsgType>
-        <ArticleCount>%s</ArticleCount>
-        <Articles>  $item_str</Articles>
-        </xml>";
+        $xmlTpl = "<xml><ToUserName><![CDATA[%s]]></ToUserName> <FromUserName><![CDATA[%s]]></FromUserName> <CreateTime>%s</CreateTime><MsgType><![CDATA[news]]></MsgType> <ArticleCount>%s</ArticleCount> <Articles>  $item_str</Articles></xml>";
         $result = sprintf($xmlTpl, (string)$object['FromUserName'], (string)$object['ToUserName'], time(), count($newsArray));
         return $result;
     }
