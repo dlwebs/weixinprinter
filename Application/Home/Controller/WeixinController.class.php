@@ -103,8 +103,9 @@ class WeixinController extends BaseController {
           //  return '照片已收到，可以<a href="http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>对图片进行剪裁，也可直接回复消费码开始打印';
 
             $this->_wechat->replyNews(
-            array("图片上传成功","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
-             array("图片上传成功","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'])
+            array("图片上传成功,请选择下面裁剪方式对图片进行裁剪","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
+             array("普通裁剪图片","普通裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
+             array("使用高级模版生成打印图片","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'])
             );
 
 
