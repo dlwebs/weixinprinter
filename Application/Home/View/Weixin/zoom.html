@@ -29,7 +29,7 @@
         };
     </script>
     <style type="text/css">
-        #btn{
+        #saveBtn,#okbtn{
             width: 80%;
             margin-top: 10px;
             height: 40px;
@@ -113,7 +113,7 @@
                     } else {
                         $("h2").html("裁剪完成，分享之后即可打印");
                         $(".jcrop-holder").hide();
-                        $("#status").html("<input onclick=\"document.getElementById('mcover').style.display='block';\" type='button' class='submit btn' value='裁剪完成，点击分享即可打印'><img width='300' src='/upload/"+d+"' />");
+                        $("#status").html("<input onclick=\"document.getElementById('mcover').style.display='block';\" type='button' id='okbtn' class='submit btn' value='裁剪完成，点击分享即可打印'><img width='300' src='/upload/"+d+"' />");
                         $("#saveBtn").hide()
 
                     // 所有功能必须包含在 WeixinApi.ready 中进行
