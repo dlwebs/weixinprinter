@@ -221,7 +221,7 @@ class WeixinController extends BaseController {
  $item_str</Articles>
  </xml>";
          $result = sprintf($xmlTpl, (string)$object['FromUserName'], (string)$object['ToUserName'], time(), count($newsArray));
-         return $result;
+         return $xmlTpl;
      }
     public function cropAction() {
         $uid = $_GET["uid"];
