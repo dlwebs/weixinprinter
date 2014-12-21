@@ -171,7 +171,7 @@
             $.ajax({
                 type: "POST",
                 url:"__MODULE__/Weixin/crop2?uid={$uid}",
-                data:"offsetx="+offsetx+"&offsety="+offsety+"&sfbl="+sfbl+"&temppic="+$("#r1").attr("src")+"&originpic={$picinfo.picurl}&canvesw=262&canvesh=370"
+                data:"offsetx="+offsetx+"&offsety="+offsety+"&sfbl="+sfbl+"&temppic="+$("#r1").attr("src")+"&originpic={$picinfo.imagename}&canvesw=262&canvesh=370"
             }).success(function(d){
                 if (d == "error") {
                     alert("剪裁失败");
