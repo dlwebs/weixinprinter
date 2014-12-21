@@ -23,7 +23,7 @@
             margin-top: 10px;
             height: 40px;
             border: 0px;
-            background-color: rgb(255, 116, 0);
+         
             color: #fff;
         }
         #target {
@@ -101,6 +101,12 @@
 <script>
 
     $(function(){
+        $( ".selector" ).on( "slidestop", function( event, ui ) {
+            console.log(event);
+            console.log(ui)
+        } );
+
+
         var w=$("#r1").width()||"262px";
         var h=$("#r1").height()||"370px";
         $(".resize").css({"overflow":"hidden","width":w,"height":h})
