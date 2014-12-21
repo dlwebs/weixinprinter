@@ -105,7 +105,7 @@ class WeixinController extends BaseController {
             $this->_wechat->replyNews(
             array("图片上传成功,请选择下面裁剪方式对图片进行裁剪","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
              array("普通裁剪图片","普通裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
-             array("使用高级模版生成打印图片","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'])
+             array("使用高级模版生成打印图片","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom2/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'])
             );
 
 
@@ -193,7 +193,26 @@ class WeixinController extends BaseController {
         $this->assign('uid', $uid);
         $this->display();
     }
-
+ public function zoom2Action() {
+        $uid = I('get.uid');
+        $picurl = $_GET["picurl"];
+        $fileSaveName = date("YmdHis").rand(1000,9999).'.jpg';
+        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
+        $fileContents = file_get_contents($picurl);
+        $fileResource = fopen($fileSavePath.$fileSaveName, 'a');
+        fwrite($fileResource, $fileContents);
+        fclose($fileResource);
+        list($img_width, $img_height, $type, $attr) = getimagesize($fileSavePath.$fileSaveName);
+        $sxbl = 1;
+        if($img_width>300){
+            $sxbl = floatval($img_width/300);
+            $width = 300;
+        }
+        $picinfo=array("img_width"=>$img_width, "sxbl"=>$sxbl, "width"=>$width, "imagename"=>$fileSaveName, "picurl"=>$picurl);
+        $this->assign('picinfo', $picinfo);
+        $this->assign('uid', $uid);
+        $this->display();
+    }
   //回复图文消息
      private function transmitNews($object, $newsArray)
      {
