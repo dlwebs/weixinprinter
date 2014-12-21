@@ -101,7 +101,10 @@
 <script>
 
     $(function(){
+        var picWidth= $("#r2").css("width").replace("px","");
         $( "#slider-12" ).on( "slidestop", function( event, ui ) {
+           var num= $("#slider-12").val();
+            $("#r2").css("width",picWidth*(num/100)+"px");
             console.log(event);
             console.log(ui)
         } );
