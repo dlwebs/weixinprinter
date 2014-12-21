@@ -113,7 +113,7 @@
                 switch (event.type) {
                     case "touchstart":
                         oldx= event.touches[0].clientX;
-
+                        oldy= event.touches[0].clientY;
                         console.log("Touch started (" + event.touches[0].clientX + "," + event.touches[0].clientY + ")");
                         break;
                     case "touchend":
@@ -125,17 +125,16 @@
                         event.preventDefault(); //阻止滚动
                         var newx, newy,movex,movey;
                         newx=event.changedTouches[0].clientX;
-
+                        newy=event.changedTouches[0].clientY;
                         movex=newx-oldx;
-                        if(moving){
-
-                        }
-
+                        if(moving) {oldx=newx;oldy=newy}
                         console.log( "Touch moved (图片坐标在："+$('#r2').offset().left+",鼠标移动了："+movex+":鼠标移动到了" + newx +"," + newy + ")");
-                        if(moving) oldx=newx
+
                         $('#r2').css("left",$('#r2').offset().left+movex);
+                        $('#r2').css("left",$('#r2').offset().top+movey);
                         console.log("图片坐标被移动到："+$('#r2').offset().left )
                             $("#status").html($('#r2').offset().left+":"+$('#r2').offset().top)
+
                         break;
                 }
             }
