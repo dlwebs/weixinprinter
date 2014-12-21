@@ -101,8 +101,9 @@
 <script>
 
     $(function(){
+        var picWidth;
         $("#demoImg").attr("src", "{$picinfo.picurl}").load(function() {
-            var picWidth= $("#r2").css("width").replace("px","");
+              picWidth= $("#r2").css("width").replace("px","");
         });
 
         $( "#slider-12" ).on( "slidestop", function( event, ui ) {
