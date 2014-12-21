@@ -109,7 +109,10 @@
 <script>
 
     $(function(){
-        $(".thumb ul li img").on("click")
+        $(".thumb ul li img").on("click",function(){
+            var _self=this;
+            $("#r2").attr("src",$(_self).attr("src"));
+        })
         var picWidth;
         $("#r2").attr("src", "{$picinfo.picurl}").load(function() {
               picWidth= $("#r2").css("width").replace("px","");
