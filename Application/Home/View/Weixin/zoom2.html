@@ -98,9 +98,8 @@
 <script>
 
     $(function(){
-
-        var w=$("#r1").width();
-        var h=$("#r1").height();
+        var w=$("#r1").width()||"262px";
+        var h=$("#r1").height()||"370px";
         $(".resize").css({"overflow":"hidden","width":w,"height":h})
 
         /*  $(".r1").on('touchmove',function(e){
