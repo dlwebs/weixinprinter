@@ -135,8 +135,7 @@
                         if(moving) oldx=newx
                         $('#r2').css("left",$('#r2').offset().left+movex);
                         console.log("图片坐标被移动到："+$('#r2').offset().left )
-
-
+                            $("#status").html($('#r2').offset().left+":"+$('#r2').offset().top)
                         break;
                 }
             }
