@@ -8,6 +8,8 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery.jcrop.js?version=1"></script>
     <script src="/js/weixin.js"></script>
+    <script src="/js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="/js/jquery.mobile-1.4.5.min.css"></script>
     <link rel="stylesheet" href="/css/jquery.jcrop.css?version=1" type="text/css" />
 
     <script type="text/javascript">
@@ -61,6 +63,13 @@
             <div class="jc-demo-box">
                 <div class="page-header">
                     <p>在图片中选择需要打印的区域</p>
+                    <form id="cropform" >
+
+                        <input type="button" value="确定裁剪" id="saveBtn" class="btn btn-large btn-inverse">
+
+                          <label for="slider-1">图片大小:</label>
+                            <input type="range" name="slider-1" id="slider-1" min="0" max="100" value="50">
+                    </form>
                 </div>
                 <div class="resize">
                     <img id="r1" class="r1" src="/image/2.png"  />
@@ -72,17 +81,7 @@
 
 
                 <div id="status"></div>
-                <form id="cropform" >
-                    <input type="hidden" name="x1" id="x1" size="3">
-                    <input type="hidden" name="y1" id="y1">
-                    <input type="hidden" name="cropwidth" id="cropwidth">
-                    <input type="hidden" name="cropheight" id="cropheight">
-                    <input type="hidden" name="sxbl" id="sxbl" value="{$picinfo.sxbl}"><!--当前图片缩小比例，php中用于计算裁剪-->
-                    <input type="hidden" name="src" id="src" value="{$picinfo.imagename}">
-                    <input type="hidden" name="input" id="input" value="">
-                    <input type="hidden" id="preview" value="">
-                    <input type="button" value="确定裁剪" id="saveBtn" class="btn btn-large btn-inverse">
-                </form>
+
             </div>
         </div>
     </div>
