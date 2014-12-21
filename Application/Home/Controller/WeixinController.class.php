@@ -291,7 +291,7 @@ class WeixinController extends BaseController {
 
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $imgobj = new \Think\Image();
-        $imgobj = $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 270)->save($fileSavePath.$src);
+        $imgobj = $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 131, 254)->save($fileSavePath.$src);
 
         $resource = new \Admin\Model\ResourceModel();
         $weixin = new \Admin\Model\WeixinModel();
@@ -300,9 +300,8 @@ class WeixinController extends BaseController {
 
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
-            list($jpgwidth, $jpgheight) = getimagesize($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresized($outpng, $jpeg, 0, 0, 5, 59, $newwidth, $newheight, $jpgwidth, $jpgheight);
+            imagecopyresized($outpng, $jpeg, 0, 0, 5, 59, $newwidth, $newheight, 131, 254);
             imagecopyresized($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outpng, $fileSavePath.$src);
             imagedestroy($png);
