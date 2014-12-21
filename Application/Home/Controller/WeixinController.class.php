@@ -276,8 +276,10 @@ class WeixinController extends BaseController {
         $sxbl = I('post.sfbl');
         $backpic = I('post.temppic');
         $src = I('post.originpic');
-        $cropwidth = I('post.canvesw');
-        $cropheight = I('post.canvesh');
+        $newwidth = I('post.canvesw');
+        $newheight = I('post.canvesh');
+        $cropwidth = 254;
+        $cropheight = 131
         $src = trim($src);
         if(!$src) die();
 
@@ -298,34 +300,31 @@ class WeixinController extends BaseController {
 
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
-
             list($jpgwidth, $jpgheight) = getimagesize($fileSavePath.$src);
-            list($newwidth, $newheight) = getimagesize($_SERVER['DOCUMENT_ROOT'].$backpic);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresized($outpng, $jpeg, 0, 0, 5, 59, $newwidth, $newheight, $jpgwidth, $jpgheight);
             imagecopyresized($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
-            imagejpeg($outpng, $fileSavePath.$src, 100);
+            imagejpeg($outpng, $fileSavePath.$src);
             imagedestroy($png);
             imagedestroy($jpeg);
 
-
-            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
-            if (!$weixinobj['weixin_copyright']) {
-                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
-            } else {
-                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
-            }
-            $user_img = imagecreatefromjpeg($fileSavePath.$src);
-            $background = imagecreatetruecolor(262,370);
-            $color = imagecolorallocate($background, 202, 201, 201);
-            imagefill($background, 0, 0, $color);
-            imageColorTransparent($background, $color); 
-            imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
-            imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
-            imagejpeg($background, $fileSavePath.$src);
-            imagedestroy($copyright_img);
-            imagedestroy($user_img);
-            imagedestroy($background);
+//            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
+//            if (!$weixinobj['weixin_copyright']) {
+//                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
+//            } else {
+//                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
+//            }
+//            $user_img = imagecreatefromjpeg($fileSavePath.$src);
+//            $background = imagecreatetruecolor(262,370);
+//            $color = imagecolorallocate($background, 202, 201, 201);
+//            imagefill($background, 0, 0, $color);
+//            imageColorTransparent($background, $color); 
+//            imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
+//            imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
+//            imagejpeg($background, $fileSavePath.$src);
+//            imagedestroy($copyright_img);
+//            imagedestroy($user_img);
+//            imagedestroy($background);
         
             $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$src);
             if ($isok) {
