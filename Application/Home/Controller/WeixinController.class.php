@@ -193,7 +193,8 @@ class WeixinController extends BaseController {
         $this->assign('uid', $uid);
         $this->display();
     }
- public function zoom2Action() {
+
+    public function zoom2Action() {
         $uid = I('get.uid');
         $picurl = $_GET["picurl"];
         $fileSaveName = date("YmdHis").rand(1000,9999).'.jpg';
@@ -213,35 +214,7 @@ class WeixinController extends BaseController {
         $this->assign('uid', $uid);
         $this->display();
     }
-  //回复图文消息
-     private function transmitNews($object, $newsArray)
-     {
-         if(!is_array($newsArray)){
-             return;
-         }
-         $itemTpl = "    <item>
-         <Title><![CDATA[%s]]></Title>
-         <Description><![CDATA[%s]]></Description>
-         <PicUrl><![CDATA[%s]]></PicUrl>
-         <Url><![CDATA[%s]]></Url>
-     </item>
- ";
-         $item_str = "";
-         foreach ($newsArray as $item){
-             $item_str .= sprintf($itemTpl, $item['Title'], $item['Description'], $item['PicUrl'], $item['Url']);
-         }
-         $xmlTpl = "<xml>
- <ToUserName><![CDATA[%s]]></ToUserName>
- <FromUserName><![CDATA[%s]]></FromUserName>
- <CreateTime>%s</CreateTime>
- <MsgType><![CDATA[news]]></MsgType>
- <ArticleCount>%s</ArticleCount>
- <Articles>
- $item_str</Articles>
- </xml>";
-         $result = sprintf($xmlTpl, (string)$object['ToUserName'], $object['fromUserName'], time(), count($newsArray));
-         return $xmlTpl;
-     }
+
     public function cropAction() {
         $uid = $_GET["uid"];
         $src = I('post.src');
@@ -284,6 +257,73 @@ class WeixinController extends BaseController {
             imagedestroy($copyright_img);
             imagedestroy($user_img);
             imagedestroy($background);
+        
+            $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$src);
+            if ($isok) {
+                echo $src;
+            } else {
+                echo 'error';
+            }
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function crop2Action() {
+        $uid = $_GET["uid"];
+        $x = I('post.offsetx');
+        $y = I('post.offsety');
+        $sxbl = I('post.sfbl');
+        $backpic = I('post.temppic');
+        $src = I('post.originpic');
+        $newwidth = I('post.canvesw');
+        $newheight = I('post.canvesh');
+        $cropwidth = 254;
+        $cropheight = 131;
+        $src = trim($src);
+        if(!$src) die();
+
+        //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
+        $x = intval($x * $sxbl);
+        $y = intval($y * $sxbl);
+        $width = intval($cropwidth * $sxbl);
+        $height = intval($cropheight * $sxbl);
+
+        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
+        $imgobj = new \Think\Image();
+        $imgobj = $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 131, 254)->save($fileSavePath.$src);
+
+        $resource = new \Admin\Model\ResourceModel();
+        $weixin = new \Admin\Model\WeixinModel();
+        $resinfo = $resource->getUserNoPrintResource($uid);
+        if ($resinfo) {
+
+            $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
+            $jpeg = imagecreatefromjpeg($fileSavePath.$src);
+            $outpng = imagecreatetruecolor($newwidth, $newheight);
+            imagecopyresized($outpng, $jpeg, 0, 0, 5, 59, $newwidth, $newheight, 131, 254);
+            imagecopyresized($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+            imagejpeg($outpng, $fileSavePath.$src);
+            imagedestroy($png);
+            imagedestroy($jpeg);
+
+//            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
+//            if (!$weixinobj['weixin_copyright']) {
+//                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
+//            } else {
+//                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
+//            }
+//            $user_img = imagecreatefromjpeg($fileSavePath.$src);
+//            $background = imagecreatetruecolor(262,370);
+//            $color = imagecolorallocate($background, 202, 201, 201);
+//            imagefill($background, 0, 0, $color);
+//            imageColorTransparent($background, $color); 
+//            imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
+//            imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
+//            imagejpeg($background, $fileSavePath.$src);
+//            imagedestroy($copyright_img);
+//            imagedestroy($user_img);
+//            imagedestroy($background);
         
             $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$src);
             if ($isok) {
