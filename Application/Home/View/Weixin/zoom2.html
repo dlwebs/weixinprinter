@@ -51,57 +51,7 @@
         .resize img{position:absolute}
         .resize #r1{z-index: 99}
     </style>
-    <script>
-        $(function(){
 
-            var w=$("#r1").width();
-            var h=$("#r1").height();
-            $(".resize").css({"overflow":"hidden","width":w,"height":h})
-
-            /*  $(".r1").on('touchmove',function(e){
-             e
-             })*/
-            var oldx,oldy,moving=false;
-            function handleTouchEvent(event) {
-                //只跟踪一次触摸
-                if (event.touches.length == 1) {
-
-                    switch (event.type) {
-                        case "touchstart":
-                            oldx= event.touches[0].clientX;
-
-                            console.log("Touch started (" + event.touches[0].clientX + "," + event.touches[0].clientY + ")");
-                            break;
-                        case "touchend":
-                            moving=false;
-                            console.log( "Touch ended (" + event.changedTouches[0].clientX + "," + event.changeTouches[0].clientY + ")");
-                            break;
-                        case "touchmove":
-                            moving=true
-                            event.preventDefault(); //阻止滚动
-                            var newx, newy,movex,movey;
-                            newx=event.changedTouches[0].clientX;
-
-                            movex=newx-oldx;
-                            if(moving){
-
-                            }
-
-                            console.log( "Touch moved (图片坐标在："+$('#r2').offset().left+",鼠标移动了："+movex+":鼠标移动到了" + newx +"," + newy + ")");
-                            if(moving) oldx=newx
-                            $('#r2').css("left",$('#r2').offset().left+movex);
-                            console.log("图片坐标被移动到："+$('#r2').offset().left )
-
-
-                            break;
-                    }
-                }
-            }
-            document.getElementsByClassName('r1')[0].addEventListener("touchstart", handleTouchEvent, false);
-            document.getElementsByClassName('r1')[0].addEventListener("touchend", handleTouchEvent, false);
-            document.getElementsByClassName('r1')[0].addEventListener("touchmove", handleTouchEvent, false);
-        })
-    </script>
 </head>
 <body>
 
@@ -146,81 +96,56 @@
 
 </body>
 <script>
+
     $(function(){
-        $("#saveBtn").on("click",function(){
-            $("#status").html("图片处理中...") ;
-            if(checkCoords()){
-                $.ajax({
-                    type: "POST",
-                    url:"__MODULE__/Weixin/crop?uid={$uid}",
-                    data:$('#cropform').serialize()
-                }).success(function(d){
-                    if (d == "error") {
-                        alert("剪裁失败");
-                    } else {
-                        $("h2").html("裁剪完成，分享之后即可打印");
-                        $(".jcrop-holder").hide();
-                        $("#status").html("<input onclick=\"document.getElementById('mcover').style.display='block';\" type='button' id='okbtn' class='submit btn' value='裁剪完成，点击分享即可打印'><img width='300' src='/upload/"+d+"' />");
-                        $("#saveBtn").hide()
 
-                        // 所有功能必须包含在 WeixinApi.ready 中进行
-                        WeixinApi.ready(function(Api){
+        var w=$("#r1").width();
+        var h=$("#r1").height();
+        $(".resize").css({"overflow":"hidden","width":w,"height":h})
 
-                            // 微信分享的数据
-                            var wxData = {
-                                "imgUrl":document.location.origin+"/upload/"+d,
-                                "link":'http://mp.weixin.qq.com/s?__biz=MzA4ODQ2MzIxMQ==&mid=201638658&idx=1&sn=3f46f7cc26c21c60d6be2c9099d50e66#rd',
-                                "desc":'我正在使用微谷云微信打印机打印照片呢！你也一起来参与吧！',
-                                "title":"微谷云微信打印机"
-                            };
+        /*  $(".r1").on('touchmove',function(e){
+         e
+         })*/
+        var oldx,oldy,moving=false;
+        function handleTouchEvent(event) {
+            //只跟踪一次触摸
+            if (event.touches.length == 1) {
 
-                            // 分享的回调
-                            var wxCallbacks = {
-                                // 分享操作开始之前
-                                ready:function () {
-                                    // 你可以在这里对分享的数据进行重组
-                                },
-                                // 分享被用户自动取消
-                                cancel:function (resp) {
-                                    // 你可以在你的页面上给用户一个小Tip，为什么要取消呢？
-                                },
-                                // 分享失败了
-                                fail:function (resp) {
-                                    // 分享失败了，是不是可以告诉用户：不要紧，可能是网络问题，一会儿再试试？
-                                },
-                                // 分享成功
-                                confirm:function (resp) {
-                                    // 分享成功了，我们是不是可以做一些分享统计呢？
-                                    WeixinApi.closeWindow({
-                                        success : function(resp){
+                switch (event.type) {
+                    case "touchstart":
+                        oldx= event.touches[0].clientX;
 
-                                        },
-                                        fail : function(resp){
+                        console.log("Touch started (" + event.touches[0].clientX + "," + event.touches[0].clientY + ")");
+                        break;
+                    case "touchend":
+                        moving=false;
+                        console.log( "Touch ended (" + event.changedTouches[0].clientX + "," + event.changeTouches[0].clientY + ")");
+                        break;
+                    case "touchmove":
+                        moving=true
+                        event.preventDefault(); //阻止滚动
+                        var newx, newy,movex,movey;
+                        newx=event.changedTouches[0].clientX;
 
-                                        }
-                                    });
-                                },
-                                // 整个分享过程结束
-                                all:function (resp) {
-                                    // 如果你做的是一个鼓励用户进行分享的产品，在这里是不是可以给用户一些反馈了？
-                                }
-                            };
+                        movex=newx-oldx;
+                        if(moving){
 
-                            // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
-                            Api.shareToFriend(wxData, wxCallbacks);
+                        }
 
-                            // 点击分享到朋友圈，会执行下面这个代码
-                            Api.shareToTimeline(wxData, wxCallbacks);
-
-                            // 点击分享到腾讯微博，会执行下面这个代码
-                            Api.shareToWeibo(wxData, wxCallbacks);
-                        });
-                    }
-                });
-            };
-        });
+                        console.log( "Touch moved (图片坐标在："+$('#r2').offset().left+",鼠标移动了："+movex+":鼠标移动到了" + newx +"," + newy + ")");
+                        if(moving) oldx=newx
+                        $('#r2').css("left",$('#r2').offset().left+movex);
+                        console.log("图片坐标被移动到："+$('#r2').offset().left )
 
 
-    });
+                        break;
+                }
+            }
+        }
+        document.getElementsByClassName('r1')[0].addEventListener("touchstart", handleTouchEvent, false);
+        document.getElementsByClassName('r1')[0].addEventListener("touchend", handleTouchEvent, false);
+        document.getElementsByClassName('r1')[0].addEventListener("touchmove", handleTouchEvent, false);
+    })
 </script>
+
 </html>
