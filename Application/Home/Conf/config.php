@@ -10,7 +10,7 @@ $private_config = array(
                         'URL_ROUTE_RULES' => array(
                                                   'api/:token' => 'Weixin/index',
                                                   'zoom/:uid' => 'Weixin/zoom',
-                                                   'zoom/:uid' => 'Weixin/zoom',
+                                                   'zoom2/:uid' => 'Weixin/zoom',
                                                   'printer/:atcode' => 'Index/index',
                                                   )
                         );
