@@ -279,7 +279,7 @@ class WeixinController extends BaseController {
         $newwidth = I('post.canvesw');
         $newheight = I('post.canvesh');
         $cropwidth = 254;
-        $cropheight = 131
+        $cropheight = 131;
         $src = trim($src);
         if(!$src) die();
 
