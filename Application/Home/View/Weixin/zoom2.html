@@ -127,13 +127,14 @@
                         newx=event.changedTouches[0].clientX;
                         newy=event.changedTouches[0].clientY;
                         movex=newx-oldx;
+                        movey=newy-oldy;
                         if(moving) {oldx=newx;oldy=newy}
                         console.log( "Touch moved (图片坐标在："+$('#r2').offset().left+",鼠标移动了："+movex+":鼠标移动到了" + newx +"," + newy + ")");
 
                         $('#r2').css("left",$('#r2').offset().left+movex);
                         $('#r2').css("top",$('#r2').offset().top+movey);
                         console.log("图片坐标被移动到："+$('#r2').offset().left )
-                            $("#status").html($('#r2').offset().left+":"+$('#r2').offset().top)
+                    $("#status").html($('#r2').offset().left+":"+$('#r2').offset().top)
 
                         break;
                 }
