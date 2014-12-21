@@ -54,6 +54,8 @@
         .resize{position: absolute}
         .resize img{position:absolute}
         .resize #r1{z-index: 99}
+        #thumb ul li {list-style: none;float: left}
+        #thumb ul li {width:33px}
     </style>
 
 </head>
@@ -83,7 +85,13 @@
 <div style="margin-top: 400px">
 
 
-
+  <div class="thumb" style="height: 100px">
+      <ul>
+          <li><img src="/image/2.png" > </li>
+          <li><img src="/image/3.png" > </li>
+          <li><img src="/image/4.png" > </li>
+      </ul>
+  </div>
     <form class="full-width-slider">
             <label for="slider-12" class="ui-hidden-accessible">Slider:</label>
             <input type="range" name="slider-12" id="slider-12" min="0" max="150" value="50">
@@ -101,6 +109,7 @@
 <script>
 
     $(function(){
+        $(".thumb ul li img").on("click")
         var picWidth;
         $("#r2").attr("src", "{$picinfo.picurl}").load(function() {
               picWidth= $("#r2").css("width").replace("px","");
