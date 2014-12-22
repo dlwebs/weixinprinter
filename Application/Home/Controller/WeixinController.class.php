@@ -284,10 +284,11 @@ class WeixinController extends BaseController {
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         list($origwidth, $origheight) = getimagesize($fileSavePath.$src);
-        $width = $origwidth * $sxbl;
-        $height = $origheight * $sxbl;
+        $width = intval($origwidth * $sxbl);
+        $height = intval($origheight * $sxbl);
         $imgobj = new \Think\Image();
         $imgobj = $imgobj->open($fileSavePath.$src)->thumb($width, $height)->save($fileSavePath.$src);
+        list($realwidth, $realheight) = getimagesize($fileSavePath.$src);
 
         $resource = new \Admin\Model\ResourceModel();
         $weixin = new \Admin\Model\WeixinModel();
@@ -297,11 +298,12 @@ class WeixinController extends BaseController {
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresampled($outpng, $jpeg, $x, $y, 0, 0, $width, $height, $width, $height);
+            imagecopyresampled($outpng, $jpeg, $x, $y, 0, 0, $realwidth, $realheight, $realwidth, $realheight);
             imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outpng, $fileSavePath.$src);
             imagedestroy($png);
             imagedestroy($jpeg);
+            imagedestroy($outpng);
 
 //            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
 //            if (!$weixinobj['weixin_copyright']) {
