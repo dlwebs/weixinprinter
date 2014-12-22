@@ -299,8 +299,10 @@ class WeixinController extends BaseController {
 
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
+            imagealphablending($png, false);
+            imagesavealpha($png, true);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $realwidth, $realheight, $realwidth, $realheight);
+            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $realwidth, $realheight);
             imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outpng, $fileSavePath.$src);
             imagedestroy($png);
