@@ -278,20 +278,17 @@ class WeixinController extends BaseController {
         $src = I('post.originpic');
         $newwidth = I('post.canvesw');
         $newheight = I('post.canvesh');
-        $cropwidth = 254;
-        $cropheight = 131;
         $src = trim($src);
-        if(!$src) die();
+        if(!$src) die('error');
 
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
-        $x = intval($x * $sxbl);
-        $y = intval($y * $sxbl);
-        $width = intval($cropwidth * $sxbl);
-        $height = intval($cropheight * $sxbl);
+        list($origwidth, $origheight) = getimagesize($fileSavePath.$src);
+        $width = $origwidth * $sxbl;
+        $height = $origheight * $sxbl;
 
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $imgobj = new \Think\Image();
-        $imgobj = $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 131, 254)->save($fileSavePath.$src);
+        $imgobj = $imgobj->open($fileSavePath.$src)->thumb($width, $height)->save($fileSavePath.$src);
 
         $resource = new \Admin\Model\ResourceModel();
         $weixin = new \Admin\Model\WeixinModel();
@@ -301,8 +298,8 @@ class WeixinController extends BaseController {
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresized($outpng, $jpeg, 5, 59, 0, 0, 131, 254, 131, 254);
-            imagecopyresized($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+            imagecopyresampled($outpng, $jpeg, $x, $y, 0, 0, $width, $height, $width, $height);
+            imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outpng, $fileSavePath.$src);
             imagedestroy($png);
             imagedestroy($jpeg);
