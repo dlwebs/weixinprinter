@@ -286,12 +286,12 @@ class WeixinController extends BaseController {
         list($origwidth, $origheight) = getimagesize($fileSavePath.$src);
         $width = intval($origwidth * $sxbl);
         $height = intval($origheight * $sxbl);
-        $imagetype = exif_imagetype($fileSavePath.$src);
-        if ($imagetype == IMAGETYPE_JPEG) {
+        $imagetype = array_pop(explode('.', $src));
+        if ($imagetype == 'jpg') {
             $imageobj=imagecreatefromjpeg($fileSavePath.$src);
-        } elseif ($imagetype == IMAGETYPE_PNG) {
+        } elseif ($imagetype == 'png') {
             $imageobj=imagecreatefrompng($fileSavePath.$src);
-        } elseif ($imagetype == IMAGETYPE_GIF) {
+        } elseif ($imagetype == 'gif') {
             $imageobj=imagecreatefromgif($fileSavePath.$src);
         }
         if (!$imageobj) {
@@ -299,11 +299,11 @@ class WeixinController extends BaseController {
         }
         $newimg = imagecreatetruecolor($width, $height);
         imagecopy($newimg, $imageobj, 0, 0, 0, 0, $width, $height);
-        if ($imagetype == IMAGETYPE_JPEG) {
+        if ($imagetype == 'jpg') {
             imagejpeg($newimg, $fileSavePath.$src);
-        } elseif ($imagetype == IMAGETYPE_PNG) {
+        } elseif ($imagetype == 'png') {
             imagepng($newimg, $fileSavePath.$src);
-        } elseif ($imagetype == IMAGETYPE_GIF) {
+        } elseif ($imagetype == 'gif') {
             imagegif($newimg, $fileSavePath.$src);
         }
         $x = abs($x);
