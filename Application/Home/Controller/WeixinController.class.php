@@ -282,11 +282,10 @@ class WeixinController extends BaseController {
         if(!$src) die('error');
 
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
+        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         list($origwidth, $origheight) = getimagesize($fileSavePath.$src);
         $width = $origwidth * $sxbl;
         $height = $origheight * $sxbl;
-
-        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $imgobj = new \Think\Image();
         $imgobj = $imgobj->open($fileSavePath.$src)->thumb($width, $height)->save($fileSavePath.$src);
 
