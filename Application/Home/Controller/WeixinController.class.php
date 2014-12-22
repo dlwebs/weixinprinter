@@ -323,16 +323,16 @@ class WeixinController extends BaseController {
             if ($x < 0 && $y < 0) {
                 $x = abs($x);
                 $y = abs($y);
-                imagecopyresampled($outimage, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width-$x, $height-$y);
+                imagecopyresampled($outimage, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width, $height);
             } elseif ($x >= 0 && $y >= 0) {
-                imagecopyresampled($outimage, $jpeg, $x, $y, 0, 0, $newwidth-$x, $newheight-$y, $width, $height);
+                imagecopyresampled($outimage, $jpeg, $x, $y, 0, 0, $newwidth, $newheight, $width, $height);
             } else {
                 if ($x > 0) {
                     $y = abs($y);
-                    imagecopyresampled($outimage, $jpeg, $x, 0, 0, $y, $newwidth-$x, $newheight, $width, $height-$y);
+                    imagecopyresampled($outimage, $jpeg, $x, 0, 0, $y, $newwidth, $newheight, $width, $height);
                 } elseif ($y > 0) {
                     $x = abs($x);
-                    imagecopyresampled($outimage, $jpeg, 0, $y, $x, 0, $newwidth, $newheight-$y, $width-$x, $height);
+                    imagecopyresampled($outimage, $jpeg, 0, $y, $x, 0, $newwidth, $newheight, $width, $height);
                 }
             }
             imagecopyresampled($outimage, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
