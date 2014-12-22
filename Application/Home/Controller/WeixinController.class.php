@@ -310,8 +310,6 @@ class WeixinController extends BaseController {
             imagegif($newimg, $fileSavePath.$resizeimage);
         }
         $src = $resizeimage;
-        $x = abs($x);
-        $y = abs($y);
 
         $resource = new \Admin\Model\ResourceModel();
         $weixin = new \Admin\Model\WeixinModel();
@@ -322,7 +320,21 @@ class WeixinController extends BaseController {
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width, $height);
+            if ($x < 0 && $y < 0) {
+                $x = abs($x);
+                $y = abs($y);
+                imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width, $height);
+            } elseif ($x >= 0 && $y >= 0) {
+                imagecopyresampled($outpng, $jpeg, $x, $y, 0, 0, $newwidth, $newheight, $width, $height);
+            } else {
+                if ($x > 0) {
+                    $y = abs($y);
+                    imagecopyresampled($outpng, $jpeg, $x, 0, 0, $y, $newwidth, $newheight, $width, $height);
+                } elseif ($y > 0) {
+                    $x = abs($x);
+                    imagecopyresampled($outpng, $jpeg, 0, $y, $x, 0, $newwidth, $newheight, $width, $height);
+                }
+            }
             imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outpng, $fileSavePath.$saveimage);
             imagedestroy($png);
