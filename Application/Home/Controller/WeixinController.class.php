@@ -298,7 +298,7 @@ class WeixinController extends BaseController {
             echo 'error';exit;
         }
         $newimg = imagecreatetruecolor($width, $height);
-        imagecopy($newimg, $imageobj, 0, 0, 0, 0, $width, $height);
+        imagecopyresampled($newimg, $imageobj, 0, 0, 0, 0, $width, $height, $origwidth, $origheight);
         if ($imagetype == 'jpg') {
             imagejpeg($newimg, $fileSavePath.$src);
         } elseif ($imagetype == 'png') {
@@ -324,8 +324,8 @@ class WeixinController extends BaseController {
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width, $realheight);
-            imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $height);
+            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width, $height);
+            imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outpng, $fileSavePath.$saveimage);
             imagedestroy($png);
             imagedestroy($jpeg);
