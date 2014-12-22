@@ -309,7 +309,6 @@ class WeixinController extends BaseController {
         } elseif ($imagetype == 'gif') {
             imagegif($newimg, $fileSavePath.$resizeimage);
         }
-        echo $fileSavePath.$resizeimage;exit;
         $src = $resizeimage;
 
         $resource = new \Admin\Model\ResourceModel();
@@ -320,27 +319,27 @@ class WeixinController extends BaseController {
             $saveimage = date("YmdHis").rand(10000,99999).'.jpg';
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
-            $outpng = imagecreatetruecolor($newwidth, $newheight);
+            $outimage = imagecreatetruecolor($newwidth, $newheight);
             if ($x < 0 && $y < 0) {
                 $x = abs($x);
                 $y = abs($y);
-                imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width-$x, $height-$y);
+                imagecopyresampled($outimage, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width-$x, $height-$y);
             } elseif ($x >= 0 && $y >= 0) {
-                imagecopyresampled($outpng, $jpeg, $x, $y, 0, 0, $newwidth-$x, $newheight-$y, $width, $height);
+                imagecopyresampled($outimage, $jpeg, $x, $y, 0, 0, $newwidth-$x, $newheight-$y, $width, $height);
             } else {
                 if ($x > 0) {
                     $y = abs($y);
-                    imagecopyresampled($outpng, $jpeg, $x, 0, 0, $y, $newwidth-$x, $newheight, $width, $height-$y);
+                    imagecopyresampled($outimage, $jpeg, $x, 0, 0, $y, $newwidth-$x, $newheight, $width, $height-$y);
                 } elseif ($y > 0) {
                     $x = abs($x);
-                    imagecopyresampled($outpng, $jpeg, 0, $y, $x, 0, $newwidth, $newheight-$y, $width-$x, $height);
+                    imagecopyresampled($outimage, $jpeg, 0, $y, $x, 0, $newwidth, $newheight-$y, $width-$x, $height);
                 }
             }
-            imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
-            imagejpeg($outpng, $fileSavePath.$saveimage);
+            imagecopyresampled($outimage, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+            imagejpeg($outimage, $fileSavePath.$saveimage);
             imagedestroy($png);
             imagedestroy($jpeg);
-            imagedestroy($outpng);
+            imagedestroy($outimage);
 
 //            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
 //            if (!$weixinobj['weixin_copyright']) {
