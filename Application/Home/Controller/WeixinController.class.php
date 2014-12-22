@@ -312,7 +312,7 @@ class WeixinController extends BaseController {
         echo $width;echo '|||';
         echo $height;echo '|||';
         echo $imagetype;echo '|||';
-        echo $fileSavePath.$src;echo '|||';exit;
+        echo $fileSavePath.$resizeimage;echo '|||';exit;
         $x = abs($x);
         $y = abs($y);
 
