@@ -289,6 +289,8 @@ class WeixinController extends BaseController {
         $imgobj = new \Think\Image();
         $imgobj = $imgobj->open($fileSavePath.$src)->thumb($width, $height)->save($fileSavePath.$src);
         list($realwidth, $realheight) = getimagesize($fileSavePath.$src);
+        $x = abs($x);
+        $y = abs($y);
 
         $resource = new \Admin\Model\ResourceModel();
         $weixin = new \Admin\Model\WeixinModel();
@@ -298,7 +300,7 @@ class WeixinController extends BaseController {
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresampled($outpng, $jpeg, 0, 0, 0, 0, $realwidth, $realheight, $realwidth, $realheight);
+            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $realwidth, $realheight, $realwidth, $realheight);
             imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outpng, $fileSavePath.$src);
             imagedestroy($png);
