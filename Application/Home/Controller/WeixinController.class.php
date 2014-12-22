@@ -283,6 +283,7 @@ class WeixinController extends BaseController {
 
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
+        $resizeimage = date("YmdHis").rand(100,999).'.jpg';
         list($origwidth, $origheight) = getimagesize($fileSavePath.$src);
         $width = intval($origwidth * $sxbl);
         $height = intval($origheight * $sxbl);
@@ -300,11 +301,11 @@ class WeixinController extends BaseController {
         $newimg = imagecreatetruecolor($width, $height);
         imagecopyresized($newimg, $imageobj, 0, 0, 0, 0, $width, $height, $origwidth, $origheight);
         if ($imagetype == 'jpg') {
-            imagejpeg($newimg, $fileSavePath.$src);
+            imagejpeg($newimg, $fileSavePath.$resizeimage);
         } elseif ($imagetype == 'png') {
-            imagepng($newimg, $fileSavePath.$src);
+            imagepng($newimg, $fileSavePath.$resizeimage);
         } elseif ($imagetype == 'gif') {
-            imagegif($newimg, $fileSavePath.$src);
+            imagegif($newimg, $fileSavePath.$resizeimage);
         }
         echo $origwidth;echo '|||';
         echo $origheight;echo '|||';
