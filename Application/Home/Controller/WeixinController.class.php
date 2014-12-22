@@ -299,7 +299,9 @@ class WeixinController extends BaseController {
             echo 'error';exit;
         }
         $newimg = imagecreatetruecolor($width, $height);
-        imagecopyresized($newimg, $imageobj, 0, 0, 0, 0, $width, $height, $origwidth, $origheight);
+        $color = imagecolorallocate($newimg, 255, 255, 255);
+        imagefill($newimg, 0, 0, $color);
+        imagecopyresampled($newimg, $imageobj, 0, 0, 0, 0, $width, $height, $origwidth, $origheight);
         if ($imagetype == 'jpg') {
             imagejpeg($newimg, $fileSavePath.$resizeimage);
         } elseif ($imagetype == 'png') {
