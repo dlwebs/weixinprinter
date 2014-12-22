@@ -297,15 +297,16 @@ class WeixinController extends BaseController {
         $resinfo = $resource->getUserNoPrintResource($uid);
         if ($resinfo) {
 
-            $saveimage = date("YmdHis").rand(10000,99999).'.jpg';
+            $saveimage = date("YmdHis").rand(10000,99999).'.png';
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             imagealphablending($png, false);
             imagesavealpha($png, true);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
+            imagecolorallocatealpha($outpng, 0, 0, 0, 127);
             imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $realwidth, $realheight);
             imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
-            imagejpeg($outpng, $fileSavePath.$saveimage);
+            imagepng($outpng, $fileSavePath.$saveimage);
             imagedestroy($png);
             imagedestroy($jpeg);
             imagedestroy($outpng);
