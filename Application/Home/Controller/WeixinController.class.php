@@ -285,15 +285,15 @@ class WeixinController extends BaseController {
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         $resizeimage = date("YmdHis").rand(100,999).'.jpg';
         list($origwidth, $origheight) = getimagesize($fileSavePath.$src);
-        $width = intval($origwidth * $sxbl);
-        $height = intval($origheight * $sxbl);
+        $width = round($origwidth * $sxbl);
+        $height = round($origheight * $sxbl);
         $imagetype = array_pop(explode('.', $src));
         if ($imagetype == 'jpg') {
-            $imageobj=imagecreatefromjpeg($fileSavePath.$src);
+            $imageobj = imagecreatefromjpeg($fileSavePath.$src);
         } elseif ($imagetype == 'png') {
-            $imageobj=imagecreatefrompng($fileSavePath.$src);
+            $imageobj = imagecreatefrompng($fileSavePath.$src);
         } elseif ($imagetype == 'gif') {
-            $imageobj=imagecreatefromgif($fileSavePath.$src);
+            $imageobj = imagecreatefromgif($fileSavePath.$src);
         }
         if (!$imageobj) {
             echo 'error';exit;
@@ -309,6 +309,7 @@ class WeixinController extends BaseController {
         } elseif ($imagetype == 'gif') {
             imagegif($newimg, $fileSavePath.$resizeimage);
         }
+        echo $fileSavePath.$resizeimage;exit;
         $src = $resizeimage;
 
         $resource = new \Admin\Model\ResourceModel();
