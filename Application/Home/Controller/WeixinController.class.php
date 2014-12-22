@@ -297,6 +297,7 @@ class WeixinController extends BaseController {
         $resinfo = $resource->getUserNoPrintResource($uid);
         if ($resinfo) {
 
+            $saveimage = date("YmdHis").rand(10000,99999).'.jpg';
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             imagealphablending($png, false);
@@ -304,7 +305,7 @@ class WeixinController extends BaseController {
             $outpng = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $realwidth, $realheight);
             imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
-            imagejpeg($outpng, $fileSavePath.$src);
+            imagejpeg($outpng, $fileSavePath.$saveimage);
             imagedestroy($png);
             imagedestroy($jpeg);
             imagedestroy($outpng);
@@ -327,9 +328,9 @@ class WeixinController extends BaseController {
 //            imagedestroy($user_img);
 //            imagedestroy($background);
         
-            $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$src);
+            $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$saveimage);
             if ($isok) {
-                echo $src;
+                echo $saveimage;
             } else {
                 echo 'error';
             }
