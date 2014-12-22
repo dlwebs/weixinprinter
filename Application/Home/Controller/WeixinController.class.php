@@ -284,17 +284,28 @@ class WeixinController extends BaseController {
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
         $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
         list($origwidth, $origheight) = getimagesize($fileSavePath.$src);
-        echo $fileSavePath.$src;echo '|||';
-        echo $origwidth;echo '|||';
-        echo $origheight;echo '|||';
         $width = intval($origwidth * $sxbl);
         $height = intval($origheight * $sxbl);
-        $imgobj = new \Think\Image();
-        $imgobj = $imgobj->open($fileSavePath.$src)->thumb($width, $height)->save($fileSavePath.$src);
-        list($realwidth, $realheight) = getimagesize($fileSavePath.$src);
-        echo $realwidth;echo '|||';
-        echo $realheight;echo '|||';
-        echo $fileSavePath.$src;echo '|||';exit;
+        $imagetype = exif_imagetype($fileSavePath.$src);
+        if ($imagetype == IMAGETYPE_JPEG) {
+            $imageobj=imagecreatefromjpeg($fileSavePath.$src);
+        } elseif ($imagetype == IMAGETYPE_PNG) {
+            $imageobj=imagecreatefrompng($fileSavePath.$src);
+        } elseif ($imagetype == IMAGETYPE_GIF) {
+            $imageobj=imagecreatefromgif($fileSavePath.$src);
+        }
+        if (!$imageobj) {
+            echo 'error';exit;
+        }
+        $newimg = imagecreatetruecolor($width, $height);
+        imagecopy($newimg, $imageobj, 0, 0, 0, 0, $width, $height);
+        if ($imagetype == IMAGETYPE_JPEG) {
+            imagejpeg($newimg, $fileSavePath.$src);
+        } elseif ($imagetype == IMAGETYPE_PNG) {
+            imagepng($newimg, $fileSavePath.$src);
+        } elseif ($imagetype == IMAGETYPE_GIF) {
+            imagegif($newimg, $fileSavePath.$src);
+        }
         $x = abs($x);
         $y = abs($y);
 
@@ -307,8 +318,8 @@ class WeixinController extends BaseController {
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
-            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $realwidth, $realheight);
-            imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
+            imagecopyresampled($outpng, $jpeg, 0, 0, $x, $y, $newwidth, $newheight, $width, $realheight);
+            imagecopyresampled($outpng, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $height);
             imagejpeg($outpng, $fileSavePath.$saveimage);
             imagedestroy($png);
             imagedestroy($jpeg);
