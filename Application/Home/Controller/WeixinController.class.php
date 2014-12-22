@@ -306,6 +306,12 @@ class WeixinController extends BaseController {
         } elseif ($imagetype == 'gif') {
             imagegif($newimg, $fileSavePath.$src);
         }
+        echo $origwidth;echo '|||';
+        echo $origheight;echo '|||';
+        echo $width;echo '|||';
+        echo $height;echo '|||';
+        echo $imagetype;echo '|||';
+        echo $fileSavePath.$src;echo '|||';exit;
         $x = abs($x);
         $y = abs($y);
 
