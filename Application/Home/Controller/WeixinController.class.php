@@ -298,9 +298,6 @@ class WeixinController extends BaseController {
         if ($resinfo) {
 
             $saveimage = date("YmdHis").rand(10000,99999).'.jpg';
-            echo $_SERVER['DOCUMENT_ROOT'].$backpic;
-            echo '||||';
-            echo $fileSavePath.$src;
             $png = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'].$backpic);
             $jpeg = imagecreatefromjpeg($fileSavePath.$src);
             $outpng = imagecreatetruecolor($newwidth, $newheight);
