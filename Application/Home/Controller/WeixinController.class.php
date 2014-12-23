@@ -309,7 +309,6 @@ class WeixinController extends BaseController {
         } elseif ($imagetype == 'gif') {
             imagegif($newimg, $fileSavePath.$resizeimage);
         }
-        echo $fileSavePath.$resizeimage;
         $src = $resizeimage;
 
         $resource = new \Admin\Model\ResourceModel();
@@ -338,7 +337,6 @@ class WeixinController extends BaseController {
             }
             imagecopyresampled($outimage, $png, 0, 0, 0, 0, $newwidth, $newheight, $newwidth, $newheight);
             imagejpeg($outimage, $fileSavePath.$saveimage);
-            echo $fileSavePath.$saveimage;exit;
             imagedestroy($png);
             imagedestroy($jpeg);
             imagedestroy($outimage);
