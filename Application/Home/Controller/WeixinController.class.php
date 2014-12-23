@@ -309,6 +309,7 @@ class WeixinController extends BaseController {
         } elseif ($imagetype == 'gif') {
             imagegif($newimg, $fileSavePath.$resizeimage);
         }
+        echo $fileSavePath.$resizeimage;exit;
         $src = $resizeimage;
 
         $resource = new \Admin\Model\ResourceModel();
