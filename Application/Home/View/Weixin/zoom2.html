@@ -174,7 +174,11 @@
         var sfbl,//缩放比例
             offsetx,//x轴偏移量
              offsety//y轴偏移量
+        var first=true;
         $("#saveBtn").on("click",function(){
+            if(!first)
+                return false;
+            first=false;
             offsetx=$('#r2').offset().left;
             offsety=$('#r2').offset().top;
             sfbl=$("#slider-12").val()/100;
@@ -192,7 +196,7 @@
                     $(".jcrop-holder").hide();
                     $("#status").html("<input onclick=\"document.getElementById('mcover').style.display='block';\" type='button' id='okbtn' class='submit btn' value='裁剪完成，点击分享即可打印'><img width='300' src='/upload/"+d+"' />");
                     $("#saveBtn").hide()
-
+                    $('.resize').hide();
                     // 所有功能必须包含在 WeixinApi.ready 中进行
                     WeixinApi.ready(function(Api){
 
