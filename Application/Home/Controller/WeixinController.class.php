@@ -105,7 +105,7 @@ class WeixinController extends BaseController {
                 array("图片上传成功,请选择下面裁剪方式对图片进行裁剪","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
                 array("普通裁剪图片","普通裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
                 array("使用高级模版生成打印图片","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom2/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
-                array("使用带音视频留言机的模版打印图片","使用带音视频留言机的模版打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom3/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'].'&wxtoken='.$this->_token)
+                array("使用带音视频留言机的模版打印图片","使用带音视频留言机的模版打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom3/".$post['fromUserName']."/?picurl=".$post['picUrl'].'&wxtoken='.$this->_token,$post['picUrl'])
             );
         } else {
             return '照片发送失败，请重新发送';
