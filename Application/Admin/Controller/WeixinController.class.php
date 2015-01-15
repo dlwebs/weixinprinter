@@ -175,6 +175,11 @@ class WeixinController extends BaseController {
             $post['weixin_copyright'] = '';
             unlink('./upload/copyright/'.$isdelcopyrightimage);
         }
+        $isdelminicopyrightimage = $post['delweixin_minicopyright'];
+        if ($isdelminicopyrightimage) {
+            $post['weixin_minicopyright'] = '';
+            unlink('./upload/copyright/'.$isdelminicopyrightimage);
+        }
         if ($_FILES['weixin_copyright']['name']) {
             $upload = new \Think\Upload();
             $upload->maxSize = 3145728;//3M
@@ -186,7 +191,18 @@ class WeixinController extends BaseController {
             }
             $post['weixin_copyright'] = $uploadinfo['savepath'].$uploadinfo['savename'];
         }
-
+        if ($_FILES['weixin_minicopyright']['name']) {
+            $upload = new \Think\Upload();
+            $upload->maxSize = 3145728;//3M
+            $upload->exts = array('jpg', 'gif', 'png', 'jpeg');
+            $upload->rootPath = './upload/copyright/';
+            $uploadinfo = $upload->uploadOne($_FILES['weixin_minicopyright']);
+            if(!$uploadinfo) {
+                $this->error($upload->getError());
+            }
+            $post['weixin_minicopyright'] = $uploadinfo['savepath'].$uploadinfo['savename'];
+        }
+      
         $isdelimage = $post['delweixin_imgcode'];
         if ($isdelimage) {
             $post['weixin_imgcode'] = '';
@@ -208,6 +224,8 @@ class WeixinController extends BaseController {
             }
         }
         if (isset($post['id']) && $post['id']) {
+            unset($post['delweixin_copyright']);
+            unset($post['delweixin_minicopyright']);
             $edunumber = $weixin->updateWeixin($post);
             if ($edunumber) {
                 $id = $post['id'];

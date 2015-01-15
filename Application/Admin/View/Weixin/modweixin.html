@@ -62,12 +62,22 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="weixin_copyright" class="col-sm-3 control-label">版权图片</label>
+              <label for="weixin_copyright" class="col-sm-3 control-label">版权图片262x100</label>
               <div class="col-sm-9">
                 <input type="file" id="weixin_copyright" name="weixin_copyright">
                 <if condition="$wxinfo.weixin_copyright neq ''">
                       <img src="/upload/copyright/{$wxinfo.weixin_copyright}" width="262" height="100">
-                      <input type="checkbox" name="delweixin_copyright" value='{$wxinfo.weixin_copyright}'>删除版权图片
+                      <input type="checkbox" name="delweixin_copyright" id="delweixin_copyright" value='{$wxinfo.weixin_copyright}'>删除版权图片
+                 </if>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="weixin_copyright" class="col-sm-3 control-label">版权图片162x100</label>
+              <div class="col-sm-9">
+                <input type="file" id="weixin_minicopyright" name="weixin_minicopyright">
+                <if condition="$wxinfo.weixin_minicopyright neq ''">
+                      <img src="/upload/copyright/{$wxinfo.weixin_minicopyright}" width="162" height="100">
+                      <input type="checkbox" name="delweixin_minicopyright" id="delweixin_minicopyright" value='{$wxinfo.weixin_minicopyright}'>删除迷你版权图片
                  </if>
               </div>
             </div>
@@ -99,6 +109,10 @@ $(function () {
         var weixin_name = $("#weixin_name").val();
         var weixin_appid = $("#weixin_appid").val();
         var weixin_appsecret = $("#weixin_appsecret").val();
+        var weixin_copyright = $("#weixin_copyright").val();
+        var weixin_minicopyright = $("#weixin_minicopyright").val();
+        var delweixin_copyright = document.getElementById('delweixin_copyright').checked;
+        var delweixin_minicopyright = document.getElementById('delweixin_minicopyright').checked;
         if (!weixin_number) {
             alert("请填写公众号原始ID");
             return false;
@@ -113,6 +127,14 @@ $(function () {
         }
         if (!weixin_appsecret) {
             alert("请填写AppSecret");
+            return false;
+        }
+        if (delweixin_copyright && !weixin_copyright) {
+            alert("您选择了删除原有的版权图片，请上传新的尺寸为262x100的版权图片");
+            return false;
+        }
+        if (delweixin_minicopyright && !weixin_minicopyright) {
+            alert("您选择了删除原有的迷你版权图片，请上传新的尺寸为162x100的迷你版权图片");
             return false;
         }
         <if condition="$Think.session.userinfo.group_id eq 1">
