@@ -7,6 +7,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery.jcrop.js?version=1"></script>
     <script src="/js/weixin.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <link rel="stylesheet" href="/css/jquery.jcrop.css?version=1" type="text/css" />
     <script type="text/javascript">
         $(function(){
@@ -84,6 +85,9 @@
                     <input type="hidden" name="src" id="src" value="{$picinfo.imagename}">
                     <input type="hidden" name="input" id="input" value="">
                     <input type="hidden" id="preview" value="">
+                    <input type="hidden" id="wxtoken" name="wxtoken" value="{$wxtoken}">
+                    <input type="button" value="开始录音" id="audioBeginBtn" class="btn btn-large btn-inverse">
+                    <input type="button" value="停止录音" id="audioEndBtn" class="btn btn-large btn-inverse">
                     <input type="button" value="确定裁剪" id="saveBtn" class="btn btn-large btn-inverse">
                 </form>
             </div>
@@ -100,12 +104,40 @@
 </body>
 <script>
     $(function(){
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$wxinfo.weixin_appid}', // 必填，公众号的唯一标识
+            timestamp: {$signPackage.timestamp:}, // 必填，生成签名的时间戳
+            nonceStr: '{$signPackage.nonceStr:}', // 必填，生成签名的随机串
+            signature: '{$signPackage.signature:}',// 必填，签名，见附录1
+            jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function(){
+            $("#audioBeginBtn").on("click",function(){
+                wx.startRecord();
+            });
+            $("#audioBeginBtn").on("click",function(){
+                wx.stopRecord({
+                    success: function (res) {
+                        var localId = res.localId;
+                    }
+                });
+            });
+            wx.onVoiceRecordEnd({
+                // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+                complete: function (res) {
+                    var localId = res.localId; 
+                }
+            });
+        });
+        
+        
         $("#saveBtn").on("click",function(){
             $("#status").html("图片处理中...") ;
             if(checkCoords()){
                 $.ajax({
                     type: "POST",
-                    url:"__MODULE__/Weixin/crop3?uid={$uid}&wxtoken={$wxtoken}",
+                    url:"__MODULE__/Weixin/crop3?uid={$uid}",
                     data:$('#cropform').serialize()
                 }).success(function(d){
                     if (d == "error") {
