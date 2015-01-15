@@ -90,7 +90,6 @@ class WeixinController extends BaseController {
     }
 
 
-
     public function receiveImage($data){
         $post = array('fromUserName'=>(string)$data['FromUserName'], 'toUserName'=>$this->_token/*(string)$data['ToUserName']*/, 'picUrl'=>(string)$data['PicUrl'], 'mediaId'=>(string)$data['MediaId']);
         $check_print = $this->_checkfree($post);
@@ -103,12 +102,11 @@ class WeixinController extends BaseController {
           //  return '照片已收到，可以<a href="http://'.$_SERVER['SERVER_NAME'].'/index.php/zoom/'.$post['fromUserName']."/?picurl=".$post['picUrl'].'">点击这里</a>对图片进行剪裁，也可直接回复消费码开始打印';
 
             $this->_wechat->replyNews(
-            array("图片上传成功,请选择下面裁剪方式对图片进行裁剪","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
-             array("普通裁剪图片","普通裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
-             array("使用高级模版生成打印图片","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom2/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'])
+                array("图片上传成功,请选择下面裁剪方式对图片进行裁剪","请先裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
+                array("普通裁剪图片","普通裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
+                array("使用高级模版生成打印图片","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom2/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
+                array("使用带音视频留言机的模版打印图片","使用带音视频留言机的模版打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom3/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl'].'&wxtoken='.$this->_token)
             );
-
-
         } else {
             return '照片发送失败，请重新发送';
         }
@@ -211,6 +209,29 @@ class WeixinController extends BaseController {
         }
         $picinfo=array("img_width"=>$img_width, "sxbl"=>$sxbl, "width"=>$width, "imagename"=>$fileSaveName, "picurl"=>$picurl);
         $this->assign('picinfo', $picinfo);
+        $this->assign('uid', $uid);
+        $this->display();
+    }
+    
+    public function zoom3Action() {
+        $uid = I('get.uid');
+        $wxtoken = $_GET["wxtoken"];
+        $picurl = $_GET["picurl"];
+        $fileSaveName = date("YmdHis").rand(1000,9999).'.jpg';
+        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
+        $fileContents = file_get_contents($picurl);
+        $fileResource = fopen($fileSavePath.$fileSaveName, 'a');
+        fwrite($fileResource, $fileContents);
+        fclose($fileResource);
+        list($img_width, $img_height, $type, $attr) = getimagesize($fileSavePath.$fileSaveName);
+        $sxbl = 1;
+        if($img_width>300){
+            $sxbl = floatval($img_width/300);
+            $width = 300;
+        }
+        $picinfo=array("img_width"=>$img_width, "sxbl"=>$sxbl, "width"=>$width, "imagename"=>$fileSaveName, "picurl"=>$picurl);
+        $this->assign('picinfo', $picinfo);
+        $this->assign('wxtoken', $wxtoken);
         $this->assign('uid', $uid);
         $this->display();
     }
@@ -340,28 +361,63 @@ class WeixinController extends BaseController {
             imagedestroy($png);
             imagedestroy($jpeg);
             imagedestroy($outimage);
-
-//            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
-//            if (!$weixinobj['weixin_copyright']) {
-//                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
-//            } else {
-//                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
-//            }
-//            $user_img = imagecreatefromjpeg($fileSavePath.$src);
-//            $background = imagecreatetruecolor(262,370);
-//            $color = imagecolorallocate($background, 202, 201, 201);
-//            imagefill($background, 0, 0, $color);
-//            imageColorTransparent($background, $color); 
-//            imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
-//            imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
-//            imagejpeg($background, $fileSavePath.$src);
-//            imagedestroy($copyright_img);
-//            imagedestroy($user_img);
-//            imagedestroy($background);
-        
             $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$saveimage);
             if ($isok) {
                 echo $saveimage;
+            } else {
+                echo 'error';
+            }
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function crop3Action() {
+        $uid = $_GET["uid"];
+        $src = I('post.src');
+        $x = I('post.x1');
+        $y = I('post.y1');
+        $cropwidth = I('post.cropwidth');
+        $cropheight = I('post.cropheight');
+        $sxbl = I('post.sxbl');
+        $src = trim($src);
+        if(!$src) die();
+
+        //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
+        $x = intval($x * $sxbl);
+        $y = intval($y * $sxbl);
+        $width = intval($cropwidth * $sxbl);
+        $height = intval($cropheight * $sxbl);
+
+        $fileSavePath = $_SERVER['DOCUMENT_ROOT']."/upload/";
+        $imgobj = new \Think\Image();
+        $imgobj = $imgobj->open($fileSavePath.$src)->crop($width, $height, $x, $y, 262, 270)->save($fileSavePath.$src);
+
+        $resource = new \Admin\Model\ResourceModel();
+        $weixin = new \Admin\Model\WeixinModel();
+        $resinfo = $resource->getUserNoPrintResource($uid);
+        if ($resinfo) {
+            $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
+            if (!$weixinobj['weixin_copyright']) {
+                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
+            } else {
+                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
+            }
+            $user_img = imagecreatefromjpeg($fileSavePath.$src);
+            $background = imagecreatetruecolor(262,370);
+            $color = imagecolorallocate($background, 202, 201, 201);
+            imagefill($background, 0, 0, $color);
+            imageColorTransparent($background, $color); 
+            imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
+            imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
+            imagejpeg($background, $fileSavePath.$src);
+            imagedestroy($copyright_img);
+            imagedestroy($user_img);
+            imagedestroy($background);
+        
+            $isok = $resource->updateResourceContent($resinfo['resource_id'], 'http://'.$_SERVER['SERVER_NAME'].'/upload/'.$src);
+            if ($isok) {
+                echo $src;
             } else {
                 echo 'error';
             }

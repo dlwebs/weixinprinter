@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>图片剪裁</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.jcrop.js?version=1"></script>
+    <script src="/js/weixin.js"></script>
+    <link rel="stylesheet" href="/css/jquery.jcrop.css?version=1" type="text/css" />
+    <script type="text/javascript">
+        $(function(){
+            $('#cropbox').Jcrop({
+                aspectRatio: 262 / 270,
+                onSelect: updateCoords,
+                onChange: updateCoords
+            });
+        });
+        function updateCoords(c){
+            $("#x1").val(c.x); //得到选中区域左上角横坐标
+            $("#y1").val(c.y); //得到选中区域左上角纵坐标
+            $("#cropwidth").val(c.w); //得到选中区域的宽度
+            $("#cropheight").val(c.h); //得到选中区域的高度
+        };
+        function checkCoords(){
+            if (parseInt($('#cropwidth').val())) return true;
+            alert('请选择剪裁区域然后提交');
+            return false;
+        };
+    </script>
+    <style type="text/css">
+        #saveBtn,#okbtn{
+            width: 80%;
+            margin-top: 10px;
+            height: 40px;
+            border: 0px;
+            background-color: rgb(255, 116, 0);
+            color: #fff;
+        }
+        #target {
+            background-color: #ccc;
+            width: 500px;
+            height: 330px;
+            font-size: 24px;
+            display: block;
+        }
+        #mcover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 20000;
+        }
+        #mcover img {
+            position: fixed;
+            right: 28px;
+            top: 25%;
+            width: 260px!important;
+            height: 180px!important;
+            z-index: 20001;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="span12">
+            <div class="jc-demo-box">
+                <div class="page-header">
+                    <p>在图片中选择需要打印的区域</p>
+                </div>
+                <img src="{$picinfo.picurl}" id="cropbox" width="{$picinfo.width}"/>
+                <div id="status"></div>
+                <form id="cropform" >
+                    <input type="hidden" name="x1" id="x1" size="3">
+                    <input type="hidden" name="y1" id="y1">
+                    <input type="hidden" name="cropwidth" id="cropwidth">
+                    <input type="hidden" name="cropheight" id="cropheight">
+                    <input type="hidden" name="sxbl" id="sxbl" value="{$picinfo.sxbl}"><!--当前图片缩小比例，php中用于计算裁剪-->
+                    <input type="hidden" name="src" id="src" value="{$picinfo.imagename}">
+                    <input type="hidden" name="input" id="input" value="">
+                    <input type="hidden" id="preview" value="">
+                    <input type="button" value="确定裁剪" id="saveBtn" class="btn btn-large btn-inverse">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display: none;">
+    <img src="/img/guide.png">
+</div>
+
+
+</body>
+<script>
+    $(function(){
+        $("#saveBtn").on("click",function(){
+            $("#status").html("图片处理中...") ;
+            if(checkCoords()){
+                $.ajax({
+                    type: "POST",
+                    url:"__MODULE__/Weixin/crop3?uid={$uid}&wxtoken={$wxtoken}",
+                    data:$('#cropform').serialize()
+                }).success(function(d){
+                    if (d == "error") {
+                        alert("剪裁失败");
+                    } else {
+                        $("h2").html("裁剪完成，分享之后即可打印");
+                        $(".jcrop-holder").hide();
+                        $("#status").html("<input onclick=\"document.getElementById('mcover').style.display='block';\" type='button' id='okbtn' class='submit btn' value='裁剪完成，点击分享即可打印'><img width='300' src='/upload/"+d+"' />");
+                        $("#saveBtn").hide()
+
+                    // 所有功能必须包含在 WeixinApi.ready 中进行
+                        WeixinApi.ready(function(Api){
+
+                            // 微信分享的数据
+                            var wxData = {
+                                "imgUrl":document.location.origin+"/upload/"+d,
+                                "link":'http://mp.weixin.qq.com/s?__biz=MzA4ODQ2MzIxMQ==&mid=201638658&idx=1&sn=3f46f7cc26c21c60d6be2c9099d50e66#rd',
+                                "desc":'我正在使用微谷云微信打印机打印照片呢！你也一起来参与吧！',
+                                "title":"微谷云微信打印机"
+                            };
+
+                            // 分享的回调
+                            var wxCallbacks = {
+                                // 分享操作开始之前
+                                ready:function () {
+                                    // 你可以在这里对分享的数据进行重组
+                                },
+                                // 分享被用户自动取消
+                                cancel:function (resp) {
+                                    // 你可以在你的页面上给用户一个小Tip，为什么要取消呢？
+                                },
+                                // 分享失败了
+                                fail:function (resp) {
+                                    // 分享失败了，是不是可以告诉用户：不要紧，可能是网络问题，一会儿再试试？
+                                },
+                                // 分享成功
+                                confirm:function (resp) {
+                                    // 分享成功了，我们是不是可以做一些分享统计呢？
+                                    WeixinApi.closeWindow({
+                                        success : function(resp){
+
+                                        },
+                                        fail : function(resp){
+
+                                        }
+                                    });
+                                },
+                                // 整个分享过程结束
+                                all:function (resp) {
+                                    // 如果你做的是一个鼓励用户进行分享的产品，在这里是不是可以给用户一些反馈了？
+                                }
+                            };
+
+                            // 用户点开右上角popup菜单后，点击分享给好友，会执行下面这个代码
+                            Api.shareToFriend(wxData, wxCallbacks);
+
+                            // 点击分享到朋友圈，会执行下面这个代码
+                            Api.shareToTimeline(wxData, wxCallbacks);
+
+                            // 点击分享到腾讯微博，会执行下面这个代码
+                            Api.shareToWeibo(wxData, wxCallbacks);
+                        });
+                    }
+                });
+            };
+        });
+
+
+    });
+</script>
+</html>
