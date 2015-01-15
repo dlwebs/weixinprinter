@@ -111,7 +111,7 @@
             timestamp: {$signPackage.timestamp}, // 必填，生成签名的时间戳
             nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
             signature: '{$signPackage.signature}',// 必填，签名，见附录1
-            jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            jsApiList: ['startRecord','stopRecord','onVoiceRecordEnd'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
         wx.ready(function(){
             $("#audioBeginBtn").on("click",function(){
