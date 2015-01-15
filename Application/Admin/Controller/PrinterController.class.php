@@ -248,7 +248,8 @@ class PrinterController extends BaseController {
         $printertplobj = D('printertpl');
         $printerwxobj = D('printerwx');
         $updatePrintArray = array();
-
+        //print_r($post);
+        //exit;
 
         if (!isset($post['id']) || !$post['id']) {
             $sysobj = D('system');
@@ -287,6 +288,7 @@ class PrinterController extends BaseController {
                     if (!$uploadinfo) {
                         $this->error($upload->getError());
                     }
+                    /**
                     $array = explode(".", $uploadinfo['savename']);
                     $fileName = $array[0];
                     $suffix = $array[1];
@@ -294,6 +296,10 @@ class PrinterController extends BaseController {
                         exec(C('FFMPEG_DIR') . "ffmpeg -i " . $_SERVER['DOCUMENT_ROOT'] . "/upload/" . $uploadinfo['savepath'] . $uploadinfo['savename'] . " -ab 128 -ar 22050 -b:v 1700k -r 15 -s 640x480 -f flv " . $_SERVER['DOCUMENT_ROOT'] . "/upload/" . $uploadinfo['savepath'] . $fileName . ".flv");
                     }
                     $upload_file['video' . $i . '_file'] = $uploadinfo['savepath'] . $fileName . ".flv";
+                    */
+                    $upload_file['video' . $i . '_file'] = $uploadinfo['savepath'] . $uploadinfo['savename'];
+                }else{
+                    $upload_file['video' . $i . '_file'] = $post["video" . $i . '_file_hidden'];
                 }
             }
         }
@@ -308,7 +314,9 @@ class PrinterController extends BaseController {
                     if (!$uploadinfo) {
                         $this->error($upload->getError());
                     }
-                    $upload_file['video' . $i . '_file'] = $uploadinfo['savepath'] . $uploadinfo['savename'];
+                    $upload_file['image' . $i . '_file'] = $uploadinfo['savepath'] . $uploadinfo['savename'];
+                }else{
+                    $upload_file['image' . $i . '_file'] = $post["image" . $i . '_file_hidden'];
                 }
             }
         }
@@ -396,18 +404,28 @@ class PrinterController extends BaseController {
                 $tplArray = $printertplobj->getPrintertplByCondition("printertpl_type='video' and printertpl_num=" . $i . " and printertpl_printer=" . $id);
                 if ($post["video" . $i] == "file") {
                     if ($_FILES['video' . $i . '_file']['name']) {
-                        $insertArray['printertpl_content'] = $upload_file['video' . $i . '_file'];
-                    }else{
                         if (count($tplArray)) {
                             if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
                                 unlink("./upload/" . $tplArray[0]["printertpl_content"]);
                             }
-                            $insertArray['printertpl_content'] = "";
+                        }
+                        $insertArray['printertpl_content'] = $upload_file['video' . $i . '_file'];
+                    }else{
+                        if (count($tplArray)) {
+                            //if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
+                            //    unlink("./upload/" . $tplArray[0]["printertpl_content"]);
+                            //}
+                            $insertArray['printertpl_content'] = $upload_file['video' . $i . '_file'];
                             $insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
                             $printertplid = $printertplobj->updatePrintertpl($insertArray);
                         }
                     }
                 } elseif ($post["video" . $i] == "text") {
+                    if (count($tplArray)) {
+                        if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
+                            unlink("./upload/" . $tplArray[0]["printertpl_content"]);
+                        }
+                    }
                     $insertArray['printertpl_content'] = $post["video" . $i . "_text"];
                 }
                 if ($insertArray['printertpl_content']) {
@@ -415,9 +433,11 @@ class PrinterController extends BaseController {
                     $insertArray['printertpl_printer'] = $id;
                     $insertArray['printertpl_type'] = 'video';
                     if (count($tplArray)) {
+                        /**
                         if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
                             unlink("./upload/" . $tplArray[0]["printertpl_content"]);
                         }
+                        */
                         $insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
                         $printertplid = $printertplobj->updatePrintertpl($insertArray);
                     } else {
@@ -431,18 +451,28 @@ class PrinterController extends BaseController {
                 $tplArray = $printertplobj->getPrintertplByCondition("printertpl_type='image' and printertpl_num=" . $i . " and printertpl_printer=" . $id);
                 if ($post["image" . $i] == "file") {
                     if ($_FILES['image' . $i . '_file']['name']) {
-                        $insertArray['printertpl_content'] = $upload_file['video' . $i . '_file'];
-                    }else{
-                        if (count($tplArray)) {
+                         if (count($tplArray)) {
                             if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
                                 unlink("./upload/" . $tplArray[0]["printertpl_content"]);
                             }
-                            $insertArray['printertpl_content'] = "";
+                        }
+                        $insertArray['printertpl_content'] = $upload_file['image' . $i . '_file'];
+                    }else{
+                        if (count($tplArray)) {
+                            //if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
+                            //    unlink("./upload/" . $tplArray[0]["printertpl_content"]);
+                            //}
+                            $insertArray['printertpl_content'] = $upload_file['image' . $i . '_file'];
                             $insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
                             $printertplid = $printertplobj->updatePrintertpl($insertArray);
                         }
                     }
                 } elseif ($post["image" . $i] == "text") {
+                    if (count($tplArray)) {
+                        if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
+                            unlink("./upload/" . $tplArray[0]["printertpl_content"]);
+                        }
+                    }
                     $insertArray['printertpl_content'] = $post["image" . $i . "_text"];
                 }
                 if ($insertArray['printertpl_content']) {
@@ -450,9 +480,11 @@ class PrinterController extends BaseController {
                     $insertArray['printertpl_printer'] = $id;
                     $insertArray['printertpl_type'] = 'image';
                     if (count($tplArray)) {
+                        /**
                         if ($tplArray[0]["printertpl_content"] && substr($tplArray[0]["printertpl_content"], 0, 4) != "http") {
                             unlink("./upload/" . $tplArray[0]["printertpl_content"]);
                         }
+                        */
                         $insertArray['printertpl_id'] = $tplArray[0]['printertpl_id'];
                         $printertplid = $printertplobj->updatePrintertpl($insertArray);
                     } else {

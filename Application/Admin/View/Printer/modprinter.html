@@ -239,6 +239,7 @@
                     if (videoSult != "" && videoSult != null) {
                         if (videoSult.substring(0, 4) != "http") {
                             returnHtml += "				<input type=\"file\" id=\"video" + i + "_file\" name=\"video" + i + "_file\">";
+							returnHtml += "				<input type=\"hidden\" name=\"video" + i + "_file_hidden\" value=\"" + videoSult + "\">";
                         } else {
                             returnHtml += "				<input type=\"file\" id=\"video" + i + "_file\" name=\"video" + i + "_file\" style=\"display:none\">";
                         }
@@ -248,6 +249,7 @@
                     if (videoSult != "" && videoSult != null) {
                         if (videoSult.substring(0, 4) == "http") {
                             returnHtml += "				<input type=\"text\" id=\"video" + i + "_text\" name=\"video" + i + "_text\" value=\"" + videoSult + "\" class=\"form-control\">";
+							
                         } else {
                             returnHtml += "				<input type=\"text\" id=\"video" + i + "_text\" name=\"video" + i + "_text\" class=\"form-control\" style=\"display:none\">";
                         }
@@ -287,6 +289,7 @@
                     if (imageSult != "" && imageSult != null) {
                         if (imageSult.substring(0, 4) != "http") {
                             returnHtml += "				<input type=\"file\" id=\"image" + i + "_file\" name=\"image" + i + "_file\">";
+							returnHtml += "				<input type=\"hidden\" name=\"image" + i + "_file_hidden\" value=\"" + imageSult + "\">";
                             if (imageSult) {
                                 returnHtml += "<img src=\"/upload/" + imageSult + "\" width=\"100\" height=\"50\">";
                             }
