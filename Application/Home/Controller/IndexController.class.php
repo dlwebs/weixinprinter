@@ -52,10 +52,10 @@ class IndexController extends BaseController {
                         $source_type = 'video/webm';
                     }
                     if (strpos($value['printertpl_content'], 'http://') === false) {
-                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%" data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
+                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%" >
                                        <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';
                     } else {
-                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%"  data-setup=\'{"controls" : false, "autoplay" : true, "preload" : "auto", "loop": true}\'>
+                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%"  >
                                        <source src="'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';
                     }
                     $this->assign('video'.$value['printertpl_num'], $object_str);
