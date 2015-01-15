@@ -111,8 +111,14 @@ $(function () {
         var weixin_appsecret = $("#weixin_appsecret").val();
         var weixin_copyright = $("#weixin_copyright").val();
         var weixin_minicopyright = $("#weixin_minicopyright").val();
-        var delweixin_copyright = document.getElementById('delweixin_copyright').checked;
-        var delweixin_minicopyright = document.getElementById('delweixin_minicopyright').checked;
+        var delweixin_copyright = '';
+        if (document.getElementById('delweixin_copyright')) {
+            delweixin_copyright = document.getElementById('delweixin_copyright').checked;
+        }
+        var delweixin_minicopyright = '';
+        if (document.getElementById('delweixin_minicopyright')) {
+            delweixin_minicopyright = document.getElementById('delweixin_minicopyright').checked;
+        }
         if (!weixin_number) {
             alert("请填写公众号原始ID");
             return false;
