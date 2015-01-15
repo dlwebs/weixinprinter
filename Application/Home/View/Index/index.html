@@ -1,27 +1,114 @@
 
-    <style>
-        *,body{margin: 0}
-        .content{width: 1440px;height: 900px;overflow: hidden;background: url(/upload/1440-900/bg.jpg);padding: 20px 40px}
-        .left{width: 1000px;padding: 60px 60px}
-        .right{width: 440px}
-        .big-pic{  }
-        .big-pic img{width: 800px;height: 480px;border: 20px solid #fff;border-radius: 10px;box-shadow: 16px 13px 28px 9px;}
-        .small-pic{padding-top: 30px;}
-        .small-pic img{width: 200px;height:120px;border: 4px solid #fff;border-radius: 10px;}
-    </style>
+
+<style>
+
+    *,body{margin: 0;overflow: hidden}
+    h1{text-align: center;}
+    .content{width: 1440px;height: 900px;overflow: hidden;background: url(bg.jpg);padding: 20px 40px;margin: -20px;}
+    .left{width: 900px;padding: 60px 0px 60px 60px;float: left;}
+    .right{width: 440px; float: left;height: 900px; padding: 18px 0px 0px 0px;color: #fff;}
+    .big-pic{  }
+    .big-pic img{width: 800px;height: 480px;border: 20px solid #fff;border-radius: 10px;box-shadow: 20px 8px 56px 3px; }
+    .small-pic{padding-top: 30px;}
+    .small-pic img{width: 200px;height:120px;border: 4px solid #fff;border-radius: 10px;box-shadow: 0px -7px 50px 7px;}
+    .code{
+        width: 414px;
+        height: 250px;
+        border-radius: 10px;
+        background: -webkit-gradient(linear, 8 8, 0 86%, from(#ECECEC), to(#F7F7F7));
+        text-align: center;
+        box-shadow: 5px 5px 6px -1px #000;
+    }
+    .code img{width: 200px;top: 10px;position: relative;border-radius: 10px;}
+    .desc{color: rgb(123, 0, 0);
+        bottom: -20px;
+        position: relative;
+        font-weight: bold;
+        font-size: 18px;}
+    .verification{
+        width: 414px;
+        height: 74px;
+        background: -webkit-gradient(linear, 8 8, 0 86%, from(#0CB221), to(#057113));
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        box-shadow: 5px 5px 6px -1px #000;
+        margin-bottom: 17px;
+    }
+    .verification span{color: white;
+        line-height: 74px;
+        margin-left: 10px;font-size: 40px;}
+    .current-pic{
+        width: 414px;
+        height: 370px;
+        margin-top: 20px;
+        background: -webkit-gradient(linear, 8 8, 0 86%, from(#ECECEC), to(#F7F7F7));  border-radius: 10px;
+    }
+    .current-pic img{
+        width: 90%;
+        height: auto;
+        margin: 20px;
+        border-radius: 10px;
+    }
+    .copy{height: 50px;
+        font-size: 30px;
+        color: wheat;
+        /* box-shadow: 18px 5px 36px 0px #000; */
+        bottom: 81px;
+        position: absolute;
+        border-radius: 10px;margin-left: 10%;}
+</style>
+
 
 
 <div class="content">
     <div class="left">
         <div class="big-pic">
-            <img src="/upload/1440-900/1.jpg">
+            {$image1}
         </div>
         <div class="small-pic">
-            <img src="/upload/1440-900/1.jpg">
-            <img src="/upload/1440-900/1.jpg">
-            <img src="/upload/1440-900/1.jpg">
-            <img src="/upload/1440-900/1.jpg">
+            {$image1}
+            {$image2}
+            {$image3}
+            {$image4}
+        </div>
+        <div class="copy">技术支持：浙江微谷云科技有限公司</div>
+    </div>
+    <div class="right">
+        <h1>微谷云微信打印机</h1>
+        <div class="code">
+            <img id="code" src="code.jpg">
+
+            <div class="desc">扫码加关注，即可打印一张照片！</div>
+        </div>
+        <div class="verification">
+            <span>验证码： {$code}</span>
+        </div>
+        <h1 class="red">正在打印图片</h1>
+        <div class="current-pic">
+
+            {$current_image}
         </div>
     </div>
-    <div class="right"></div>
 </div>
+<script>
+    var i=0;
+    var lunbo=function(){
+        var pics= $(".small-pic img");
+        var pic=$(pics[(i++)%4]);
+
+        $(pic).css("border-color","red");
+        var url= $(pic).attr("src");
+        $(".big-pic img").attr("src",url);
+    }
+    window.setInterval(lunbo,5000)
+    var qcodes=qrcode_list;
+    var i =0;
+    window.setInterval(function(){
+        $("#code").attr("src",qcodes[i%qcodes.length].imgcode)
+    },10000)
+
+
+</script>
+ 
