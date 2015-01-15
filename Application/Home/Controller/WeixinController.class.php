@@ -237,14 +237,8 @@ class WeixinController extends BaseController {
         $weixin = new \Admin\Model\WeixinModel();
         $wxinfo = $weixin->getWeixinByToken($wxtoken);
         require_once  APP_PATH."Common/Common/jssdk.php";
-        echo '<pre>';
-        print_r($wxinfo);
-        echo '</pre>';
         $jssdk = new \JSSDK($wxinfo['weixin_appid'], $wxinfo['weixin_appsecret']);
         $signPackage = $jssdk->GetSignPackage();
-        echo '<pre>';
-        print_r($signPackage);
-        echo '</pre>';
         $this->assign('signPackage', $signPackage);
         $this->assign('wxinfo', $wxinfo);
         $this->display();
