@@ -85,6 +85,7 @@
                     <input type="hidden" name="sxbl" id="sxbl" value="{$picinfo.sxbl}"><!--当前图片缩小比例，php中用于计算裁剪-->
                     <input type="hidden" name="src" id="src" value="{$picinfo.imagename}">
                     <input type="hidden" name="input" id="input" value="">
+                    <input type="hidden" name="media_id" id="media_id" value="">
                     <input type="hidden" id="preview" value="">
                     <input type="hidden" id="wxtoken" name="wxtoken" value="{$wxtoken}">
                     <input type="button" value="开始录音" id="audioBeginBtn" class="btn btn-large btn-inverse">
@@ -114,6 +115,7 @@
             jsApiList: ['startRecord','stopRecord','onVoiceRecordEnd','playVoice','pauseVoice','stopVoice','onVoicePlayEnd','uploadVoice','downloadVoice']
         });
         var localId = '';
+        var serverId = '';
         wx.ready(function(){
             $("#audioBeginBtn").on("click",function(){
                 wx.startRecord();
@@ -122,30 +124,43 @@
                 wx.stopRecord({
                     success: function (res) {
                          localId = res.localId;
-                         wx.playVoice({
-                            localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
-                        });
-               /*         wx.uploadVoice({
+//                         wx.playVoice({
+//                            localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
+//                        });
+                        wx.uploadVoice({
                             localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
                             isShowProgressTips: 1, // 默认为1，显示进度提示
                             success: function (res) {
-                                var serverId = res.serverId; // 返回音频的服务器端ID
+                                serverId = res.serverId; // 返回音频的服务器端ID
                             }
-                        });*/
+                        });
                     }
                 });
             });
             wx.onVoiceRecordEnd({
                 // 录音时间超过一分钟没有停止的时候会执行 complete 回调
                 complete: function (res) {
-                    localId = res.localId; 
+                    localId = res.localId;
+                    wx.uploadVoice({
+                        localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            serverId = res.serverId; // 返回音频的服务器端ID
+                        }
+                    });
                 }
             });
         });
         
         
         $("#saveBtn").on("click",function(){
+            alert(serverId);
+            if (!serverId) {
+                alert('请先录音，录音最大时长一分钟');
+                return false;
+            }
             $("#status").html("图片处理中...") ;
+            $("#media_id").val(serverId) ;
             if(checkCoords()){
                 $.ajax({
                     type: "POST",
