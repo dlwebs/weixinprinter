@@ -51,14 +51,33 @@ class IndexController extends BaseController {
                     } elseif ($video_ext == 'webm') {
                         $source_type = 'video/webm';
                     }
-                  /*  if (strpos($value['printertpl_content'], 'http://') === false) {
-                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%" >
-                                       <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';
+                    if (strpos($value['printertpl_content'], 'http://') === false) {
+               /*         $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%" >
+                                       <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';*/
+$object_str=<<<EOF
+
+                        <object type="application/x-shockwave-flash" id="VzPlayerMx2" name="VzPlayerMx2" align="middle" data="http://player.cztv.com/player/VzPlayerMx2.swf" width="100%" height="100%"><param name="quality" value="high">
+                        <param name="bgcolor" value="#000000">
+                        <param name="allowscriptaccess" value="always">
+                        <param name="allowfullscreen" value="true">
+                        <param name="flashvars" value="http://{$_SERVER['SERVER_NAME']}/upload/{$value['printertpl_content']}">
+                        </object>
+EOF;
                     } else {
-                        $object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%"  >
-                                       <source src="'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';
-                    }*/
-                    $object_str='<embed src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" width="100%" height="100%" hidden=ture autostart=true loop=true> ';
+                        /*$object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%"  >
+                                       <source src="'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';*/
+                       /* $object_str='<embed src="'.$value['printertpl_content'].'" width="100%" height="100%" hidden=ture autostart=true loop=true> ';*/
+                        $object_str=<<<EOF
+
+                        <object type="application/x-shockwave-flash" id="VzPlayerMx2" name="VzPlayerMx2" align="middle" data="http://player.cztv.com/player/VzPlayerMx2.swf" width="100%" height="100%"><param name="quality" value="high">
+                        <param name="bgcolor" value="#000000">
+                        <param name="allowscriptaccess" value="always">
+                        <param name="allowfullscreen" value="true">
+                        <param name="flashvars" value="{$value['printertpl_content']}">
+                        </object>
+EOF;
+                    }
+
                     $this->assign('video'.$value['printertpl_num'], $object_str);
                 } elseif ($value['printertpl_type'] == 'image') {
                     if (strpos($value['printertpl_content'], 'http://') === false) {
