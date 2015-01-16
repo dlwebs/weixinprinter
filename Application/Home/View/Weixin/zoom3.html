@@ -89,7 +89,6 @@
                     <input type="hidden" id="wxtoken" name="wxtoken" value="{$wxtoken}">
                     <input type="button" value="开始录音" id="audioBeginBtn" class="btn btn-large btn-inverse">
                     <input type="button" value="停止录音" id="audioEndBtn" class="btn btn-large btn-inverse">
-                    <input type="button" value="播放录音" id="audioPlayBtn" class="btn btn-large btn-inverse">
                     <input type="button" value="确定裁剪" id="saveBtn" class="btn btn-large btn-inverse">
                 </form>
             </div>
@@ -107,27 +106,25 @@
 <script>
     $(function(){
         wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: '{$wxinfo.weixin_appid}', // 必填，公众号的唯一标识
-            timestamp: {$signPackage.timestamp}, // 必填，生成签名的时间戳
-            nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
-            signature: '{$signPackage.signature}',// 必填，签名，见附录1
-            jsApiList: ['startRecord','stopRecord','onVoiceRecordEnd'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            debug: true,
+            appId: '{$wxinfo.weixin_appid}',
+            timestamp: {$signPackage.timestamp},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: ['startRecord','stopRecord','onVoiceRecordEnd','playVoice','pauseVoice','stopVoice','onVoicePlayEnd','uploadVoice','downloadVoice']
         });
         var localId = '';
         wx.ready(function(){
             $("#audioBeginBtn").on("click",function(){
                 wx.startRecord();
             });
-            $("#audioPlayBtn").on("click",function(){
-                wx.playVoice({
-                    localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
-                });
-            });
             $("#audioEndBtn").on("click",function(){
                 wx.stopRecord({
                     success: function (res) {
                          localId = res.localId;
+                         wx.playVoice({
+                            localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
+                        });
                /*         wx.uploadVoice({
                             localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
                             isShowProgressTips: 1, // 默认为1，显示进度提示
