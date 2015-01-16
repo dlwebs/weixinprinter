@@ -56,12 +56,11 @@ class IndexController extends BaseController {
                                        <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';*/
 $object_str=<<<EOF
 
-                        <object type="application/x-shockwave-flash" id="VzPlayerMx2" name="VzPlayerMx2" align="middle" data="http://player.cztv.com/player/VzPlayerMx2.swf" width="100%" height="100%"><param name="quality" value="high">
-                        <param name="bgcolor" value="#000000">
-                        <param name="allowscriptaccess" value="always">
-                        <param name="allowfullscreen" value="true">
-                        <param name="flashvars" value="http://{$_SERVER['SERVER_NAME']}/upload/{$value['printertpl_content']}">
-                        </object>
+                       <video id="example_video_1_html5_api" class="vjs-tech" preload="auto" poster="http://192.168.88.135/oscar/V001091.jpg" data-setup="{}">
+                <source src="http://{$_SERVER['SERVER_NAME']}/upload/{$value['printertpl_content']}" type="$source_type">
+            </video>
+
+
 EOF;
                     } else {
                         /*$object_str = '<video id="video'.$value['printertpl_num'].'" class="video-js vjs-default-skin" width="100%" height="100%"  >
@@ -69,12 +68,9 @@ EOF;
                        /* $object_str='<embed src="'.$value['printertpl_content'].'" width="100%" height="100%" hidden=ture autostart=true loop=true> ';*/
                         $object_str=<<<EOF
 
-                        <object type="application/x-shockwave-flash" id="VzPlayerMx2" name="VzPlayerMx2" align="middle" data="http://player.cztv.com/player/VzPlayerMx2.swf" width="100%" height="100%"><param name="quality" value="high">
-                        <param name="bgcolor" value="#000000">
-                        <param name="allowscriptaccess" value="always">
-                        <param name="allowfullscreen" value="true">
-                        <param name="flashvars" value="{$value['printertpl_content']}">
-                        </object>
+                      <video id="example_video_1_html5_api" class="vjs-tech" preload="auto" poster="http://192.168.88.135/oscar/V001091.jpg" data-setup="{}">
+                <source src="{$value['printertpl_content']}" type="$source_type">
+            </video>
 EOF;
                     }
 
