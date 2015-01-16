@@ -394,7 +394,8 @@ class WeixinController extends BaseController {
         $wxtoken = I('post.wxtoken');
         $weixin = new \Admin\Model\WeixinModel();
         $wxinfo = $weixin->getWeixinByToken($wxtoken);
-        
+
+        //拉取音频文件
         $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
         $audio_save_file = $wxtoken.'_'.date('YmdHis').'.amr';
         $access_token = session('printer_access_token');
@@ -408,19 +409,18 @@ class WeixinController extends BaseController {
         }
         $dl_media_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
         \Org\Net\Http::curlDownload($dl_media_url, $audio_save_path.$audio_save_file);
-        
-        
-        
+
+ 
+        //生成音频文件地址二维码
         Vendor("phpqrcode.phpqrcode");
         $data = 'http://'.$_SERVER['SERVER_NAME'].'/upload/audio/'.$audio_save_file;
         $level = 'Q';
         $size = 4;
         $fileName = $wxtoken.$level.$size.'_'.date('YmdHis').'.png';
         \QRcode::png($data, $_SERVER['DOCUMENT_ROOT'].'/upload/qrcode/'.$fileName, $level, $size);
-        
-        
-        
-        
+
+ 
+        //resize音频二维码到100x100的大小
         $qrcode_dir = $_SERVER['DOCUMENT_ROOT'].'/upload/qrcode/';
         $qrcode_resize_name = $wxtoken.$level.$size.'_'.date('YmdHis').'_resize.png';
         list($origwidth, $origheight) = getimagesize($qrcode_dir.$fileName);
@@ -431,14 +431,8 @@ class WeixinController extends BaseController {
         imagecopyresampled($newimg, $imageobj, 0, 0, 0, 0, 100, 100, $origwidth, $origheight);
         imagepng($newimg, $qrcode_dir.$qrcode_resize_name);
         $audio_resize_qrcode = imagecreatefrompng($qrcode_dir.$qrcode_resize_name);
-        
-        
-        
-        
-        
-        
-        
-            
+
+
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
         $x = intval($x * $sxbl);
         $y = intval($y * $sxbl);
@@ -455,9 +449,9 @@ class WeixinController extends BaseController {
         if ($resinfo) {
             $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
             if (!$weixinobj['weixin_copyright']) {
-                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
+                $copyright_img = imagecreatefrompng($fileSavePath.'copyright/minilogo.png');//copyright image default 262x100
             } else {
-                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
+                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_minicopyright']);
             }
             $user_img = imagecreatefromjpeg($fileSavePath.$src);
             $background = imagecreatetruecolor(262,370);
