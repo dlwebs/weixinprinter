@@ -117,7 +117,7 @@
             $("#audioBeginBtn").on("click",function(){
                 wx.startRecord();
             });
-            $("#audioBeginBtn").on("click",function(){
+            $("#audioEndBtn").on("click",function(){
                 wx.stopRecord({
                     success: function (res) {
                         var localId = res.localId;
