@@ -411,12 +411,12 @@ class WeixinController extends BaseController {
         
         
         
-        vendor("phpqrcode.phpqrcode");
+        Vendor("phpqrcode.phpqrcode");
         $data = 'http://'.$_SERVER['SERVER_NAME'].'/upload/audio/'.$audio_save_file;
         $level = 'Q';
         $size = 4;
         $fileName = $wxtoken.$level.$size.'_'.date('YmdHis').'.png';
-        QRcode::png($data, $_SERVER['DOCUMENT_ROOT'].'/upload/qrcode/'.$fileName, $level, $size);
+        \QRcode::png($data, $_SERVER['DOCUMENT_ROOT'].'/upload/qrcode/'.$fileName, $level, $size);
         
         
         
