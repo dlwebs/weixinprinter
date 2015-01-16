@@ -56,7 +56,7 @@ class IndexController extends BaseController {
                                        <source src="http://'.$_SERVER['SERVER_NAME'].'/upload/'.$value['printertpl_content'].'" type="'.$source_type.'"></video>';*/
 $object_str=<<<EOF
 
-                       <video id="example_video_1_html5_api" class="vjs-tech" preload="auto" autoplay="true" width="100%" height="100%" controls="false"  poster="" data-setup="{}">
+                       <video id="example_video_1_html5_api" class="vjs-tech video-js vjs-default-skin" preload="auto" autoplay="true" width="100%" height="100%" controls="false"  poster="" data-setup="{}">
                 <source src="http://{$_SERVER['SERVER_NAME']}/upload/{$value['printertpl_content']}" type="$source_type">
             </video>
 
@@ -68,7 +68,7 @@ EOF;
                        /* $object_str='<embed src="'.$value['printertpl_content'].'" width="100%" height="100%" hidden=ture autostart=true loop=true> ';*/
                         $object_str=<<<EOF
 
-                      <video id="example_video_1_html5_api" class="vjs-tech" preload="auto" autoplay="true"  width="100%" height="100%"  controls="false" poster="" data-setup="{}">
+                      <video id="example_video_1_html5_api" class="vjs-tech video-js vjs-default-skin" preload="auto" autoplay="true"  width="100%" height="100%"  controls="false" poster="" data-setup="{}">
                 <source src="{$value['printertpl_content']}" type="$source_type">
             </video>
 EOF;
