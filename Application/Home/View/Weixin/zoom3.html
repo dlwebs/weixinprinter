@@ -89,6 +89,7 @@
                     <input type="hidden" id="wxtoken" name="wxtoken" value="{$wxtoken}">
                     <input type="button" value="开始录音" id="audioBeginBtn" class="btn btn-large btn-inverse">
                     <input type="button" value="停止录音" id="audioEndBtn" class="btn btn-large btn-inverse">
+                    <input type="button" value="播放录音" id="audioPlayBtn" class="btn btn-large btn-inverse">
                     <input type="button" value="确定裁剪" id="saveBtn" class="btn btn-large btn-inverse">
                 </form>
             </div>
@@ -113,17 +114,20 @@
             signature: '{$signPackage.signature}',// 必填，签名，见附录1
             jsApiList: ['startRecord','stopRecord','onVoiceRecordEnd'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
+        var localId = '';
         wx.ready(function(){
             $("#audioBeginBtn").on("click",function(){
                 wx.startRecord();
             });
+            $("#audioPlayBtn").on("click",function(){
+                wx.playVoice({
+                    localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
+                });
+            });
             $("#audioEndBtn").on("click",function(){
                 wx.stopRecord({
                     success: function (res) {
-                        var localId = res.localId;
-                        wx.playVoice({
-                            localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
-                        });
+                         localId = res.localId;
                /*         wx.uploadVoice({
                             localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
                             isShowProgressTips: 1, // 默认为1，显示进度提示
@@ -137,7 +141,7 @@
             wx.onVoiceRecordEnd({
                 // 录音时间超过一分钟没有停止的时候会执行 complete 回调
                 complete: function (res) {
-                    var localId = res.localId; 
+                    localId = res.localId; 
                 }
             });
         });
