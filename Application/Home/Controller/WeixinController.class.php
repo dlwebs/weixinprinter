@@ -390,6 +390,7 @@ class WeixinController extends BaseController {
         $sxbl = I('post.sxbl');
         $src = trim($src);
         if(!$src) die();
+        $wxtext = I('post.wxtext');
         $media_id = I('post.media_id');
         $wxtoken = I('post.wxtoken');
         $weixin = new \Admin\Model\WeixinModel();
