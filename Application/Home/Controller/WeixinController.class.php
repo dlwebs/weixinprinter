@@ -390,7 +390,55 @@ class WeixinController extends BaseController {
         $sxbl = I('post.sxbl');
         $src = trim($src);
         if(!$src) die();
-
+        $media_id = I('post.media_id');
+        $wxtoken = I('post.wxtoken');
+        $weixin = new \Admin\Model\WeixinModel();
+        $wxinfo = $weixin->getWeixinByToken($wxtoken);
+        
+        $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
+        $audio_save_file = $wxtoken.'_'.date('YmdHis').'.amr';
+        $access_token = session('printer_access_token');
+        if (!$access_token) {
+            $access_token_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$wxinfo['weixin_appid'].'&secret='.$wxinfo['weixin_appsecret'];
+            $access_token_json_content = file_get_contents($access_token_url);
+            $access_token_json_obj = json_decode($access_token_json_content, true);
+            session(array('name'=>'printer_access_token_id', 'expire'=>$access_token_json_obj['expires_in ']));
+            session('printer_access_token', $access_token_json_obj['access_token']);
+            $access_token = $access_token_json_obj['access_token'];
+        }
+        $dl_media_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
+        \Org\Net\Http::curlDownload($dl_media_url, $audio_save_path.$audio_save_file);
+        
+        
+        
+        vendor("phpqrcode.phpqrcode");
+        $data = 'http://'.$_SERVER['SERVER_NAME'].'/upload/audio/'.$audio_save_file;
+        $level = 'Q';
+        $size = 4;
+        $fileName = $wxtoken.$level.$size.'_'.date('YmdHis').'.png';
+        QRcode::png($data, $_SERVER['DOCUMENT_ROOT'].'/upload/qrcode/'.$fileName, $level, $size);
+        
+        
+        
+        
+        $qrcode_dir = $_SERVER['DOCUMENT_ROOT'].'/upload/qrcode/';
+        $qrcode_resize_name = $wxtoken.$level.$size.'_'.date('YmdHis').'_resize.png';
+        list($origwidth, $origheight) = getimagesize($qrcode_dir.$fileName);
+        $imageobj = imagecreatefrompng($qrcode_dir.$fileName);
+        $newimg = imagecreatetruecolor(100, 100);
+        $color = imagecolorallocate($newimg, 255, 255, 255);
+        imagefill($newimg, 0, 0, $color);
+        imagecopyresampled($newimg, $imageobj, 0, 0, 0, 0, 100, 100, $origwidth, $origheight);
+        imagepng($newimg, $qrcode_dir.$qrcode_resize_name);
+        $audio_resize_qrcode = imagecreatefrompng($qrcode_dir.$qrcode_resize_name);
+        
+        
+        
+        
+        
+        
+        
+            
         //根据缩小比例计算所选区域在原图上的真实坐标及真实宽高
         $x = intval($x * $sxbl);
         $y = intval($y * $sxbl);
@@ -417,7 +465,8 @@ class WeixinController extends BaseController {
             imagefill($background, 0, 0, $color);
             imageColorTransparent($background, $color); 
             imagecopyresized($background, $user_img, 0, 0, 0, 0, 262, 270, 262, 270);
-            imagecopyresized($background, $copyright_img, 0, 271, 0, 0, 262, 100, 262, 100);
+            imagecopyresized($background, $copyright_img, 100, 271, 0, 0, 162, 100, 162, 100);
+            imagecopyresized($background, $audio_resize_qrcode, 0, 271, 0, 0, 100, 100, 100, 100);
             imagejpeg($background, $fileSavePath.$src);
             imagedestroy($copyright_img);
             imagedestroy($user_img);

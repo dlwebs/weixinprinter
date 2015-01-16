@@ -154,14 +154,13 @@
         
         
         $("#saveBtn").on("click",function(){
-            alert(serverId);
             if (!serverId) {
                 alert('请先录音，录音最大时长一分钟');
                 return false;
             }
             $("#status").html("图片处理中...") ;
-            $("#media_id").val(serverId) ;
             if(checkCoords()){
+                $("#media_id").val(serverId) ;
                 $.ajax({
                     type: "POST",
                     url:"__MODULE__/Weixin/crop3?uid={$uid}",
