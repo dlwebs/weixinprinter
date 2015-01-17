@@ -125,10 +125,7 @@
             $("#audioEndBtn").on("click",function(){
                 wx.stopRecord({
                     success: function (res) {
-                         localId = res.localId;
-//                         wx.playVoice({
-//                            localId: localId // 需要播放的音频的本地ID，由stopRecord接口获得
-//                        });
+                        localId = res.localId;
                         wx.uploadVoice({
                             localId: localId, // 需要上传的音频的本地ID，由stopRecord接口获得
                             isShowProgressTips: 1, // 默认为1，显示进度提示
@@ -149,6 +146,7 @@
                         isShowProgressTips: 1, // 默认为1，显示进度提示
                         success: function (res) {
                             serverId = res.serverId; // 返回音频的服务器端ID
+                            alert("您的留言时长已超过一分钟，一分钟内留言成功，请填写留言文字");
                         }
                     });
                 }
