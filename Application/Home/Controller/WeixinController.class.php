@@ -397,10 +397,6 @@ class WeixinController extends BaseController {
         $wxinfo = $weixin->getWeixinByToken($wxtoken);
 
         //拉取音频文件
-        $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
-//        $audio_save_filetype = '.mp3';
-        $audio_save_file = $wxtoken.date('YmdHis');
-
         $access_token_file = $wxinfo['weixin_appid'].'_'.$wxinfo['weixin_appsecret'].'_access_token.json';
         $access_token_data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/upload/jssdk/'.$access_token_file));
         $access_token = $access_token_data->access_token;
@@ -417,6 +413,9 @@ class WeixinController extends BaseController {
           }
         }
         $dl_media_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
+        $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
+//        $audio_save_filetype = '.mp3';
+        $audio_save_file = $access_token.'_'.$media_id;
         saveWeixinMedia($dl_media_url, $audio_save_path, $audio_save_file);
 //        $weixinFileInfo = downloadWeixinFile($dl_media_url);
 //        saveWeixinFile($audio_save_path.$audio_save_file.$audio_save_filetype, $weixinFileInfo["body"]);
