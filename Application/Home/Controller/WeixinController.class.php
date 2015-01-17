@@ -449,11 +449,22 @@ class WeixinController extends BaseController {
         $resinfo = $resource->getUserNoPrintResource($uid);
         if ($resinfo) {
             $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
-            if (!$weixinobj['weixin_copyright']) {
-                $copyright_img = imagecreatefrompng($fileSavePath.'copyright/minilogo.png');//copyright image default 262x100
-            } else {
-                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_minicopyright']);
+//            if (!$weixinobj['weixin_copyright']) {
+//                $copyright_img = imagecreatefrompng($fileSavePath.'copyright/minilogo.png');//copyright image default 262x100
+//            } else {
+//                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_minicopyright']);
+//            }
+            if (!$wxtext) {
+                $wxtext = '微谷云微信打印机';
             }
+            $text_image_file = $fileSavePath.'copyright/'.$resinfo['resource_weixin'].'_'.date('YmdHis').'_oldtext.png';
+            $copyright_img = imagecreatetruecolor(162,100);
+            $color = imagecolorallocate($copyright_img, 255, 255, 255);
+            imagefill($copyright_img, 0, 0, $color);
+            imagepng($copyright_img, $text_image_file);
+            $imgobj = new \Think\Image();
+            $imgobj = $imgobj->open($text_image_file)->text($wxtext, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', 3, '#00000000', \Think\Image::IMAGE_WATER_WEST)->save($text_image_file);
+
             $user_img = imagecreatefromjpeg($fileSavePath.$src);
             $background = imagecreatetruecolor(262,370);
             $color = imagecolorallocate($background, 202, 201, 201);
