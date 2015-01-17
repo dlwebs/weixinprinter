@@ -463,7 +463,7 @@ class WeixinController extends BaseController {
             imagefill($copyright_img, 0, 0, $color);
             imagepng($copyright_img, $text_image_file);
             $imgobj = new \Think\Image();
-            $imgobj = $imgobj->open($text_image_file)->text($wxtext, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', 15, '#000000', \Think\Image::IMAGE_WATER_WEST)->save($text_image_file);
+            $imgobj = $imgobj->open($text_image_file)->text($wxtext, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', 13, '#000000', \Think\Image::IMAGE_WATER_WEST)->save($text_image_file);
             $copyright_img = imagecreatefrompng($text_image_file);
 
 
