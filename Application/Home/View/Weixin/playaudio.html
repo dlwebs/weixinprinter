@@ -15,10 +15,9 @@ $(function () {
         jsApiList: ['startRecord','stopRecord','onVoiceRecordEnd','playVoice','pauseVoice','stopVoice','onVoicePlayEnd','uploadVoice','downloadVoice']
     });
     var localId = '';
-    var serverId = '{$media_id}';
     wx.ready(function(){
         wx.downloadVoice({
-            serverId: serverId, // 需要下载的音频的服务器端ID，由uploadVoice接口获得
+            serverId: '{$media_id}', // 需要下载的音频的服务器端ID，由uploadVoice接口获得
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
                 localId = res.localId; // 返回音频的本地ID
