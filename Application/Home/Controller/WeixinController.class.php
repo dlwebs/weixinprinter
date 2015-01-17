@@ -457,13 +457,15 @@ class WeixinController extends BaseController {
             if (!$wxtext) {
                 $wxtext = '微谷云微信打印机';
             }
-            $text_image_file = $fileSavePath.'copyright/'.$resinfo['resource_weixin'].'_'.date('YmdHis').'_oldtext.png';
+            $text_image_file = $fileSavePath.'copyright/'.$resinfo['resource_weixin'].'_'.date('YmdHis').'_text.png';
             $copyright_img = imagecreatetruecolor(162,100);
             $color = imagecolorallocate($copyright_img, 255, 255, 255);
             imagefill($copyright_img, 0, 0, $color);
             imagepng($copyright_img, $text_image_file);
             $imgobj = new \Think\Image();
-            $imgobj = $imgobj->open($text_image_file)->text($wxtext, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', 10, '#000000', \Think\Image::IMAGE_WATER_WEST)->save($text_image_file);
+            $imgobj = $imgobj->open($text_image_file)->text($wxtext, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', 5, '#000000', \Think\Image::IMAGE_WATER_WEST)->save($text_image_file);
+            $copyright_img = imagecreatefrompng($text_image_file);
+
 
             $user_img = imagecreatefromjpeg($fileSavePath.$src);
             $background = imagecreatetruecolor(262,370);

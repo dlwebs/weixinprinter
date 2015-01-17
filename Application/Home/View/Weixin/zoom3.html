@@ -109,7 +109,7 @@
 <script>
     $(function(){
         wx.config({
-            debug: true,
+            debug: false,
             appId: '{$wxinfo.weixin_appid}',
             timestamp: {$signPackage.timestamp},
             nonceStr: '{$signPackage.nonceStr}',
@@ -169,8 +169,8 @@
                 alert('请先录音，录音最大时长一分钟');
                 return false;
             }
-            $("#status").html("图片处理中...") ;
             if(checkCoords()){
+                $("#status").html("图片处理中...") ;
                 $("#media_id").val(serverId) ;
                 $.ajax({
                     type: "POST",
