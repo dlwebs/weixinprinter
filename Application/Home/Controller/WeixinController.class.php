@@ -398,7 +398,7 @@ class WeixinController extends BaseController {
 
         //拉取音频文件
         $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
-        $audio_save_filetype = '.mp3';
+//        $audio_save_filetype = '.mp3';
         $audio_save_file = $wxtoken.date('YmdHis');
 
         $access_token_file = $wxinfo['weixin_appid'].'_'.$wxinfo['weixin_appsecret'].'_access_token.json';
@@ -417,8 +417,9 @@ class WeixinController extends BaseController {
           }
         }
         $dl_media_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
-        $weixinFileInfo = downloadWeixinFile($dl_media_url);
-        saveWeixinFile($audio_save_path.$audio_save_file.$audio_save_filetype, $weixinFileInfo["body"]);
+        saveWeixinMedia($dl_media_url, $audio_save_path, $audio_save_file);
+//        $weixinFileInfo = downloadWeixinFile($dl_media_url);
+//        saveWeixinFile($audio_save_path.$audio_save_file.$audio_save_filetype, $weixinFileInfo["body"]);
 
  
         //生成音频文件地址二维码
