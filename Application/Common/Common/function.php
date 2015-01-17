@@ -49,7 +49,7 @@ function saveWeixinMedia($url, $saveDir, $saveFile) {
     curl_close($ch);
     $media = array_merge(array('mediaBody' => $package), $httpinfo);
 
-    preg_match('/\w\/(\w+)/i', $media["content_type"], $extmatches);
+    preg_match('/filename=\"\w+\.(\w+)\"$/i', $media["Content-disposition"], $extmatches);
     $fileExt = $extmatches[1];
     $saveFile = $saveFile.'.'.$fileExt;
     if(!file_exists($saveDir)){
@@ -58,3 +58,26 @@ function saveWeixinMedia($url, $saveDir, $saveFile) {
     file_put_contents($saveDir.$saveFile, $media['mediaBody']);
     return $saveDir.$saveFile;
 }
+
+//function downloadWeixinFile($url) {
+//    $ch = curl_init($url);
+//    curl_setopt($ch, CURLOPT_HEADER, 0);
+//    curl_setopt($ch, CURLOPT_NOBODY, 0);
+//    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+//    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//    $package = curl_exec($ch);
+//    $httpinfo = curl_getinfo($ch);
+//    curl_close($ch);
+//    $imageAll = array_merge(array('header' => $httpinfo), array('body' => $package)); 
+//    return $imageAll;
+//}
+// 
+//function saveWeixinFile($filename, $filecontent) {
+//    $local_file = fopen($filename, 'w');
+//    if (false !== $local_file){
+//        if (false !== fwrite($local_file, $filecontent)) {
+//            fclose($local_file);
+//        }
+//    }
+//}

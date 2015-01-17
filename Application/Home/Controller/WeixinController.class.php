@@ -414,8 +414,7 @@ class WeixinController extends BaseController {
         }
         $dl_media_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
         $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
-//        $audio_save_filetype = '.mp3';
-        $audio_save_file = $access_token.'_'.$media_id;
+        $audio_save_file = $wxtoken.'__'.$media_id;
         saveWeixinMedia($dl_media_url, $audio_save_path, $audio_save_file);
 //        $weixinFileInfo = downloadWeixinFile($dl_media_url);
 //        saveWeixinFile($audio_save_path.$audio_save_file.$audio_save_filetype, $weixinFileInfo["body"]);
@@ -502,7 +501,16 @@ class WeixinController extends BaseController {
 
     public function playaudioAction() {
         $audio = I('get.audio');
-        $this->assign('audio', $audio.'.mp3');
+        $audioinfo = explode('__', $audio);
+
+        $weixin = new \Admin\Model\WeixinModel();
+        $wxinfo = $weixin->getWeixinByToken($audioinfo[0]);
+        require_once  APP_PATH."Common/Common/jssdk.php";
+        $jssdk = new \JSSDK($wxinfo['weixin_appid'], $wxinfo['weixin_appsecret']);
+        $signPackage = $jssdk->GetSignPackage();
+        $this->assign('signPackage', $signPackage);
+        $this->assign('wxinfo', $wxinfo);
+        $this->assign('media_id', $audioinfo[1]);
         $this->display();
     }
 }
