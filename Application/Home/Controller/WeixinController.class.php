@@ -398,7 +398,8 @@ class WeixinController extends BaseController {
 
         //拉取音频文件
         $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
-        $audio_save_file = $wxtoken.'_'.date('YmdHis').'.mp3';
+        $audio_save_filetype = '.mp3';
+        $audio_save_file = $wxtoken.date('YmdHis');
         $access_token = session('printer_access_token');
         if (!$access_token) {
             $access_token_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$wxinfo['weixin_appid'].'&secret='.$wxinfo['weixin_appsecret'];
@@ -410,12 +411,12 @@ class WeixinController extends BaseController {
         }
         $dl_media_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
         $weixinFileInfo = downloadWeixinFile($dl_media_url);
-        saveWeixinFile($audio_save_path.$audio_save_file, $weixinFileInfo["body"]);
+        saveWeixinFile($audio_save_path.$audio_save_file.$audio_save_filetype, $weixinFileInfo["body"]);
 
  
         //生成音频文件地址二维码
         Vendor("phpqrcode.phpqrcode");
-        $data = 'http://'.$_SERVER['SERVER_NAME'].'/upload/audio/'.$audio_save_file;
+        $data = 'http://'.$_SERVER['SERVER_NAME'].'/index.php/playaudio/'.$audio_save_file;
         $level = 'Q';
         $size = 4;
         $fileName = $wxtoken.$level.$size.'_'.date('YmdHis').'.png';
@@ -490,5 +491,11 @@ class WeixinController extends BaseController {
         } else {
             echo 'error';
         }
+    }
+
+    public function playaudioAction() {
+        $audio = I('get.audio');
+        $this->assign('audio', $audio.'.mp3');
+        $this->display();
     }
 }
