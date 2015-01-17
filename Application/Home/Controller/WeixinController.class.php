@@ -450,7 +450,7 @@ class WeixinController extends BaseController {
         if ($resinfo) {
             $weixinobj = $weixin->getWeixinByToken($resinfo['resource_weixin']);
 //            if (!$weixinobj['weixin_copyright']) {
-//                $copyright_img = imagecreatefrompng($fileSavePath.'copyright/minilogo.png');//copyright image default 262x100
+//                $copyright_img = imagecreatefrompng($fileSavePath.'copyright/minilogo.png');//copyright image default 162x100
 //            } else {
 //                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_minicopyright']);
 //            }
@@ -463,7 +463,7 @@ class WeixinController extends BaseController {
             imagefill($copyright_img, 0, 0, $color);
             imagepng($copyright_img, $text_image_file);
             $imgobj = new \Think\Image();
-            $imgobj = $imgobj->open($text_image_file)->text($wxtext, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', 3, '#00000000', \Think\Image::IMAGE_WATER_WEST)->save($text_image_file);
+            $imgobj = $imgobj->open($text_image_file)->text($wxtext, '/usr/share/fonts/truetype/XHei_Ubuntu.ttc', 10, '#000000', \Think\Image::IMAGE_WATER_WEST)->save($text_image_file);
 
             $user_img = imagecreatefromjpeg($fileSavePath.$src);
             $background = imagecreatetruecolor(262,370);
