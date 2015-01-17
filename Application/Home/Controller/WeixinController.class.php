@@ -400,14 +400,21 @@ class WeixinController extends BaseController {
         $audio_save_path = $_SERVER['DOCUMENT_ROOT'].'/upload/audio/';
         $audio_save_filetype = '.mp3';
         $audio_save_file = $wxtoken.date('YmdHis');
-        $access_token = session('printer_access_token');
-        if (!$access_token) {
-            $access_token_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$wxinfo['weixin_appid'].'&secret='.$wxinfo['weixin_appsecret'];
-            $access_token_json_content = file_get_contents($access_token_url);
-            $access_token_json_obj = json_decode($access_token_json_content, true);
-            session(array('name'=>'printer_access_token_id', 'expire'=>$access_token_json_obj['expires_in ']));
-            session('printer_access_token', $access_token_json_obj['access_token']);
-            $access_token = $access_token_json_obj['access_token'];
+
+        $access_token_file = $wxinfo['weixin_appid'].'_'.$wxinfo['weixin_appsecret'].'_access_token.json';
+        $access_token_data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'].'/upload/jssdk/'.$access_token_file));
+        $access_token = $access_token_data->access_token;
+        if ($access_token_data->expire_time < time()) {
+          $access_token_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$wxinfo['weixin_appid'].'&secret='.$wxinfo['weixin_appsecret'];
+          $res = json_decode(getPage($access_token_url));
+          $access_token = $res->access_token;
+          if ($access_token) {
+            $access_token_data->expire_time = time() + 7000;
+            $access_token_data->access_token = $access_token;
+            $fp = fopen($_SERVER['DOCUMENT_ROOT'].'/upload/jssdk/'.$access_token_file, "w");
+            fwrite($fp, json_encode($access_token_data));
+            fclose($fp);
+          }
         }
         $dl_media_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$media_id;
         $weixinFileInfo = downloadWeixinFile($dl_media_url);
