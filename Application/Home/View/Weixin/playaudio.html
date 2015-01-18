@@ -8,6 +8,7 @@
     width: 80%;
     height: 40px;
     border: 0px;
+    margin-top : 20px;
     background-color: rgb(255, 116, 0);
     color: #fff;
 }
@@ -24,35 +25,37 @@ $(function () {
         signature: '{$signPackage.signature}',
         jsApiList: ['startRecord','stopRecord','onVoiceRecordEnd','playVoice','pauseVoice','stopVoice','onVoicePlayEnd','uploadVoice','downloadVoice']
     });
-    var localId = '';
+    var local_Id = '';
     wx.ready(function(){
         wx.downloadVoice({
             serverId: '{$media_id}', // 需要下载的音频的服务器端ID，由uploadVoice接口获得
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
-                localId = res.localId; // 返回音频的本地ID
+                local_Id = res.localId; // 返回音频的本地ID
+                alert(local_Id);
                 wx.playVoice({
-                    localId: localId
+                    localId: local_Id
                 });
             }
         });
     });
 
     $("#startbtn").click(function () {
+    alert(local_Id);
         wx.playVoice({
-            localId: localId
+            localId: local_Id
         });
     });
 
     $("#pausebtn").click(function () {
         wx.pauseVoice({
-            localId: localId
+            localId: local_Id
         });
     });
 
     $("#stopbtn").click(function () {
         wx.stopVoice({
-            localId: localId
+            localId: local_Id
         });
     });
 });
