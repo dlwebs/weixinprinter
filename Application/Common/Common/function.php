@@ -52,7 +52,7 @@ function saveWeixinMedia($url, $saveDir, $saveFile) {
     preg_match('/filename=\"\w+\.(\w+)\"$/i', $media["Content-disposition"], $extmatches);
     $fileExt = $extmatches[1];
     $saveFile = $saveFile.'.'.$fileExt;
-    if(!file_exists($saveDir)){
+    if (!file_exists($saveDir)) {
         mkdir($saveDir, 0777, true);
     }
     file_put_contents($saveDir.$saveFile, $media['mediaBody']);
