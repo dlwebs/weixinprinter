@@ -243,7 +243,15 @@ class WeixinController extends BaseController {
         $this->assign('wxinfo', $wxinfo);
         $this->display();
     }
+    public function zoom4Action() {
+        $uid = I('get.uid');
+        $picurl = $_GET["picurl"];
 
+        $picinfo=array( "picurl"=>$picurl);
+        $this->assign('picinfo', $picinfo);
+
+        $this->display();
+    }
     public function cropAction() {
         $uid = $_GET["uid"];
         $src = I('post.src');
