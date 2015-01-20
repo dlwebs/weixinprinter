@@ -12,6 +12,7 @@ $private_config = array(
                                                   'zoom/:uid' => 'Weixin/zoom',
                                                   'zoom2/:uid' => 'Weixin/zoom2',
                                                   'zoom3/:uid' => 'Weixin/zoom3',
+                                                  'zoom4/:uid' => 'Weixin/zoom4',
                                                   'printer/:atcode' => 'Index/index',
                                                   'playaudio/:audio' => 'Weixin/playaudio',
                                                   )
