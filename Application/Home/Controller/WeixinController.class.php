@@ -282,7 +282,7 @@ class WeixinController extends BaseController {
             if (!$weixinobj['weixin_copyright']) {
                 $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/banquan.jpg');//copyright image default 262x100
             } else {
-                $copyright_img = imagecreatefromjpeg($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
+                $copyright_img = imagecreatefrompng($fileSavePath.'copyright/'.$weixinobj['weixin_copyright']);
             }
             $user_img = imagecreatefromjpeg($fileSavePath.$src);
             $background = imagecreatetruecolor(262,370);
