@@ -120,9 +120,11 @@
         var serverId = '';
         wx.ready(function(){
             $("#audioBeginBtn").on("click",function(){
+                alert("点击确定开始录音");
                 wx.startRecord();
             });
             $("#audioEndBtn").on("click",function(){
+                alert("点击确定结束录音");
                 wx.stopRecord({
                     success: function (res) {
                         localId = res.localId;
