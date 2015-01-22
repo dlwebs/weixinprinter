@@ -106,6 +106,7 @@ class WeixinController extends BaseController {
                 array("普通裁剪图片","普通裁剪图片，然后即可打印","http://".$_SERVER['SERVER_NAME']."/index.php/zoom/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
                 array("使用高级模版生成打印图片","使用高级模版生成打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom2/".$post['fromUserName']."/?picurl=".$post['picUrl'],$post['picUrl']),
                 array("使用带文字和音频留言机的模版打印图片","使用带文字和音频留言机的模版打印图片","http://".$_SERVER['SERVER_NAME']."/index.php/zoom3/".$post['fromUserName']."/?picurl=".$post['picUrl'].'&wxtoken='.$this->_token,$post['picUrl'])
+              /*  array("美图打印（敬请期待..）","http://".$_SERVER['SERVER_NAME']."/index.php/zoom4/".$post['fromUserName']."/?picurl=".$post['picUrl'].'&wxtoken='.$this->_token,$post['picUrl'])*/
             );
         } else {
             return '照片发送失败，请重新发送';
@@ -243,7 +244,15 @@ class WeixinController extends BaseController {
         $this->assign('wxinfo', $wxinfo);
         $this->display();
     }
+    public function zoom4Action() {
+        $uid = I('get.uid');
+        $picurl = $_GET["picurl"];
 
+        $picinfo=array( "picurl"=>$picurl);
+        $this->assign('picinfo', $picinfo);
+
+        $this->display();
+    }
     public function cropAction() {
         $uid = $_GET["uid"];
         $src = I('post.src');
