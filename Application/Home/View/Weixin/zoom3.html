@@ -101,7 +101,7 @@
 
 
 <div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display: none;">
-    <img src="/img/guide.png">
+    <img src="/images/voice.png">
 </div>
 
 
@@ -120,7 +120,8 @@
         var serverId = '';
         wx.ready(function(){
             $("#audioBeginBtn").on("click",function(){
-                alert("点击确定开始录音");
+
+                $("#mcover").show();
                 wx.startRecord();
             });
             $("#audioEndBtn").on("click",function(){
