@@ -109,10 +109,10 @@
                     <input type="hidden" id="preview" value="">
                     <input type="hidden" id="wxtoken" name="wxtoken" value="{$wxtoken}">
 
-                    <button type="button" id="audioBeginBtn">开始录音</button>
+                    <button type="button" id="audioBeginBtn" class="step step1_btn">开始录音</button>
 
-                    <input type="text" name="wxtext" value="" id="wxtext" placeholder="留言文字，不能超过8个字">
-                    <button  type="button"   id="saveBtn"  >确定裁剪</button>
+                    <input type="text" name="wxtext" value="" id="wxtext" class="step step3_btn" style="display: none" placeholder="留言文字，不能超过8个字">
+                    <button  type="button" class="step step3_btn" style="display: none"   id="saveBtn"  >确定裁剪</button>
                 </form>
             </div>
         </div>
@@ -160,6 +160,8 @@
                                 serverId = res.serverId; // 返回音频的服务器端ID
                                // alert("留言成功，请填写留言文字");
                                 $("#mcover").hide();
+                                $(".step1_btn").hide();
+                                $(".step3_btn").show();
                             }
                         });
                     }
@@ -210,7 +212,8 @@
                     } else {
                       //  $("h2").html("裁剪完成，分享之后即可打印");
                         $(".jcrop-holder").hide();
-                        $("#status").html("<input onclick=\"document.getElementById('mcover').style.display='block';\" type='button' id='okbtn' class='submit btn' value='裁剪完成，点击分享即可打印'><img width='300' src='/upload/"+d+"' />");
+                        $(".page-header h1").html("裁剪完成，返回微信聊天输入验证码即可打印")
+                        $("#status").html("<img width='300' src='/upload/"+d+"' />");
                         $("#saveBtn").hide()
 
                     // 所有功能必须包含在 WeixinApi.ready 中进行
