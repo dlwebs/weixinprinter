@@ -97,7 +97,7 @@
                 </div>
                 <img src="{$picinfo.picurl}" id="cropbox" width="{$picinfo.width}"/>
                 <div id="status"></div>
-                <div id="cropform" >
+                <form id="cropform" >
                     <input type="hidden" name="x1" id="x1" size="3">
                     <input type="hidden" name="y1" id="y1">
                     <input type="hidden" name="cropwidth" id="cropwidth">
@@ -109,11 +109,11 @@
                     <input type="hidden" id="preview" value="">
                     <input type="hidden" id="wxtoken" name="wxtoken" value="{$wxtoken}">
 
-                    <button id="audioBeginBtn">开始录音</button>
+                    <button type="button" id="audioBeginBtn">开始录音</button>
 
                     <input type="text" name="wxtext" value="" id="wxtext" placeholder="留言文字，不能超过8个字">
-                    <button   id="saveBtn"  >确定裁剪</button>
-                </div>
+                    <button  type="button"   id="saveBtn"  >确定裁剪</button>
+                </form>
             </div>
         </div>
     </div>
@@ -208,7 +208,7 @@
                     if (d == "error") {
                         alert("剪裁失败");
                     } else {
-                        $("h2").html("裁剪完成，分享之后即可打印");
+                      //  $("h2").html("裁剪完成，分享之后即可打印");
                         $(".jcrop-holder").hide();
                         $("#status").html("<input onclick=\"document.getElementById('mcover').style.display='block';\" type='button' id='okbtn' class='submit btn' value='裁剪完成，点击分享即可打印'><img width='300' src='/upload/"+d+"' />");
                         $("#saveBtn").hide()
