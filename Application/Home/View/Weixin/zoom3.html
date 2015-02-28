@@ -109,10 +109,10 @@
                     <input type="hidden" id="preview" value="">
                     <input type="hidden" id="wxtoken" name="wxtoken" value="{$wxtoken}">
 
-                    <input type="button" value="开始录音" id="audioBeginBtn"  >
+                    <button id="audioBeginBtn">开始录音</button>
 
                     <input type="text" name="wxtext" value="" id="wxtext" placeholder="留言文字，不能超过8个字">
-                    <input type="button" value="确定裁剪" id="saveBtn"  >
+                    <button   id="saveBtn"  >确定裁剪</button>
                 </form>
             </div>
         </div>
@@ -122,15 +122,14 @@
 
 <div id="mcover"  style="display: none;">
     <img src="/image/voice.png">
-    <input type="button" value="停止录音" id="audioEndBtn"  >
+    <button   id="audioEndBtn"  >停止录音</button>
 </div>
 
 
 </body>
 <script>
     $(function(){
-        alert('{$wxinfo.weixin_appid}');
-        alert('{$signPackage.signature}');
+
         wx.config({
             debug: false,
             appId: '{$wxinfo.weixin_appid}',
@@ -142,7 +141,7 @@
         var localId = '';
         var serverId = '';
         wx.ready(function(){
-            alert("微信api载入完成");
+
             $("#audioBeginBtn").on("click",function(){
 
                 $("#mcover").show();
@@ -158,7 +157,8 @@
                             isShowProgressTips: 1, // 默认为1，显示进度提示
                             success: function (res) {
                                 serverId = res.serverId; // 返回音频的服务器端ID
-                                alert("留言成功，请填写留言文字");
+                               // alert("留言成功，请填写留言文字");
+                                $("#mcover").hide();
                             }
                         });
                     }
