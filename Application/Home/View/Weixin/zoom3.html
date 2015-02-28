@@ -31,6 +31,7 @@
         };
     </script>
     <style type="text/css">
+        .container{text-align: center}
         #saveBtn,#okbtn{
             width: 80%;
             margin-top: 10px;
@@ -58,9 +59,8 @@
             text-align: center;
         }
         #mcover img {
-            position: fixed;
 
-            top:80px
+            margin-top:80px
             width: 195px!important;
             height: 195px!important;
             z-index: 20001;
@@ -76,6 +76,14 @@
         #audioEndBtn{
             top: 300px
         }
+        #wxtext{
+            width: 80%;
+            margin-top: 10px;
+            height: 40px;
+            border: 0px;
+            background-color: rgb(41, 219, 122);
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +93,7 @@
         <div class="span12">
             <div class="jc-demo-box">
                 <div class="page-header">
-                    <p>在图片中选择需要打印的区域</p>
+                    <h1>在图片中选择需要打印的区域</h1>
                 </div>
                 <img src="{$picinfo.picurl}" id="cropbox" width="{$picinfo.width}"/>
                 <div id="status"></div>
@@ -103,7 +111,7 @@
 
                     <input type="button" value="开始录音" id="audioBeginBtn" class="btn btn-large btn-inverse">
 
-                    <input type="text" name="wxtext" value="" id="wxtext" placeholder="留言文字，包括标点10字以内">
+                    <input type="text" name="wxtext" value="" id="wxtext" placeholder="留言文字，不能超过8个字">
                     <input type="button" value="确定裁剪" id="saveBtn" class="btn btn-large btn-inverse">
                 </form>
             </div>
@@ -112,7 +120,7 @@
 </div>
 
 
-<div id="mcover" onclick="document.getElementById('mcover').style.display='';" style="display: none;">
+<div id="mcover"  style="display: none;">
     <img src="/image/voice.png">
     <input type="button" value="停止录音" id="audioEndBtn" class="btn btn-large btn-inverse">
 </div>
