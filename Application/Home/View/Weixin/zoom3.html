@@ -129,6 +129,8 @@
 </body>
 <script>
     $(function(){
+        alert('{$wxinfo.weixin_appid}');
+        alert('{$signPackage.signature}');
         wx.config({
             debug: false,
             appId: '{$wxinfo.weixin_appid}',
